@@ -8,6 +8,8 @@ let adminLogueado = false;
 let rolActual = "cliente";
 let carrito       = [];
 let solicitudResumenVentas = 0;
+let solicitudCaja = 0;
+let resumenCajaHoy = { efectivo: 0, qr: 0 };
 const PRODUCTOS_INICIALES = [{"id":1779293459401,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1779293449/pb6yj6xeex1bn7yjslrp.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1779293452/wvhvysvyvt0qswpcavpd.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1779293455/ynguzkqtwhicqjstqlu2.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1779293456/gpxtx6m7z8cngcrzcxs8.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1779293458/pd5qkijw62nqhjpwrmmq.jpg"],"nombre":"Manchester United 2008","tallas":"S-M-L-XL","dorsales":"7 RONALDO","calidad":"RETRO","categoria":"retro","precio":"330","visitas":1},{"id":1779297274853,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1779297266/ntuct8fqwjnimtnm4gwo.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1779297268/zmqmfbt9troo0gfaaujy.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1779297270/uqufvhn2vtsobjxvyazz.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1779297272/plfl8pflxvrruzsfuvlk.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1779297273/xis5isxrzp2gkd5udtwo.jpg"],"nombre":"Barcelona 25/26","tallas":"S-M-L-XL","dorsales":"10 LAMINE YAMAL, 11 RAPHINHA, 8 PEDRI","calidad":"VERSION JUGADOR","categoria":"player","precio":"250","colores":"","descripcion":"","stock":null,"vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null},{"id":1782172292579,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782172279/iecfmadi5mru8yrfgmbh.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782172280/cracaonudplaqhfop0s9.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782172281/nzgbdpizhh4szqzs8esw.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782172282/nanifjbvrbgez3cglrz9.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782172284/ofvbg4vz6h9rijrlxjip.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782172286/pev5y2jgmz7ddbfqkpjq.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782172287/mlv8wat5fgbhbhlrgbd5.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782172288/dnwnvoaudlqiprbxairi.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782172290/gzlkvx4zxgnby0rrdmku.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782172291/gkuvoqydytnyeh8hkq24.jpg"],"nombre":"Brasil 2026","tallas":"M,L,XL,XXL","dorsales":"10 Neymar Jr, 7 Vini Jr","calidad":"AAA","colores":"","descripcion":"Camiseta Brasil 2026 Versión Jugador","categoria":"player","precio":"280","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782173053685,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173044/n1liezxhhjqhmao4wxce.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173046/oxyswlq8iu8jm67gmidl.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173047/bumqke5awdvcgs0ehjsj.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173048/ou7vgnbfmbw5ldcoxokm.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173049/ib7zusx2h9ltlds2t3ea.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173051/jphbrq9vo9q6a2d5vfop.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173053/nivvpvlquxaxljkmxksb.jpg"],"nombre":"Barcelona 25/26","tallas":"S,M,L,XL","dorsales":"10 Lamine Yamal, 8 Pedri, 14 Rashford, 11 Raphinha","calidad":"AAA +","colores":"","descripcion":"Luce los colores del Barça con esta camiseta de excelente calidad AAA+.","categoria":"clubes","precio":"140","vendidos":0,"esOferta":true,"precioOriginal":"200","finOferta":"","stock":"12","agotado":false,"visitas":0},{"id":1782173377297,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173368/ebi7oiyojlbtgho8xk79.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173369/fjrwvahlmorrnn6ng6um.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173370/kouacw2ycxzegdvrc25w.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173372/hwcecgrwfpxjrwttehpq.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173373/tt8pkulvoutjbs515uql.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173374/y6loxtrvqvouygo1brt8.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173375/jfr5b9vcjbrwaueeswte.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173376/n7b6k0uradhplohbqppc.jpg"],"nombre":"Santos 11/12","tallas":"S,M,L,XL","dorsales":"11 NEYMAR JR","calidad":"RETRO","colores":"","descripcion":"Revive la época dorada del Santos con esta camiseta clásica.","categoria":"retro","precio":"170","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782173610926,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173601/wcagmwzjo5vbmeaiagpk.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173603/ketfdgfv1dkro44eqkwh.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173604/guwuj23jxyvomepqoaam.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173605/nvb9aa6ljfmw3umgnos7.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173607/ahsvhzxj9od6tw7hm0md.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173609/qwe8o3pfgabjdqg8cwgw.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173610/o2eu0dgfozecqmok4qm.jpg"],"nombre":"Barcelona Total 90 25/26","tallas":"M,L","dorsales":"10 Lamine Yamal, 8 Pedri, 14 Rashford, 11 Raphinha","calidad":"AAA+","colores":"","descripcion":"Un diseño que combina la nueva temporada 2025/26 con el estilo icónico Total 90.","categoria":"clubes","precio":"140","vendidos":0,"esOferta":true,"precioOriginal":"200","finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782173956946,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173942/tpqcebmety6mb3o81kuk.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173943/v2alcwubfv5j7s8lvzdy.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173945/slqalpu5ht4jdv2tbhig.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173946/bnzy3zmcswkzryv5tdqq.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173948/yazyfojrxxmbc55de636.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173949/m5m5mm2ltnfsumalzcev.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173951/fmfazsukzrihvou4g71p.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173953/ib3qbzqx8kuh5k2hq7yj.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173954/t1jpkxk7wk4pny2ooyqr.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782173956/qyzw8panrchbnbqvkuik.jpg"],"nombre":"Barcelona 15/16","tallas":"M,L","dorsales":"11 Neymar Jr","calidad":"RETRO","colores":"","descripcion":"Revive una de las temporadas más históricas del Barça.","categoria":"retro","precio":"230","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782174237300,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174227/gitjfmk4gqs87c8obhfi.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174228/ojuf9yge76260wtqgvpz.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174229/ds71tb7wzbd23swc20vi.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174230/yli7mqrbmoujfv59ti0j.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174231/uyckwzcrufl2rzxe1lsb.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174233/mu3brl0pty6fgys3h2u7.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174235/mmxpssq8i6kqisecwqpo.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174236/yvxfyc6v9n6mtmkfhwlx.jpg"],"nombre":"Real Madrid alterna 25/26","tallas":"M,L,XL","dorsales":"10 Mbappe, 5 Bellingham","calidad":"AAA","colores":"","descripcion":"Destaca con la camiseta alterna del Real Madrid 2025/26.","categoria":"retro","precio":"120","vendidos":0,"esOferta":true,"precioOriginal":"180","finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782174494138,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174484/fey6xdskaigdfavi7gqm.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174485/oygno2ba5yurbfwgj46r.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174486/fh0eoye0mp07pfa75ywe.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174488/keynfggvrorchugqjkvf.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174489/icwgv2walvtzwu2jxufu.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174490/zlrkpae1ksjzpcvdshzw.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174492/zzfgkepma77dscv4mwrm.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174493/ldlrovk4cihys8g7jrco.jpg"],"nombre":"Real Madrid alterna 17/18","tallas":"S,M,L,XL","dorsales":"7 Ronaldo","calidad":"RETRO","colores":"","descripcion":"Revive una temporada inolvidable con la camiseta alterna del Real Madrid 2017/18.","categoria":"retro","precio":"330","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782174633074,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174617/trbmg4tjjtff5wroshhu.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174619/vtbhqxb19r1ubg2e8vdn.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174621/ebhckmtibm74hngbd2n5.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174624/zrxxugc3qvl2jlzt5xgj.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174626/zuuchm1q17xr5vqez7q2.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174627/cljtxyzj88lu7a2bcf3d.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174630/oudnvq0ctxarazcwtodu.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174632/w0lwsokjweqbil4nce96.jpg"],"nombre":"Barcelona 2009","tallas":"S,M,XL","dorsales":"10 Messi","calidad":"RETRO","colores":"","descripcion":"Revive una noche histórica con la camiseta de la Final de 2009.","categoria":"retro","precio":"300","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782174844095,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174834/vt6waafwwlieayqe7pkg.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174836/gurh36od6xrpbl8j0de3.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174837/hzmkflj9lmshguqqoepv.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174838/dfwopd4qn2qadzuewhgw.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174839/ca6ghklvkoldwbta2ijk.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174841/zjruzotfni6iigsw5kec.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782174843/k0emk2kpixmymirc58xg.jpg"],"nombre":"Portugal alterna 2026","tallas":"M,L,XL,XXL","dorsales":"7 Ronaldo","calidad":"Player Version","colores":"","descripcion":"Luce el estilo de la selección portuguesa con esta camiseta alterna 2026.","categoria":"retro","precio":"280","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782175179060,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175161/sfqzb0rekp0fncnjzane.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175163/jpolfudnvczy7skwaj7s.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175164/ym7nhsce5yjhsnugcnpz.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175165/nrsjuvg7tlhsynxrklwa.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175168/powpb1fuoij6n1b6wsfm.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175169/mhiziblcbnjblkvmblu4.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175171/xv7g1haj1dxlhpacosot.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175173/gy22qekmwrfjw16ogr1b.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175174/q9ctsv7guk0pk2idrxbs.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175176/pylg5v0imawlp5u2kif9.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175178/yp2xfbetsuoz7herfk6w.jpg"],"nombre":"Barcelona alterna 25/26","tallas":"S,M,L,XL","dorsales":"10 Lamine Yamal, 8 Pedri, 11 Raphinha","calidad":"AAA+","colores":"","descripcion":"Camiseta alterna del FC Barcelona temporada 2025/26.","categoria":"clubes","precio":"140","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782175417021,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175408/rqspaarrq7snzsvuvahq.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175409/a1jepdzn6bcdr1tgxsiw.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175410/aojfrbjdgys2ngfoxap6.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175411/tzxjoaejms7udmkduwkq.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175413/qaxevqcek2f0m1l7nfb0.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175414/a2m0l5vsrgavhmed5rgd.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175416/dhszovieymstf9bh67nv.jpg"],"nombre":"Real Madrid 25/26","tallas":"S,M,L,XL","dorsales":"10 Mbappe, 5 Bellingham, 30 Mastantuono","calidad":"AAA+","colores":"","descripcion":"Nueva camiseta del Real Madrid temporada 2025/26.","categoria":"clubes","precio":"140","vendidos":0,"esOferta":true,"precioOriginal":"200","finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782175542481,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175533/jvbcdzxwzc3bovaxjkqw.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175534/qhnbpngdhenozpqgbef7.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175535/tttls02xetv7suk1wk33.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175537/xid9xfoogseldga4ld5g.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175538/q7kk98qertd1iq9fpy4d.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175540/wrmrxi0mpn14m7dhi2bt.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175541/u4kqqgrhy0jyripoysdx.jpg"],"nombre":"Real Madrid 25/26","tallas":"S,M","dorsales":"8 Valverde, 10 Mbappe","calidad":"AAA","colores":"","descripcion":"Nueva camiseta del Real Madrid temporada 2025/26.","categoria":"clubes","precio":"130","vendidos":0,"esOferta":true,"precioOriginal":"180","finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782175886150,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175872/b1fwspkn0pz4bltun2sq.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175873/koffih756usyshqecyts.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175874/inliyjfyeyopibcciakl.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175875/w0yvxzpjhpapmlmyipim.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175877/uaw4x6v9mmboj2lfw9ld.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175878/ivsya2vzxxy2qqnjgttf.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175879/w2rsyy1xk2iubwo36rx7.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175881/erbr00fcoaevqkyadfp0.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175882/cvko5huqfc1i79rupyc7.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175884/b2ztl3wjnl3zmhcz9eq7.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782175885/eqmgvvksk5pq8zulyqdo.jpg"],"nombre":"Alemania 2026","tallas":"M,L,XL,XXL","dorsales":"6 Kimmich, 17 Wirtz, 10 Musiala","calidad":"Player Version","colores":"","descripcion":"Camiseta de la selección de Alemania para la temporada 2026.","categoria":"player","precio":"280","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782176071334,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176046/yprusdwnppchrnq5dpkt.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176050/ssirnqvh2r6eewzjmpfq.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176052/pqgvoln4zeypuyizfiw3.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176057/ikytk44vely1fugzvwcf.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176059/nzn8xq5p9652x321pdlr.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176060/xazypudwoszhuxid66jj.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176063/dagxucz2qsykbvazpzcr.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176067/lokvp1k6ntwqyh3emmyz.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176069/tlvriyabldpb1decgqgz.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176070/d30frs5vql1p49dd4ubq.jpg"],"nombre":"Colombia 2026","tallas":"M,L,XL,XXL","dorsales":"10 James, 7 Luis Diaz","calidad":"Player Version","colores":"","descripcion":"Camiseta de la selección de Colombia temporada 2026.","categoria":"player","precio":"280","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782176271723,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176258/wzazujsaxmq91zdjgxvj.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176259/qsvcivs2wis3ezwup5mg.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176261/y7xlyeeaugkl1ak5f9vm.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176262/ouopqewqi9qfcetza0mf.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176264/dln2sryddhd0721i5g5m.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176265/pqa7ckcbdxwlorbghs2l.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176266/wrg3adh0oci8vm6yx15d.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176268/wibr6dgsgywymwhixjtw.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176269/drtxdyno0sbdjaarowih.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176271/kykyk8bjc8prg1yfpkio.jpg"],"nombre":"Barcelona 15/16","tallas":"M,L","dorsales":"10 Messi","calidad":"RETRO","colores":"","descripcion":"Camiseta clásica del FC Barcelona temporada 2015/16.","categoria":"retro","precio":"230","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782176405354,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176394/gtkds00tcl0xkxfo0kbi.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176395/o701wam54osuq8yhnt1d.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176396/bn5veqizylpuyr8zv7rm.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176397/fgbhebsltlmiazyub4fz.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176398/lfb5ifupvm94mx33ildp.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176400/dgqf9i6ovdmumoutl5ae.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176401/auq2njkmdfyf08qjbkve.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176403/yeayclvuf9aumayvhck8.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782176404/kl005mvdatgnvmfyskk1.jpg"],"nombre":"Espana 2026","tallas":"M,L,XL,XXL","dorsales":"19 Lamine Yamal, 20 Pedri","calidad":"Player Version","colores":"","descripcion":"Camiseta de la selección de España para la temporada 2026.","categoria":"player","precio":"280","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782409467997,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409455/mp0eugeiq5gxeeydxugi.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409456/ssafqioa0dq5k4n3azke.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409458/qa3tqfd80ggyefnfoffk.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409459/tepnnqzijor29up8ratn.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409460/iefc5pwvrn5s9yztcuci.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409462/ps3ked7yzkxvlkmvathm.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409463/nyel5xzhrcutikwhogr3.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409465/dirvwn4wiljdcv1bx6yg.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409466/lejwpgdrkf9xflxnb2nl.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409468/xvyrlzht7fnv9wqb1gao.jpg"],"nombre":"Real Madrid 3ra 25/26","tallas":"S,M","dorsales":"10 Mbappe, 8 Valverde, 30 Mastantuono","calidad":"AAA","colores":"","descripcion":"Demuestra tu pasión por el Real Madrid con la nueva tercera equipación 2025/26.","categoria":"clubes","precio":"125","vendidos":0,"esOferta":true,"precioOriginal":"180","finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782409641345,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409630/geucjzphplsbfkrdankn.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409631/hii8qpbwzfbdlmnpnanz.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409633/xyzbkfrlaosk85zv5vzi.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409634/ir1bqgjjdd73kyotgcps.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409636/cszpsfcnigykqrklcryl.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409637/ia3zeexlogwpdndmywwm.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409640/ri1ygv62vljv7yvxhon2.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409641/lzx2kxksarr2qgvkhxiq.jpg"],"nombre":"Liverpool 3ra 25/26","tallas":"M,L,XL","dorsales":"11 M.Salah, 7 Wirtz","calidad":"AAA+","colores":"","descripcion":"Luce el estilo de los Reds con la nueva Polera Liverpool 3ra 2025/26.","categoria":"clubes","precio":"140","vendidos":0,"esOferta":true,"precioOriginal":"200","finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782409792449,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409780/xgxfot7a5ucpiwk62wfy.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409781/a9ov0qyibrrkdeezvpvj.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409782/lpdxa2gy6vwwbuxckd2z.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409784/edm2duigpaedfcwzyx8a.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409785/j1dnlyrbevfuvsapztoa.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409787/zhsxofognf7aw3ohejy4.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409788/acfjmyawfgnmznxt4psd.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409790/amkuljxd2su7fcqama2d.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409792/xxnfwewne28hgyighssh.jpg"],"nombre":"Inglaterra 2002","tallas":"M,L,XL","dorsales":"7 Beckham","calidad":"RETRO","colores":"","descripcion":"Revive una de las camisetas más recordadas de la selección inglesa con la Polera Inglaterra 2002.","categoria":"clubes","precio":"200","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782409973617,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409962/qhm1g5bhtnlzketmvsqb.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409963/zyoctajujfyf7xwz6pah.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409965/n5ae927gpyke2m02x0mf.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409967/xb2qcedx9eadmpprp7zb.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409968/vijihcd9igfdrgahgvnr.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409970/e2gtg0zsk0tyjxv9ohnx.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409972/zaetbu0ni3sn9fcrqm2y.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782409973/mrpmdwxpgkj9ydblgbjo.jpg"],"nombre":"PSG 25/26","tallas":"XL,XXL","dorsales":"14 D. DOUE, 7 KVARATSKHELIA","calidad":"Player Version","colores":"","descripcion":"Luce los colores del campeón de París con la nueva Polera PSG 2025/26.","categoria":"player","precio":"200","vendidos":0,"esOferta":true,"precioOriginal":"280","finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782410103933,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410091/lk4lfikpkmbtwakryxpw.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410093/aevo7jbnpstxyimmo2os.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410094/a37azzv1wwilaaeivb1o.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410095/iheuv3wp7izha2qxppnw.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410097/wa7gbsfdwhjf3p2d5ekt.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410098/ckxizqytxrmeb04uqa8j.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410099/zvz710rdgfpsbnoby0mb.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410102/lo82vexog5mry7liiui5.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410104/cznzkeeh6ptniqa2ycta.jpg"],"nombre":"Portugal 2006","tallas":"M,L,XL","dorsales":"17 C. Ronaldo","calidad":"RETRO","colores":"","descripcion":"Revive la elegancia de una generación histórica con la Polera Portugal 2006.","categoria":"retro","precio":"300","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782410262304,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410250/dpehnrqqoema4fmnpq0y.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410252/w5w5gbsdvuuia9axeoob.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410253/ihiraj6csspjxgtelvco.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410254/qamvlfm0oq9ppocjqcej.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410257/te4qrfxb7ybpnavfz2zn.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410259/bhajzfnqgsiwxrzh4yvu.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410262/p67yikh7x5eo1ddeblxp.jpg"],"nombre":"Argentina alterna 2026","tallas":"S,M,L,XL","dorsales":"10 Messi","calidad":"AAA","colores":"","descripcion":"Luce los colores de la Albiceleste con la Polera Argentina Alterna 2026.","categoria":"selecciones","precio":"180","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782410369181,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410355/ulhjmmyxtvy3gqczptg9.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410358/soc5na3usmgcktwptnme.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410360/brh8x2duigziaer4p2np.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410362/oo2lr2xmqypmcfhpiklc.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410363/d3p5vhzg1rjxnj3430mw.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410364/dkuyh8smarbltvaekh93.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410366/injohy4cga0jx7kkuagy.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410367/upwyua1lzeudes10s783.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410369/zmsxdjvofjihjk5ppcbf.jpg"],"nombre":"Mexico 2026","tallas":"S,M,L,XL","dorsales":"SIN NUMERO","calidad":"AAA+","colores":"","descripcion":"Demuestra tu orgullo por el Tri con la Polera México 2026.","categoria":"selecciones","precio":"180","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782410461451,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410450/mejv04fqdphojcifytqe.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410451/zvpwjd4ermryhhuyaieu.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410453/slwrpjzn1yzhvkniyo1m.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410455/reluytuxe6uerrhnansn.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410456/cspqxjliatac5njd3zkq.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410458/yk8hc3iqdvvppxymamgq.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410459/eg2ieqcry7b3g8dnaoni.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410461/btz1yhepplc5xfkddlng.jpg"],"nombre":"Espana 2026","tallas":"S,M,L,XL","dorsales":"SIN NUMERO, 19 Lamine Yamal","calidad":"AAA+","colores":"","descripcion":"Lleva la pasión de La Roja con la Polera España 2026.","categoria":"selecciones","precio":"200","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782410625890,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410615/jfdxinjiufvuaggfb5uc.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410617/efdtgrm80geipsrazhlg.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410618/a9otwqtrtnqkeubpdyod.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410621/mnc5xlukyp5lv0windo2.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410622/gvjhd5ahgmasdvhuogwe.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410624/ak6tqlfhkm51zxzzzgvi.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410626/xbzhpjao7io5sioldrp0.jpg"],"nombre":"Real Madrid alterna 13/14","tallas":"M,L","dorsales":"7 Ronaldo","calidad":"RETRO","colores":"","descripcion":"Revive una temporada histórica con la Polera Real Madrid Alterna 2013/14.","categoria":"retro","precio":"250","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782410710477,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410701/mezwelh2euhlfmesvbj7.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410702/vi1hxrs2kax6pjfufngx.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410704/yeaumwfalllscr0sowvp.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410705/gbhftybjaeqqylxdkpyy.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410706/oussjibdmsuqzgylf2my.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410708/cgjsbp4m2uq82ll9apex.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410710/ry8u8e1l0yz5lx9tc9ze.jpg"],"nombre":"Real Madrid 17/18","tallas":"M,L","dorsales":"7 Ronaldo","calidad":"RETRO","colores":"","descripcion":"Revive una temporada legendaria con la Polera Real Madrid 2017/18.","categoria":"retro","precio":"250","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782410817517,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410807/xff2mtx9dwbsavggbh8w.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410808/rnhwtceaqfy2at0r0tf2.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410809/gdvvjstc5cjbxuey1cex.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410811/ybfeyhl7bvuzauptm2x8.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410813/v44xngocimt6m7rjymty.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410814/stdok3dzzjkilyh0cc5l.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410816/jkhli4koejoiwwbz6vwu.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782410817/awve3mebgy1dujmgdwgu.jpg"],"nombre":"Inglaterra alterna 2026","tallas":"S,M,L","dorsales":"10 Bellingham","calidad":"AAA","colores":"","descripcion":"Luce el estilo de los Three Lions con la Polera Inglaterra Alterna 2026.","categoria":"selecciones","precio":"180","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782411021769,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411009/ylkwwlb0tnx4a0mceq18.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411011/l0bllx7cmeetqptmqv7s.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411013/xencrwher3grdorgjcfj.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411014/zqi1jtreeh7tqx92pc5r.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411016/duvowyhp9wbtuorwlisx.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411018/uf5uf46o1subcbcyrgkl.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411019/gbtentyysaoykhl8rxvo.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411021/b4ysib6wjqjl3dumxjsx.jpg"],"nombre":"Corinthians 24/25","tallas":"S,M,L,XL","dorsales":"10 Memphis","calidad":"AAA","colores":"","descripcion":"Luce los colores del Timão con la Polera Corinthians 2024/25.","categoria":"clubes","precio":"100","vendidos":0,"esOferta":true,"precioOriginal":"180","finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782411143582,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411131/fpddskxpbnr8pgwqf6sr.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411132/i07axaxshzlisqbh4nzn.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411134/q7qa9ep1tqt3d3olzb7e.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411136/gcunmltit7xok8r8wpxm.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411137/s2doczvgoysjdfprwudb.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411140/bymofbl59t07myoeg6g7.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411142/grt07orxrqzbdqtseaur.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411143/m1r7n2eswmex2tljmue9.jpg"],"nombre":"Barcelona 1999","tallas":"S,M,L,XL","dorsales":"11 Rivaldo","calidad":"RETRO","colores":"","descripcion":"Revive el estilo clásico del final de los años 90 con la Polera Barcelona 1999.","categoria":"retro","precio":"280","vendidos":0,"esOferta":true,"precioOriginal":"300","finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782411553195,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411542/azelnlo1khjzvjc7oxlz.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411543/nr3y1g8zanhwll2gross.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411544/zdk0klhpoacoznlfacbu.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411545/qtnuw7zvktsuwjyqsuud.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411547/r1bjpy940jffflxcp1r5.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411548/b4dewqeqlow6u8fntktp.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411549/pcvyc6un9gu5uywewnqw.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411551/wwmfs3ke3fo1ivhn4mll.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411553/dgkzdct6rkrr9lzycuvw.jpg"],"nombre":"Real Madrid 125 Anos","tallas":"M,L,XL","dorsales":"10 Mbappe, 5 Bellingham, 7 Vini Jr","calidad":"AAA","colores":"","descripcion":"Celebra la historia del club más grande del mundo con la Polera Real Madrid 125 Años.","categoria":"clubes","precio":"160","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":1},{"id":1782411653052,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411644/py1ityqkelpldvjpevis.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411645/nog4vn7ag6rjzlflltlm.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411646/n279bmoizzuybodd6wzc.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411647/hxxeut1o2zh6cjenbeq5.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411649/n1hzleskyek2pcbdzn1g.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411650/fdncwlfxza1bnhemsnzy.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411651/ni65lm6nij8p1vgwfgmn.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411653/oap1yqy2fbbtwdo28d9a.jpg"],"nombre":"Espana alterna 2026","tallas":"M,L,XL","dorsales":"19 Lamine Yamal, 20 Pedri","calidad":"AAA","colores":"","descripcion":"Luce la identidad de La Roja con la Polera España Alterna 2026.","categoria":"selecciones","precio":"180","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782411767520,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411755/kjicfkannoadnj9gi4qg.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411756/dqtziz0blybrarofbtib.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411758/kxjhng8yf18lao6xubav.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411761/qe8xylhkij7mzigrueeo.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411762/vltekpcjqb9bcjl1tw7u.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411764/pysmb9ifl8b6couffkp2.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411766/qmbcfaxopdabi0fayg0k.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782411767/fdfbbtyebylvurgibf2q.jpg"],"nombre":"Inglaterra 2026","tallas":"M","dorsales":"10 Bellingham","calidad":"AAA","colores":"","descripcion":"Luce los colores de los Three Lions con la Polera Inglaterra 2026.","categoria":"selecciones","precio":"180","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782781244564,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781232/vyx1mbjcoid6kjix1jxs.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781233/tbm4pitsagxlh0mgrast.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781235/fwncvftfex5rwgtw4gg4.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781237/ea7id4mcexhlkhzhtu25.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781238/rp66aplwto3idgoullr6.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781241/jjflpvlqoxls035idfrm.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781243/fciafqictrmv0n08srwe.jpg"],"nombre":"Inter Miami alterna 24/25","tallas":"S,M,L,XL","dorsales":"10 Messi","calidad":"AAA","colores":"","descripcion":"Luce el estilo del Inter Miami con la Polera Alterna 24/25.","categoria":"clubes","precio":"100","vendidos":0,"esOferta":true,"precioOriginal":"170","finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782781444449,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781429/uneehjvczzdufj5pwhvr.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781431/x7zwhmetfduduckmtvfy.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781433/rkhabfv1puwl16t9vrat.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781435/nyw9wq9vre8r1c9o9llk.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781436/ttmfbjsb1awzjuizxvxy.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781438/juxcn5eap02bv1hnuhzr.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781440/cxcvtwhlorv6yq7jfvdv.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781443/gfyurx9ljtss0atue7q3.jpg"],"nombre":"Barcelona alterna 24/25","tallas":"M,L","dorsales":"19 Lamine Yamal, Sin Numero","calidad":"AAA","colores":"","descripcion":"Luce un estilo único con la Polera Barcelona Alterna 24/25.","categoria":"clubes","precio":"100","vendidos":0,"esOferta":true,"precioOriginal":"170","finOferta":"","stock":null,"agotado":false,"visitas":0},{"id":1782781555546,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781545/phfj8j27sm3mq3bqk9m5.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781546/lgxoxnms8gmgocclibit.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781547/mlivtmkz9nrlg2j37oli.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781549/wl674gowk3agakbvwd9d.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781551/a9jubhpqhbmuqlanfiu9.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781552/pyk994pdpdxplwuohk20.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781554/dxchoavbdttqyyhkjl3m.jpg"],"nombre":"Croacia alterna 2026","tallas":"M","dorsales":"10 Modric","calidad":"AAA","colores":"","descripcion":"Luce la nueva Polera Croacia Alterna 2026.","categoria":"clubes","precio":"170","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782781681017,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781669/vnimwwogumb1mwkothyt.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781670/duwake5vwpfnndgaxjck.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781671/fg5uidkvpmadsaeydgdn.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781672/o7rr0zcepsalacpzjbu2.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781673/m2h41xb1u32qzapjqymi.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781675/iryavppsmedjee9mkjl2.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781676/w1lu7pkgugf0mbjmokjk.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781677/uzl9kqyotwv2dwgjok7w.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781679/tejekyokpeeaen8wyqer.jpg"],"nombre":"Ecuador 2026","tallas":"M","dorsales":"23 M. Caicedo","calidad":"AAA","colores":"","descripcion":"Luce la nueva Polera Ecuador 2026.","categoria":"selecciones","precio":"180","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782781796593,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781785/tfjy0j9legf0zzpfwgr5.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781786/x8nacrtxo3lxs8ivhujz.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781788/so0vl2b6f4qskxiyc2v5.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781790/z15yjqeh0pqw9bhqhdjm.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781791/qdjtpmn7tuhfcqqz4rpf.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781793/fkf83wtjj2dwrmungpok.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781795/jzqwwxjftvn1itqzw8w2.jpg"],"nombre":"Liverpool conmemorativa","tallas":"M","dorsales":"Sin Numero","calidad":"AAA","colores":"","descripcion":"Luce la Camiseta Conmemorativa Liverpool Negra.","categoria":"clubes","precio":"170","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782781940092,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781924/afdd7uaujz2hfochumye.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781925/qlyfbyr1yrwh7oybq2ge.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781928/spov4teusy2gr2vds98b.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781930/owz7gnc5i69ce4w2bchc.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781932/hu8pvs47n8cyrj2ajzoh.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781934/lpukaadz9qmefisulvs8.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781935/noum2ju0ykzo9biel9ve.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781937/kwkuyk4tcnbnzczyino4.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782781938/pp1tp4uemg4k2phbjs3i.jpg"],"nombre":"Portugal 2026","tallas":"S,M,L,XL","dorsales":"7 RONALDO","calidad":"AAA","colores":"","descripcion":"Luce la nueva Polera Portugal 2026.","categoria":"selecciones","precio":"170","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0},{"id":1782782080032,"imagenes":["https://res.cloudinary.com/dxcfq1mln/image/upload/v1782782066/lyrvnmluydqnhcuspubt.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782782067/arsaxvvepslt6s1efarr.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782782069/xrdex2roojww0pctvb02.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782782070/z9grwnh4asnxfxtmmhfd.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782782072/zktmz9jjrnuaormunrra.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782782073/rsub2ds6un1rlxq3gmzn.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782782075/pj8a3sj9xv6ikhg2m0pa.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782782077/t98vscjzjaorfaqrnhh6.jpg","https://res.cloudinary.com/dxcfq1mln/image/upload/v1782782078/jojyzmniwyitorumoy5t.jpg"],"nombre":"Colombia 2026","tallas":"S,M,L,XL","dorsales":"7 Luis Diaz, Sin Numero","calidad":"AAA+","colores":"","descripcion":"Luce la nueva Polera Colombia 2026.","categoria":"selecciones","precio":"200","vendidos":0,"esOferta":false,"precioOriginal":null,"finOferta":null,"stock":null,"agotado":false,"visitas":0}];
 let productos     = JSON.parse(localStorage.getItem("productos")) || PRODUCTOS_INICIALES;
 let historial     = JSON.parse(localStorage.getItem("historial"))  || [];
@@ -24,7 +26,7 @@ let usuarioActual = null;
 let perfilActual = null;
 let vistaCuenta = "ingresar";
 let encargoFotoPreviewUrl = "";
-const ROLES_PERSONAL = ["admin", "cajero", "proveedor"];
+const ROLES_PERSONAL = ["admin", "cajero", "empleado"];
 const ESTADOS_PEDIDO = ["pendiente", "confirmado", "preparando", "enviado", "completado", "cancelado"];
 
 function esPersonal() {
@@ -32,7 +34,7 @@ function esPersonal() {
 }
 
 function etiquetaRol(rol) {
-    return ({ admin: "Administrador", cajero: "Cajero", proveedor: "Proveedor" })[rol] || "Cliente";
+    return ({ admin: "Administrador", cajero: "Cajero", empleado: "Empleado" })[rol] || "Cliente";
 }
 
 function abrirPanelAdministracion() {
@@ -56,7 +58,10 @@ function configurarAccesoPanel() {
         const panel = $("tab-" + btn.dataset.tab);
         if (panel) panel.hidden = !permitido;
     });
-    const vistaInicial = rolActual === "cajero" ? "clientes" : rolActual === "proveedor" ? "editar" : "agregar";
+    document.querySelectorAll("[data-admin-only]").forEach(elemento => {
+        elemento.hidden = !adminLogueado;
+    });
+    const vistaInicial = rolActual === "cajero" ? "clientes" : "agregar";
     const actual = botones.find(btn => btn.classList.contains("activo") && !btn.hidden);
     const seleccion = actual || botones.find(btn => btn.dataset.tab === vistaInicial && !btn.hidden);
     if (seleccion) activarTabAdmin(seleccion);
@@ -168,7 +173,7 @@ async function actualizarSesionFirebase(usuario) {
     if (usuario && !adminLogueado) {
         try {
             const token = await usuario.getIdTokenResult();
-            if (["cajero", "proveedor"].includes(token.claims.role)) rolActual = token.claims.role;
+            if (["cajero", "empleado"].includes(token.claims.role)) rolActual = token.claims.role;
         } catch (error) {
             mostrarToast(`No se pudo verificar tu rol: ${describirErrorFirebase(error)}`);
             console.error("Error al verificar el rol de la cuenta:", error);
@@ -190,10 +195,7 @@ async function actualizarSesionFirebase(usuario) {
     $("abrir-cuenta").textContent = usuario ? "Mi cuenta" : "Ingresar / Mi cuenta";
     $("admin-panel").style.display = esPersonal() ? "block" : "none";
     renderCuentaPerfil();
-    if (esPersonal()) {
-        if (location.hash === "#admin-panel") abrirPanelAdministracion();
-        else configurarAccesoPanel();
-    }
+    if (esPersonal()) abrirPanelAdministracion();
     if (adminLogueado) {
         renderProductos(productos);
         renderOfertas();
@@ -677,6 +679,7 @@ function activarTabAdmin(btn) {
     $("tab-"+btn.dataset.tab).classList.add("activo");
     if(btn.dataset.tab==="editar") renderListaAdmin();
     if(btn.dataset.tab==="clientes") renderAdminClientes();
+    if(btn.dataset.tab==="caja") renderCaja();
     if(btn.dataset.tab==="encargos-admin") renderAdminEncargos();
     if(btn.dataset.tab==="cupones") renderListaCupones();
     if(btn.dataset.tab==="resenas-admin") renderResenasPendientes();
@@ -687,12 +690,57 @@ $("admin-actualizar").addEventListener("click",()=>{
     const pestanaActiva=document.querySelector(".atab.activo")?.dataset.tab;
     if(pestanaActiva==="editar") renderListaAdmin();
     if(pestanaActiva==="clientes") renderAdminClientes();
+    if(pestanaActiva==="caja") renderCaja();
     if(pestanaActiva==="encargos-admin") renderAdminEncargos();
     if(pestanaActiva==="cupones") renderListaCupones();
     if(pestanaActiva==="resenas-admin") renderResenasPendientes();
     if(pestanaActiva==="equipo" && !adminLogueado) return;
     mostrarToast("Panel actualizado");
 });
+$("equipo-form").addEventListener("submit", async event => {
+    event.preventDefault();
+    const estado = $("equipo-estado");
+    const boton = $("equipo-crear");
+    if (!adminLogueado || !usuarioActual) {
+        estado.textContent = "Solo el administrador puede crear cuentas del equipo.";
+        return;
+    }
+
+    estado.textContent = "Creando cuenta…";
+    boton.disabled = true;
+    try {
+        const token = await usuarioActual.getIdToken();
+        const response = await fetch("/api/create-staff", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: $("equipo-email").value.trim(),
+                password: $("equipo-password").value,
+                role: $("equipo-rol").value
+            })
+        });
+        let result;
+        try {
+            result = await response.json();
+        } catch (error) {
+            throw new Error("La función de cuentas de Vercel todavía no está disponible.");
+        }
+        if (!response.ok) throw new Error(result.error || "No se pudo crear la cuenta.");
+        estado.textContent = `Cuenta ${etiquetaRol(result.role)} creada para ${result.email}. UID: ${result.uid}`;
+        $("equipo-form").reset();
+    } catch (error) {
+        estado.textContent = error.message || "No se pudo crear la cuenta. Inténtalo nuevamente.";
+        console.error("Error al crear cuenta del equipo:", error);
+    } finally {
+        boton.disabled = false;
+    }
+});
+$("caja-fondo-inicial").addEventListener("input", actualizarVistaCierreCaja);
+$("caja-efectivo-contado").addEventListener("input", actualizarVistaCierreCaja);
+$("caja-cerrar-dia").addEventListener("click", registrarCierreCaja);
 $("admin-ver-tienda").addEventListener("click",()=>{
     document.querySelector('nav .nav-links a[href="#inicio"]')?.click();
 });
@@ -710,6 +758,10 @@ $("edit-es-oferta").addEventListener("change",()=>{$("edit-campo-oferta").style.
 
 /* =============================================   AGREGAR PRODUCTO   */
 async function agregarProducto(){
+    if (!adminLogueado && rolActual !== "empleado") {
+        mostrarToast("Tu rol no puede agregar productos.");
+        return;
+    }
     const archivos=$("imagen").files;
     const imgUrl  =$("img-url").value.trim();
     const nombre  =$("nombre").value.trim();
@@ -726,8 +778,14 @@ async function agregarProducto(){
     const finOf   =$("fin-oferta").value;
     const stock   =$("stock").value;
     if(!nombre||!precio){alert("Completa nombre y precio");return;}
+    if(!Number.isFinite(Number(precio))||Number(precio)<=0){alert("Ingresa un precio válido.");return;}
+    if(archivos.length+(imgUrl?1:0)>10){alert("Agrega un máximo de 10 imágenes por producto.");return;}
     if(esOferta&&!precioO){alert("Ingresa el precio original");return;}
     if(!tallas){alert("Selecciona al menos una talla");return;}
+    if(rolActual==="empleado"&&stock!==""&&(!Number.isInteger(Number(stock))||Number(stock)<0||Number(stock)>10000)){
+        alert("El stock debe ser un número entero entre 0 y 10.000.");
+        return;
+    }
     let imagenes=[];
     if(imgUrl) imagenes=[imgUrl];
     if(archivos.length>0){
@@ -746,8 +804,52 @@ async function agregarProducto(){
         }
     }
     if(!imagenes.length){alert("Agrega al menos una imagen o URL");return;}
-    productos.push({id:Date.now(),imagenes,nombre,tallas,dorsales,calidad,colores,descripcion:desc,categoria:cat,precio,vendidos:+vendidos||0,esOferta,precioOriginal:esOferta?precioO:null,finOferta:esOferta&&finOf?finOf:null,stock:stock||null,agotado:false,visitas:0});
-    guardarLS();renderProductos(productos);renderOfertas();renderAdminStats();limpiarFormulario();
+    const nuevoProducto={id:Date.now(),imagenes,nombre,tallas,dorsales,calidad,colores,descripcion:desc,categoria:cat,precio:adminLogueado?precio:Number(precio),vendidos:+vendidos||0,esOferta,precioOriginal:esOferta?precioO:null,finOferta:esOferta&&finOf?finOf:null,stock:stock||null,agotado:false,visitas:0};
+    if (rolActual === "empleado") {
+        const productoEmpleado = {
+            id: nuevoProducto.id,
+            imagenes: nuevoProducto.imagenes,
+            nombre: nuevoProducto.nombre,
+            tallas: nuevoProducto.tallas,
+            dorsales: nuevoProducto.dorsales,
+            calidad: nuevoProducto.calidad,
+            colores: nuevoProducto.colores,
+            descripcion: nuevoProducto.descripcion,
+            categoria: nuevoProducto.categoria,
+            precio: Number(precio),
+            ...(stock === "" ? {} : { stock: Number(stock) }),
+            agotado: stock !== "" && Number(stock) === 0
+        };
+        try {
+            let guardado = false;
+            for (let intento = 0; intento < 3 && !guardado; intento++) {
+                const snapshot = await db.ref("productos").once("value");
+                const existentes = snapshot.val();
+                if (!Array.isArray(existentes)) {
+                    throw new Error("El catálogo todavía no está inicializado en Firebase.");
+                }
+                const hueco = existentes.findIndex(producto => !producto);
+                const indice = hueco >= 0 ? hueco : existentes.length;
+                const resultado = await db.ref(`productos/${indice}`).transaction(
+                    actual => actual === null ? productoEmpleado : undefined,
+                    null,
+                    false
+                );
+                guardado = resultado.committed;
+            }
+            if (!guardado) throw new Error("El catálogo cambió mientras guardabas. Inténtalo otra vez.");
+        } catch (error) {
+            mostrarToast(`No se pudo agregar el producto: ${describirErrorFirebase(error)}`);
+            console.error("Error al agregar producto como empleado:", error);
+            return;
+        }
+        productos.push(productoEmpleado);
+        localStorage.setItem("productos", JSON.stringify(productos));
+    } else {
+        productos.push(nuevoProducto);
+        guardarLS();
+    }
+    renderProductos(productos);renderOfertas();renderAdminStats();limpiarFormulario();
     imagenesPreview=[];portadaIndex=0;
     const previewCont=$("preview-imagenes");if(previewCont){previewCont.innerHTML="";previewCont.style.display="none";}
     $$(".talla-check").forEach(c=>c.checked=false);
@@ -1464,13 +1566,64 @@ function abrirEditar(p){
     $("edit-id").value=p.id;$("edit-nombre").value=p.nombre;$("edit-tallas").value=p.tallas;
     $("edit-dorsales").value=p.dorsales;$("edit-calidad").value=p.calidad;$("edit-colores").value=p.colores||"";
     $("edit-descripcion").value=p.descripcion||"";$("edit-categoria").value=p.categoria;
-    $("edit-precio").value=p.precio;$("edit-stock").value=p.stock||"";$("edit-vendidos").value=p.vendidos||"";
+    $("edit-precio").value=p.precio;$("edit-stock").value=p.stock===null||p.stock===undefined?"":p.stock;$("edit-vendidos").value=p.vendidos||"";
     $("edit-es-oferta").checked=p.esOferta||false;$("edit-campo-oferta").style.display=p.esOferta?"block":"none";
     $("edit-precio-original").value=p.precioOriginal||"";$("edit-fin-oferta").value=p.finOferta||"";
+    document.querySelectorAll("#editar-modal [data-admin-only]").forEach(elemento => {
+        elemento.hidden = !adminLogueado;
+    });
     $("editar-modal").classList.add("activo");
 }
-function guardarEdicion(){
+async function guardarEdicion(){
+    if (!adminLogueado && rolActual !== "empleado") {
+        mostrarToast("Tu rol no puede editar el catálogo.");
+        return;
+    }
     const id=+$("edit-id").value;const p=productos.find(x=>x.id===id);if(!p)return;
+    if (rolActual === "empleado") {
+        const precio = Number($("edit-precio").value);
+        const stockTexto = $("edit-stock").value;
+        const stock = stockTexto === "" ? null : Number(stockTexto);
+        if (!Number.isFinite(precio) || precio <= 0) {
+            mostrarToast("Ingresa un precio válido.");
+            return;
+        }
+        if (stock !== null && (!Number.isInteger(stock) || stock < 0 || stock > 10000)) {
+            mostrarToast("El stock debe ser un número entero entre 0 y 10.000.");
+            return;
+        }
+        const cambios = {
+            nombre: $("edit-nombre").value.trim(),
+            tallas: $("edit-tallas").value.trim(),
+            dorsales: $("edit-dorsales").value.trim(),
+            calidad: $("edit-calidad").value.trim(),
+            colores: $("edit-colores").value.trim(),
+            descripcion: $("edit-descripcion").value.trim(),
+            categoria: $("edit-categoria").value,
+            precio,
+            stock,
+            agotado: stock === 0
+        };
+        try {
+            const snapshot = await db.ref("productos").once("value");
+            const lista = snapshot.val();
+            const indice = Array.isArray(lista)
+                ? lista.findIndex(producto => producto && String(producto.id) === String(id))
+                : -1;
+            if (indice < 0) throw new Error("No se encontró el producto en Firebase.");
+            await db.ref(`productos/${indice}`).update(cambios);
+            Object.assign(p, cambios);
+            localStorage.setItem("productos", JSON.stringify(productos));
+        } catch (error) {
+            mostrarToast(`No se pudo guardar el producto: ${describirErrorFirebase(error)}`);
+            console.error("Error al editar producto como empleado:", error);
+            return;
+        }
+        renderProductos(productos);renderOfertas();renderListaAdmin();renderAdminStats();
+        $("editar-modal").classList.remove("activo");
+        mostrarToast("✅ Jersey actualizado");
+        return;
+    }
     p.nombre=$("edit-nombre").value.trim();p.tallas=$("edit-tallas").value.trim();p.dorsales=$("edit-dorsales").value.trim();
     p.calidad=$("edit-calidad").value.trim();p.colores=$("edit-colores").value.trim();
     p.descripcion=$("edit-descripcion").value.trim();p.categoria=$("edit-categoria").value;
@@ -1518,11 +1671,9 @@ function renderListaAdmin(){
                 <button type="button" aria-label="${agotado?"Marcar disponible":"Marcar agotado"}" onclick="toggleAgotado(${+p.id})">${agotado?"↩️":"❌"}</button>
                 <button type="button" aria-label="Eliminar ${escaparHTML(p.nombre)}" onclick="eliminarProd(${+p.id})">🗑</button>
             </div>`
-            : rolActual==="proveedor"
-                ? `<div class="provider-stock-control">
-                    <label for="stock-proveedor-${+p.id}">Existencias</label>
-                    <input type="number" id="stock-proveedor-${+p.id}" min="0" max="10000" step="1" value="${stockConocido?escaparHTML(p.stock):0}">
-                    <button type="button" onclick="guardarStockProveedor(${+p.id})">Guardar stock</button>
+            : rolActual==="empleado"
+                ? `<div class="admin-prod-btns">
+                    <button type="button" aria-label="Editar ${escaparHTML(p.nombre)}" onclick="abrirEditar(productos.find(x=>x.id===${+p.id}))">✏️</button>
                 </div>`
                 : "";
         return `<div class="admin-prod-item">
@@ -1540,39 +1691,8 @@ function renderListaAdmin(){
         </div>`;
     }).join("");
 }
-async function guardarStockProveedor(id) {
-    if (rolActual !== "proveedor") return;
-    const campo = $(`stock-proveedor-${id}`);
-    const stock = Number(campo.value);
-    if (!Number.isInteger(stock) || stock < 0 || stock > 10000) {
-        mostrarToast("El stock debe ser un número entero entre 0 y 10.000.");
-        return;
-    }
-    try {
-        const snapshot=await db.ref("productos").once("value");
-        const productosActuales=snapshot.val();
-        const index=Array.isArray(productosActuales)
-            ?productosActuales.findIndex(producto=>producto&&String(producto.id)===String(id))
-            :-1;
-        if(index<0) {
-            mostrarToast("No se encontró el producto en Firebase.");
-            return;
-        }
-        await db.ref(`productos/${index}`).update({stock,agotado:stock===0});
-        const producto=productos.find(actual=>String(actual.id)===String(id));
-        if(producto){
-            producto.stock=stock;
-            producto.agotado=stock===0;
-            renderListaAdmin();
-            renderAdminStats();
-        }
-        mostrarToast("Existencias actualizadas");
-    } catch (error) {
-        mostrarToast(describirErrorFirebase(error));
-        console.error("Error al actualizar existencias:", error);
-    }
-}
 function toggleAgotado(id){
+    if (!adminLogueado) return;
     const p=productos.find(x=>x.id===id);
     if(!p)return;
     const stockConocido=p.stock!==null&&p.stock!==undefined&&p.stock!=="";
@@ -1584,7 +1704,7 @@ function toggleAgotado(id){
     guardarLS();renderProductos(productos);renderOfertas();renderListaAdmin();renderAdminStats();
     mostrarToast(p.agotado?"❌ Agotado":"✅ Disponible");
 }
-function eliminarProd(id){if(confirm("¿Eliminar?")){productos=productos.filter(p=>p.id!==id);guardarLS();renderProductos(productos);renderOfertas();renderListaAdmin();renderAdminStats();mostrarToast("🗑 Eliminado");}}
+function eliminarProd(id){if(!adminLogueado)return;if(confirm("¿Eliminar?")){productos=productos.filter(p=>p.id!==id);guardarLS();renderProductos(productos);renderOfertas();renderListaAdmin();renderAdminStats();mostrarToast("🗑 Eliminado");}}
 
 async function renderAdminClientes(){
     const contenedor=$("lista-clientes");
@@ -1616,14 +1736,33 @@ async function renderAdminClientes(){
             ${pedidos.length?pedidos.map(pedido=>{
                 const articulos=Array.isArray(pedido.items)?pedido.items:Object.values(pedido.items||{});
                 const estado=ESTADOS_PEDIDO.includes(pedido.estado)?pedido.estado:"pendiente";
+                const pago=pedido.pago;
+                const detallePago=pago?.estado==="pagado"
+                    ? `<p class="pedido-pago-confirmado">Pagado por ${pago.metodo==="qr"?"QR":"efectivo"} · ${escaparHTML(pago.monto)} Bs · ${escaparHTML(new Date(pago.fechaISO).toLocaleString("es-BO"))}</p>`
+                    : estado==="cancelado"
+                        ? `<p class="pedido-pago-pendiente">Pedido cancelado; no registrar pagos.</p>`
+                        : `<p class="pedido-pago-pendiente">Pago pendiente de confirmar</p>`;
+                const controlesPago=!pago&&estado!=="cancelado"&&(adminLogueado||rolActual==="cajero")
+                    ? `<div class="pedido-pago-control">
+                        <label for="pago-metodo-${escaparHTML(pedido.id)}">Método
+                            <select id="pago-metodo-${escaparHTML(pedido.id)}">
+                                <option value="efectivo">Efectivo</option>
+                                <option value="qr">QR</option>
+                            </select>
+                        </label>
+                        <button type="button" class="pedido-pago-guardar" data-uid="${escaparHTML(uid)}" data-pedido-id="${escaparHTML(pedido.id)}">Registrar pago recibido</button>
+                    </div>`
+                    : "";
                 return `<div class="pedido-admin" data-estado="${escaparHTML(pedido.estado||"pendiente")}">
                     <div class="pedido-cabecera"><strong>Pedido #${escaparHTML(pedido.numero)}</strong><span>${escaparHTML(pedido.fecha)}</span><span>${escaparHTML(pedido.estado||"pendiente")}</span></div>
                     <ul>${articulos.map(item=>`<li>${escaparHTML(item.nombre)} ×${escaparHTML(item.cantidad)} · Talla ${escaparHTML(item.talla)}${item.dorsal&&item.dorsal!=="—"?" · "+escaparHTML(item.dorsal):""}</li>`).join("")}</ul>
                     <p class="pedido-admin-total">${escaparHTML(pedido.total)} Bs</p>
+                    ${detallePago}
+                    ${controlesPago}
                     ${adminLogueado||rolActual==="cajero"?`<div class="pedido-estado-control">
                         <label for="pedido-estado-${escaparHTML(pedido.id)}">Estado
                             <select id="pedido-estado-${escaparHTML(pedido.id)}">
-                                ${ESTADOS_PEDIDO.map(opcion=>`<option value="${opcion}"${opcion===estado?" selected":""}>${opcion.charAt(0).toUpperCase()+opcion.slice(1)}</option>`).join("")}
+                                ${ESTADOS_PEDIDO.map(opcion=>`<option value="${opcion}"${opcion===estado?" selected":""}${pago?.estado==="pagado"&&opcion==="cancelado"?" disabled":""}>${opcion.charAt(0).toUpperCase()+opcion.slice(1)}</option>`).join("")}
                             </select>
                         </label>
                         <button type="button" class="pedido-estado-guardar" data-uid="${escaparHTML(uid)}" data-pedido-id="${escaparHTML(pedido.id)}">Guardar</button>
@@ -1635,6 +1774,12 @@ async function renderAdminClientes(){
             boton.dataset.uid,
             boton.dataset.pedidoId,
             $(`pedido-estado-${boton.dataset.pedidoId}`).value,
+            boton
+        )));
+        contenedor.querySelectorAll(".pedido-pago-guardar").forEach(boton=>boton.addEventListener("click",()=>registrarPagoPedido(
+            boton.dataset.uid,
+            boton.dataset.pedidoId,
+            boton.closest(".pedido-pago-control").querySelector("select").value,
             boton
         )));
         aplicarFiltroPedidosAdmin();
@@ -1660,6 +1805,51 @@ async function actualizarEstadoPedido(uid,pedidoId,estado,boton) {
     } catch(error) {
         mostrarToast(describirErrorFirebase(error));
         console.error("Error al actualizar el estado del pedido:",error);
+    } finally {
+        boton.disabled=false;
+    }
+}
+
+async function registrarPagoPedido(uid,pedidoId,metodo,boton) {
+    if (!adminLogueado && rolActual !== "cajero") return;
+    if (!["efectivo","qr"].includes(metodo)) {
+        mostrarToast("Selecciona efectivo o QR.");
+        return;
+    }
+    if (!confirm(`¿Confirmas que recibiste el pago completo por ${metodo === "qr" ? "QR" : "efectivo"}?`)) return;
+    boton.disabled=true;
+    try {
+        const pedidoRef=db.ref(`pedidos/${uid}/${pedidoId}`);
+        const snapshot=await pedidoRef.once("value");
+        const pedido=snapshot.val();
+        const monto=Number(pedido?.total);
+        if (!pedido || pedido.estado==="cancelado" || !Number.isFinite(monto) || monto<=0) {
+            throw new Error("El pedido no se puede cobrar.");
+        }
+        const pago={
+            estado:"pagado",
+            metodo,
+            monto,
+            fechaCaja:fechaCajaLocal(),
+            fechaISO:new Date().toISOString(),
+            registradoPor:usuarioActual.uid
+        };
+        const resultado=await pedidoRef.child("pago").transaction(
+            actual=>actual===null?pago:undefined,
+            null,
+            false
+        );
+        if (!resultado.committed) {
+            mostrarToast("Este pedido ya tiene un pago registrado.");
+            return;
+        }
+        mostrarToast("Pago recibido y registrado.");
+        renderAdminClientes();
+        renderAdminStats();
+        if (document.querySelector('.admin-tabs .atab.activo')?.dataset.tab==="caja") renderCaja();
+    } catch (error) {
+        mostrarToast(`No se pudo registrar el pago: ${describirErrorFirebase(error)}`);
+        console.error("Error al registrar un pago:",error);
     } finally {
         boton.disabled=false;
     }
@@ -1779,11 +1969,11 @@ function renderAdminStats(){
     });
     const puedeVerVentas=adminLogueado||rolActual==="cajero";
     $("admin-resumen-nota").textContent=puedeVerVentas
-        ?"Montos de pedidos registrados, excluye cancelados; no confirma pagos."
+        ?"Ingresos con pago confirmado. Los pedidos aún no cobrados no se cuentan."
         :"Alertas calculadas con las existencias registradas en el catálogo.";
     stats.innerHTML=puedeVerVentas
-        ? `<div class="stat-card"><h4 id="admin-ventas-hoy">—</h4><p>Monto en pedidos hoy</p></div>
-            <div class="stat-card"><h4 id="admin-ventas-mes">—</h4><p>Monto en pedidos este mes</p></div>
+        ? `<div class="stat-card"><h4 id="admin-ventas-hoy">—</h4><p>Ingresos cobrados hoy</p></div>
+            <div class="stat-card"><h4 id="admin-ventas-mes">—</h4><p>Ingresos cobrados este mes</p></div>
             <div class="stat-card"><h4 id="admin-pedidos-pendientes">—</h4><p>Pedidos pendientes</p></div>
             <div class="stat-card"><h4>${conStockBajo.length}</h4><p>Productos con stock bajo</p></div>`
         : `<div class="stat-card"><h4>${productos.length}</h4><p>Productos en catálogo</p></div>
@@ -1831,9 +2021,9 @@ async function cargarResumenVentasAdmin(){
         let pendientes=0;
         pedidos.forEach(pedido=>{
             if(pedido.estado==="pendiente")pendientes++;
-            if(pedido.estado==="cancelado")return;
-            const fecha=new Date(pedido.fechaISO||"");
-            const total=Number(pedido.total);
+            if(pedido.pago?.estado!=="pagado")return;
+            const fecha=new Date(pedido.pago.fechaISO||"");
+            const total=Number(pedido.pago.monto);
             if(!Number.isFinite(fecha.getTime())||!Number.isFinite(total)||total<0)return;
             if(fecha>=inicioHoy&&fecha<inicioManana)ventasHoy+=total;
             if(fecha>=inicioMes&&fecha<inicioManana)ventasMes+=total;
@@ -1847,6 +2037,148 @@ async function cargarResumenVentasAdmin(){
         if(solicitud!==solicitudResumenVentas)return;
         estado.textContent=`No se pudo cargar el resumen de pedidos: ${describirErrorFirebase(error)}`;
         console.error("Error al cargar el resumen de ventas:",error);
+    }
+}
+
+function fechaCajaLocal(fecha=new Date()) {
+    const ano=fecha.getFullYear();
+    const mes=String(fecha.getMonth()+1).padStart(2,"0");
+    const dia=String(fecha.getDate()).padStart(2,"0");
+    return `${ano}-${mes}-${dia}`;
+}
+
+function formatoBs(valor) {
+    return `${new Intl.NumberFormat("es-BO",{minimumFractionDigits:2,maximumFractionDigits:2}).format(valor)} Bs`;
+}
+
+function redondearBs(valor) {
+    return Math.round((valor+Number.EPSILON)*100)/100;
+}
+
+async function obtenerPagosCaja(dia) {
+    const usuariosSnapshot=await db.ref("usuarios").once("value");
+    const usuarios=usuariosSnapshot.val()||{};
+    const pedidosPorUsuario=await Promise.all(Object.keys(usuarios).map(async uid=>{
+        const snapshot=await db.ref(`pedidos/${uid}`).once("value");
+        return Object.values(snapshot.val()||{}).filter(Boolean);
+    }));
+    const pagos=pedidosPorUsuario.flat()
+        .map(pedido=>pedido.pago)
+        .filter(pago=>pago&&pago.estado==="pagado"&&pago.fechaCaja===dia);
+    return {
+        efectivo:redondearBs(pagos.filter(pago=>pago.metodo==="efectivo").reduce((suma,pago)=>suma+Number(pago.monto||0),0)),
+        qr:redondearBs(pagos.filter(pago=>pago.metodo==="qr").reduce((suma,pago)=>suma+Number(pago.monto||0),0))
+    };
+}
+
+function actualizarVistaCierreCaja() {
+    const fondo=Number($("caja-fondo-inicial").value);
+    const contadoTexto=$("caja-efectivo-contado").value;
+    const contado=Number(contadoTexto);
+    const esperado=fondo+resumenCajaHoy.efectivo;
+    $("caja-efectivo-esperado").textContent=Number.isFinite(esperado)?formatoBs(esperado):"—";
+    $("caja-diferencia").textContent=contadoTexto!==""&&Number.isFinite(contado)
+        ?formatoBs(contado-esperado)
+        :"Ingresa el efectivo contado";
+}
+
+async function renderCaja() {
+    if (!adminLogueado && rolActual!=="cajero") return;
+    const solicitud=++solicitudCaja;
+    const estado=$("caja-cierre-estado");
+    estado.textContent="Cargando pagos del día…";
+    $("caja-cerrar-dia").disabled=true;
+    try {
+        const hoy=fechaCajaLocal();
+        const resumen=await obtenerPagosCaja(hoy);
+        if (solicitud!==solicitudCaja) return;
+        resumenCajaHoy=resumen;
+        $("caja-efectivo-ventas").textContent=formatoBs(resumenCajaHoy.efectivo);
+        $("caja-qr-total").textContent=formatoBs(resumenCajaHoy.qr);
+        $("caja-total-recibido").textContent=formatoBs(resumenCajaHoy.efectivo+resumenCajaHoy.qr);
+
+        const cierreRef=db.ref(`cierresCaja/${usuarioActual.uid}/${hoy}`);
+        const cierreSnapshot=await cierreRef.once("value");
+        if (solicitud!==solicitudCaja) return;
+        const cierre=cierreSnapshot.val();
+        $("caja-fondo-inicial").disabled=Boolean(cierre);
+        $("caja-efectivo-contado").disabled=Boolean(cierre);
+        $("caja-cerrar-dia").disabled=Boolean(cierre);
+        if (cierre) {
+            $("caja-fondo-inicial").value=cierre.fondoInicial;
+            $("caja-efectivo-contado").value=cierre.efectivoContado;
+            estado.textContent=`Cierre registrado ${new Date(cierre.cerradoEn).toLocaleString("es-BO")}. Diferencia: ${formatoBs(cierre.diferencia)}.`;
+        } else {
+            $("caja-fondo-inicial").value="0";
+            $("caja-efectivo-contado").value="";
+            estado.textContent=`Cierre pendiente para ${hoy}.`;
+        }
+        actualizarVistaCierreCaja();
+    } catch (error) {
+        if (solicitud!==solicitudCaja) return;
+        estado.textContent=`No se pudo cargar caja: ${describirErrorFirebase(error)}`;
+        console.error("Error al cargar los pagos para caja:",error);
+    }
+}
+
+async function registrarCierreCaja() {
+    if (!adminLogueado && rolActual!=="cajero") return;
+    const fondo=redondearBs(Number($("caja-fondo-inicial").value));
+    const contadoTexto=$("caja-efectivo-contado").value;
+    const contado=redondearBs(Number(contadoTexto));
+    if (!Number.isFinite(fondo)||fondo<0||!Number.isFinite(contado)||contadoTexto===""||contado<0) {
+        mostrarToast("Ingresa el fondo inicial y el efectivo contado.");
+        return;
+    }
+    const hoy=fechaCajaLocal();
+    const boton=$("caja-cerrar-dia");
+    boton.disabled=true;
+    try {
+        const cierreRef=db.ref(`cierresCaja/${usuarioActual.uid}/${hoy}`);
+        const cierreActual=await cierreRef.once("value");
+        if (cierreActual.exists()) {
+            await renderCaja();
+            mostrarToast("Ya existe un cierre registrado para hoy.");
+            return;
+        }
+        resumenCajaHoy=await obtenerPagosCaja(hoy);
+        $("caja-efectivo-ventas").textContent=formatoBs(resumenCajaHoy.efectivo);
+        $("caja-qr-total").textContent=formatoBs(resumenCajaHoy.qr);
+        $("caja-total-recibido").textContent=formatoBs(resumenCajaHoy.efectivo+resumenCajaHoy.qr);
+    } catch (error) {
+        $("caja-cierre-estado").textContent=`No se pudo actualizar caja: ${describirErrorFirebase(error)}`;
+        console.error("Error al actualizar pagos antes del cierre:",error);
+        boton.disabled=false;
+        return;
+    }
+    const efectivoEsperado=redondearBs(fondo+resumenCajaHoy.efectivo);
+    const ahora=new Date();
+    const cierre={
+        fecha:hoy,
+        efectivoVentas:resumenCajaHoy.efectivo,
+        qrTotal:resumenCajaHoy.qr,
+        fondoInicial:fondo,
+        efectivoEsperado,
+        efectivoContado:contado,
+        diferencia:redondearBs(contado-efectivoEsperado),
+        totalRecaudado:redondearBs(resumenCajaHoy.efectivo+resumenCajaHoy.qr),
+        cerradoPor:usuarioActual.uid,
+        cerradoEn:ahora.toISOString()
+    };
+    try {
+        const resultado=await db.ref(`cierresCaja/${usuarioActual.uid}/${hoy}`).transaction(
+            actual=>actual===null?cierre:undefined,
+            null,
+            false
+        );
+        if (!resultado.committed) throw new Error("Ya existe un cierre para hoy en esta cuenta.");
+        mostrarToast("Cierre diario registrado.");
+        await renderCaja();
+    } catch (error) {
+        $("caja-cierre-estado").textContent=`No se pudo registrar el cierre: ${describirErrorFirebase(error)}`;
+        console.error("Error al registrar el cierre diario:",error);
+    } finally {
+        if (!$("caja-fondo-inicial").disabled) boton.disabled=false;
     }
 }
 

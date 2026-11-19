@@ -1230,19 +1230,36 @@ body.vista-seccion[data-vista="admin-panel"]>#admin-panel.vista-activa{
 .equipo-instrucciones pre{display:grid;gap:8px;overflow-x:auto;margin:10px 0;padding:14px;border:1px solid var(--border);border-radius:10px;background:var(--bg2);}
 .equipo-instrucciones code{color:var(--text);font-size:.92rem;white-space:pre;}
 .equipo-seguridad{max-width:850px;padding:13px 15px;border:1px solid var(--border);border-radius:10px;color:var(--text2);font-size:.92rem;line-height:1.55;}
-.provider-stock-control,.pedido-estado-control{display:flex;align-items:center;gap:8px;margin-top:10px;}
-#admin-panel .provider-stock-control input,
+.pedido-estado-control,.pedido-pago-control{display:flex;align-items:center;gap:8px;margin-top:10px;}
 #admin-panel .pedido-estado-control select{width:auto;min-width:100px;max-width:180px;min-height:40px;margin:0;padding:8px 10px;}
-#admin-panel .provider-stock-control button,
-#admin-panel .pedido-estado-control button{width:auto;min-height:40px;margin:0;padding:8px 12px;}
-#admin-panel .pedido-estado-control label{display:flex;align-items:center;gap:8px;color:var(--text2);}
+#admin-panel .pedido-pago-control select{width:auto;min-width:130px;max-width:180px;min-height:40px;margin:0;padding:8px 10px;}
+#admin-panel .pedido-estado-control button,
+#admin-panel .pedido-pago-control button{width:auto;min-height:40px;margin:0;padding:8px 12px;}
+#admin-panel .pedido-estado-control label,
+#admin-panel .pedido-pago-control label{display:flex;align-items:center;gap:8px;color:var(--text2);}
+.pedido-pago-confirmado{margin-top:8px;color:#67d391;font-weight:700;}
+.pedido-pago-pendiente{margin-top:8px;color:var(--text3);font-size:.88rem;}
+.equipo-form{display:grid;gap:9px;max-width:560px;margin:18px 0;}
+.equipo-form label,.caja-cierre label{color:var(--text2);font-weight:600;}
+.equipo-form input,.equipo-form select,.caja-cierre input{width:100%;margin:0 0 8px;padding:12px;border:1px solid var(--border);border-radius:10px;background:var(--bg2);color:var(--text);}
+.equipo-form button,.caja-cierre button{width:auto;min-height:44px;padding:10px 16px;}
+.equipo-form #equipo-estado,.caja-cierre p{color:var(--text2);line-height:1.5;}
+.caja-resumen{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0;}
+.caja-resumen article,.caja-cierre{padding:16px;border:1px solid var(--border);border-radius:12px;background:var(--bg2);}
+.caja-resumen article{display:grid;gap:8px;}
+.caja-resumen article span{color:var(--text3);font-size:.85rem;}
+.caja-resumen article strong{font-size:1.2rem;}
+.caja-cierre{display:grid;gap:9px;max-width:560px;}
+.caja-cierre h4{margin:0 0 4px;}
+.editar-contenido [hidden]{display:none!important;}
 @media(max-width:600px){
     .admin-identidad{width:100%;}
-    .provider-stock-control,.pedido-estado-control{align-items:stretch;flex-direction:column;}
-    #admin-panel .provider-stock-control input,
+    .pedido-estado-control,.pedido-pago-control{align-items:stretch;flex-direction:column;}
     #admin-panel .pedido-estado-control select,
-    #admin-panel .provider-stock-control button,
-    #admin-panel .pedido-estado-control button{width:100%;max-width:none;}
+    #admin-panel .pedido-pago-control select,
+    #admin-panel .pedido-estado-control button,
+    #admin-panel .pedido-pago-control button{width:100%;max-width:none;}
+    .caja-resumen{grid-template-columns:1fr;}
 }
 @media(max-width:760px){
     .admin-lista-acciones{width:100%;align-items:stretch;flex-direction:column;}

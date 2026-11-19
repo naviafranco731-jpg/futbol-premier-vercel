@@ -1,0 +1,7 @@
+{
+  "name": "futbol-premier",
+  "private": true,
+  "dependencies": {
+    "firebase-admin": "^14.5.1"
+  }
+}

@@ -6,13 +6,59 @@
       ".read": true,
       ".write": "auth != null && auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' && auth.token.email == 'naviafranco731@gmail.com'",
       "$index": {
+        ".write": "auth != null && auth.token.role == 'empleado' && $index.matches(/^[0-9]+$/) && !data.exists() && newData.hasChildren(['id', 'imagenes', 'nombre', 'tallas', 'categoria', 'precio'])",
+        "id": {
+          ".validate": "auth == null || auth.token.role != 'empleado' || newData.isNumber()"
+        },
+        "imagenes": {
+          ".write": "auth != null && auth.token.role == 'empleado' && data.parent().exists() && newData.hasChildren()",
+          ".validate": "auth == null || auth.token.role != 'empleado' || (newData.hasChildren() && newData.numChildren() <= 10)",
+          "$imagen": {
+            ".validate": "auth == null || auth.token.role != 'empleado' || (newData.isString() && newData.val().length <= 2048)"
+          }
+        },
+        "nombre": {
+          ".write": "auth != null && auth.token.role == 'empleado' && data.parent().exists() && newData.isString() && newData.val().length > 0 && newData.val().length <= 120",
+          ".validate": "auth == null || auth.token.role != 'empleado' || (newData.isString() && newData.val().length > 0 && newData.val().length <= 120)"
+        },
+        "tallas": {
+          ".write": "auth != null && auth.token.role == 'empleado' && data.parent().exists() && newData.isString() && newData.val().length <= 100",
+          ".validate": "auth == null || auth.token.role != 'empleado' || (newData.isString() && newData.val().length <= 100)"
+        },
+        "dorsales": {
+          ".write": "auth != null && auth.token.role == 'empleado' && data.parent().exists() && newData.isString() && newData.val().length <= 100",
+          ".validate": "auth == null || auth.token.role != 'empleado' || (newData.isString() && newData.val().length <= 100)"
+        },
+        "calidad": {
+          ".write": "auth != null && auth.token.role == 'empleado' && data.parent().exists() && newData.isString() && newData.val().length <= 100",
+          ".validate": "auth == null || auth.token.role != 'empleado' || (newData.isString() && newData.val().length <= 100)"
+        },
+        "colores": {
+          ".write": "auth != null && auth.token.role == 'empleado' && data.parent().exists() && newData.isString() && newData.val().length <= 200",
+          ".validate": "auth == null || auth.token.role != 'empleado' || (newData.isString() && newData.val().length <= 200)"
+        },
+        "descripcion": {
+          ".write": "auth != null && auth.token.role == 'empleado' && data.parent().exists() && newData.isString() && newData.val().length <= 2000",
+          ".validate": "auth == null || auth.token.role != 'empleado' || (newData.isString() && newData.val().length <= 2000)"
+        },
+        "categoria": {
+          ".write": "auth != null && auth.token.role == 'empleado' && data.parent().exists() && (newData.val() == 'clubes' || newData.val() == 'retro' || newData.val() == 'selecciones' || newData.val() == 'player')",
+          ".validate": "auth == null || auth.token.role != 'empleado' || (newData.isString() && (newData.val() == 'clubes' || newData.val() == 'retro' || newData.val() == 'selecciones' || newData.val() == 'player'))"
+        },
+        "precio": {
+          ".write": "auth != null && auth.token.role == 'empleado' && data.parent().exists() && newData.isNumber() && newData.val() > 0 && newData.val() <= 100000",
+          ".validate": "auth == null || auth.token.role != 'empleado' || (newData.isNumber() && newData.val() > 0 && newData.val() <= 100000)"
+        },
         "stock": {
-          ".write": "$index.matches(/^[0-9]+$/) && data.parent().exists() && data.parent().child('id').isNumber() && auth != null && auth.token.role == 'proveedor' && newData.isNumber() && newData.val() >= 0 && newData.val() <= 10000 && newData.val() % 1 == 0",
-          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 10000 && newData.val() % 1 == 0"
+          ".write": "$index.matches(/^[0-9]+$/) && data.parent().exists() && data.parent().child('id').isNumber() && auth != null && auth.token.role == 'empleado' && (!newData.exists() || (newData.isNumber() && newData.val() >= 0 && newData.val() <= 10000 && newData.val() % 1 == 0))",
+          ".validate": "auth == null || auth.token.role != 'empleado' || !newData.exists() || (newData.isNumber() && newData.val() >= 0 && newData.val() <= 10000 && newData.val() % 1 == 0)"
         },
         "agotado": {
-          ".write": "$index.matches(/^[0-9]+$/) && data.parent().exists() && data.parent().child('id').isNumber() && auth != null && auth.token.role == 'proveedor' && newData.isBoolean() && newData.val() == (newData.parent().child('stock').val() == 0)",
-          ".validate": "newData.isBoolean()"
+          ".write": "$index.matches(/^[0-9]+$/) && data.parent().exists() && data.parent().child('id').isNumber() && auth != null && auth.token.role == 'empleado' && newData.isBoolean() && newData.val() == (newData.parent().child('stock').val() == 0)",
+          ".validate": "auth == null || auth.token.role != 'empleado' || (newData.isBoolean() && newData.val() == (newData.parent().child('stock').val() == 0))"
+        },
+        "$other": {
+          ".validate": "auth == null || auth.token.role != 'empleado' || (data.exists() && newData.val() == data.val())"
         }
       }
     },
@@ -47,7 +93,7 @@
         ".read": "auth != null && (auth.uid == $uid || (auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' && auth.token.email == 'naviafranco731@gmail.com') || auth.token.role == 'cajero')",
         "$pedidoId": {
           ".write": "auth != null && auth.token.email_verified == true && auth.uid == $uid && !data.exists() && newData.child('uid').val() == auth.uid && newData.child('correo').val() == auth.token.email",
-          ".validate": "newData.hasChildren(['uid', 'correo', 'numero', 'fecha', 'items', 'total', 'estado'])",
+          ".validate": "newData.hasChildren(['uid', 'correo', 'numero', 'fecha', 'items', 'total', 'estado']) && (data.exists() || !newData.child('pago').exists())",
           "numero": {
             ".validate": "newData.isNumber()"
           },
@@ -61,8 +107,73 @@
             ".validate": "newData.isNumber() && newData.val() >= 0"
           },
           "estado": {
-            ".write": "auth != null && ((auth.token.role == 'cajero') || (auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' && auth.token.email == 'naviafranco731@gmail.com'))",
+            ".write": "auth != null && ((auth.token.role == 'cajero' && !(data.parent().child('pago').child('estado').val() == 'pagado' && newData.val() == 'cancelado')) || (auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' && auth.token.email == 'naviafranco731@gmail.com'))",
             ".validate": "newData.isString() && (newData.val() == 'pendiente' || newData.val() == 'confirmado' || newData.val() == 'preparando' || newData.val() == 'enviado' || newData.val() == 'completado' || newData.val() == 'cancelado')"
+          },
+          "pago": {
+            ".write": "auth != null && data.parent().exists() && data.parent().child('estado').val() != 'cancelado' && ((auth.token.role == 'cajero' && !data.exists() && !root.child('cierresCaja').child(auth.uid).child(newData.child('fechaCaja').val()).exists()) || (auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' && auth.token.email == 'naviafranco731@gmail.com'))",
+            ".validate": "newData.hasChildren(['estado', 'metodo', 'monto', 'fechaCaja', 'fechaISO', 'registradoPor'])",
+            "estado": {
+              ".validate": "newData.val() == 'pagado'"
+            },
+            "metodo": {
+              ".validate": "newData.val() == 'efectivo' || newData.val() == 'qr'"
+            },
+            "monto": {
+              ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() == newData.parent().parent().child('total').val()"
+            },
+            "fechaISO": {
+              ".validate": "newData.isString()"
+            },
+            "fechaCaja": {
+              ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)"
+            },
+            "registradoPor": {
+              ".validate": "newData.isString() && (newData.val() == auth.uid || auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1')"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        }
+      }
+    },
+    "cierresCaja": {
+      ".read": "auth != null && auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' && auth.token.email == 'naviafranco731@gmail.com'",
+      "$uid": {
+        ".read": "auth != null && (auth.uid == $uid || (auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' && auth.token.email == 'naviafranco731@gmail.com'))",
+        "$fecha": {
+          ".write": "auth != null && auth.uid == $uid && !data.exists() && (auth.token.role == 'cajero' || (auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' && auth.token.email == 'naviafranco731@gmail.com'))",
+          ".validate": "newData.hasChildren(['fecha', 'efectivoVentas', 'qrTotal', 'fondoInicial', 'efectivoEsperado', 'efectivoContado', 'diferencia', 'totalRecaudado', 'cerradoPor', 'cerradoEn']) && newData.child('fecha').val() == $fecha && $fecha.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) && newData.child('cerradoPor').val() == auth.uid",
+          "efectivoVentas": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "qrTotal": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "fondoInicial": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "efectivoEsperado": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "efectivoContado": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "diferencia": {
+            ".validate": "newData.isNumber()"
+          },
+          "totalRecaudado": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "cerradoPor": {
+            ".validate": "newData.isString() && newData.val() == auth.uid"
+          },
+          "cerradoEn": {
+            ".validate": "newData.isString()"
+          },
+          "$other": {
+            ".validate": false
           }
         }
       }

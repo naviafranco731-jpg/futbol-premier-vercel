@@ -14,41 +14,28 @@ Las cuentas de cliente se crean con usuario, correo y contraseña. Para preparar
 
 - Usuario: `Rodrigo`
 - Correo de prueba: `rodrigo@futbolpremier.test`
-- Contraseña de prueba: `Rodrigo123!`
 
-La cuenta se crea en Firebase Authentication y su perfil se guarda en `/usuarios/{uid}`. El dominio `.test` no recibe correo; para probar verificación, encargos o pedidos, usa una dirección real que controles. Cambia la contraseña de prueba antes de publicar. La contraseña del cliente se define en el formulario y nunca se inserta en el código.
+La cuenta se crea en Firebase Authentication y su perfil se guarda en `/usuarios/{uid}`. El dominio `.test` no recibe correo; para probar verificación, encargos o pedidos, usa una dirección real que controles y una contraseña segura y única. No guardes contraseñas en el repositorio.
 
-## 2. Crear cuentas de Cajero y Proveedor sin Cloud Functions
+## 2. Crear cuentas de Cajero y Empleado desde el panel
 
-Este procedimiento no requiere Blaze ni Cloud Functions. La cuenta se crea manualmente en Firebase Console y el rol se asigna desde una herramienta local, usando una credencial privada fuera del repositorio.
+El panel llama a `/api/create-staff` en Vercel. El servidor valida el token de Firebase y solo acepta solicitudes de la cuenta administradora; la credencial de servicio nunca se envía al navegador. No requiere Firebase Cloud Functions ni el plan Blaze.
 
-1. En Firebase Console, abre **Authentication → Users → Add user**. Crea la cuenta con el correo y la contraseña que entregues a la persona.
-2. Copia el UID de esa cuenta.
-3. En **Google Cloud Console → IAM y administración → Cuentas de servicio**, crea una cuenta de servicio dedicada y asígnale el rol **Firebase Authentication Admin** (`roles/firebaseauth.admin`). Genera una clave JSON y guárdala fuera del repositorio, por ejemplo en `%USERPROFILE%\.firebase-private\futbol-premier-staff.json`. Limita el acceso a esa clave y elimínala/ rótala cuando ya no la necesites. Nunca la compartas ni la subas a Git.
-4. Desde la carpeta del proyecto, instala la herramienta local:
+1. En **Google Cloud Console → IAM y administración → Cuentas de servicio**, crea una cuenta de servicio dedicada y asígnale únicamente **Firebase Authentication Admin** (`roles/firebaseauth.admin`).
+2. Genera una clave JSON. No la subas a Git ni la pegues en el código o en el chat.
+3. En Vercel, abre el proyecto `futbol-premier-vercel` → **Settings → Environment Variables**. Agrega `FIREBASE_SERVICE_ACCOUNT` para **Production** y pega el contenido completo del JSON como valor. Guarda y vuelve a desplegar Production para que la función reciba la variable.
+4. En el sitio publicado, inicia sesión como administrador, abre **Equipo**, ingresa correo, contraseña temporal de al menos 12 caracteres y el rol **Cajero** o **Empleado**. Comunica la contraseña temporal directamente a esa persona.
+5. La persona inicia sesión en **Ingresar / Mi cuenta** con su correo y contraseña. Si ya tenía una sesión abierta, debe salir y volver a entrar para cargar el rol.
 
-   ```powershell
-   npm install --prefix tools/staff-roles
-   $env:GOOGLE_APPLICATION_CREDENTIALS = "$HOME\.firebase-private\futbol-premier-staff.json"
-   ```
+El Cajero puede consultar pedidos, importes y pagos, registrar cobros completos en efectivo o QR y cerrar su caja diaria. El Empleado puede agregar productos y editar datos de catálogo, precio y existencias; no puede consultar pedidos ni ingresos. El pago se verifica manualmente, no se procesa en línea.
 
-5. Asigna el rol usando el UID copiado:
-
-   ```powershell
-   node tools/staff-roles/set-role.js UID cajero
-   ```
-
-   Para un proveedor, usa `node tools/staff-roles/set-role.js UID proveedor`.
-
-6. La persona inicia sesión normalmente con su correo y contraseña. Si ya tenía una sesión abierta, debe cerrar sesión y volver a entrar para cargar el custom claim del rol.
-
-La herramienta local verifica que la credencial pertenezca a `futbol-premier-6cc4e` y solo permite asignar `cajero` o `proveedor`. No crea contraseñas ni las guarda en Firebase Realtime Database.
+La herramienta local `tools/staff-roles/set-role.js` se conserva como alternativa de recuperación; requiere una credencial privada local y solo permite asignar `cajero` o `empleado`.
 
 ## 3. Publicar reglas de Realtime Database
 
 Publica [database.rules.json](./database.rules.json) en **Realtime Database → Rules**. También puedes hacerlo desde la carpeta del proyecto con `npx firebase-tools deploy --project futbol-premier-6cc4e --only database`; este despliegue solo actualiza reglas y no requiere Cloud Functions ni activar Blaze.
 
-Las reglas permiten a Cajeros consultar perfiles y pedidos, y actualizar el estado de pedidos. Los Proveedores pueden leer el catálogo y cambiar únicamente los campos de existencias y disponibilidad. La cuenta administradora conserva sus permisos actuales. Antes de crear roles, publica estas reglas.
+Las reglas permiten a Cajeros consultar perfiles y pedidos, actualizar estados y registrar un pago completo una sola vez. Los Empleados pueden crear productos y editar solo el catálogo permitido. Los cierres de caja son personales por cuenta y día. La cuenta administradora conserva sus permisos actuales. Publica estas reglas antes de usar los roles nuevos.
 
 ## 4. Fotos de referencia de encargos
 
@@ -72,9 +59,9 @@ No actives la aplicación obligatoria antes de publicar el sitio con la clave co
 - Registra la cuenta de prueba Rodrigo o una cuenta de cliente con un correo accesible, confirma el correo y comprueba que su UID aparece en el perfil.
 - Inicia sesión con esa cuenta y confirma un pedido. El pedido se guarda con estado `pendiente` en `/pedidos/{uid}` y aparece en el historial de esa cuenta.
 - Inicia sesión con `FUTADMI` (o el correo administrador), abre **Clientes y pedidos** y comprueba que se muestran clientes, IDs y pedidos.
-- Abre **Equipo**, sigue las instrucciones para crear en Authentication y asignar cada rol desde la herramienta local. Al iniciar sesión con la cuenta, el icono del encabezado debe mostrar su nombre y rol.
-- Confirma que el Cajero puede consultar pedidos y cambiar su estado, pero no ve herramientas administrativas ni de proveedor.
-- Confirma que el Proveedor puede actualizar existencias, pero no puede acceder a clientes, pedidos ni a las herramientas administrativas.
+- Abre **Equipo** y crea cada cuenta con el rol correspondiente. Al iniciar sesión con la cuenta, el icono del encabezado debe mostrar su nombre y rol.
+- Confirma que el Cajero puede consultar pedidos, importes y pagos; registrar pagos y un cierre diario, pero no editar el catálogo.
+- Confirma que el Empleado puede agregar productos y editar precio y existencias, pero no puede consultar clientes, pedidos ni ingresos.
 - Envía un encargo de prueba con y sin referencia; con foto, comprueba que el enlace abre WhatsApp y pide adjuntar la imagen. El administrador puede revisar las solicitudes en la pestaña **Encargos** y actualizar su estado.
 - Prueba desde una sesión no autenticada que el catálogo se puede leer, pero que no se pueden modificar productos ni consultar datos personales.
 

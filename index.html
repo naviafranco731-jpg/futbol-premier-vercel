@@ -9,7 +9,7 @@
     <meta property="og:description" content="Los mejores jerseys de fútbol.">
     <meta property="og:image" content="img/logo.png">
     <link rel="icon" type="image/png" href="img/logo.png">
-    <link rel="stylesheet" href="style.css?v=20261106-admin-panel-isolated">
+    <link rel="stylesheet" href="style.css?v=20261119-cajero-empleado-caja">
 </head>
 <body>
 
@@ -313,7 +313,7 @@
         <div>
             <p class="admin-kicker">FÚTBOL PREMIER <span>/</span> ADMINISTRACIÓN</p>
             <h2>Panel de administración</h2>
-            <p class="admin-descripcion">Gestiona productos, pedidos y la actividad de tu tienda desde un solo lugar.</p>
+            <p class="admin-descripcion">Gestiona catálogo, pedidos, pagos e ingresos según tu rol.</p>
         </div>
         <div class="admin-cabecera-acciones">
             <div class="admin-identidad" id="admin-identidad" aria-live="polite">
@@ -344,32 +344,37 @@
         <aside class="admin-sidebar">
             <p class="admin-menu-titulo">MENÚ ADMINISTRADOR</p>
             <div class="admin-tabs" role="tablist" aria-label="Secciones de administración" aria-orientation="vertical">
-                <button type="button" class="atab activo" id="admin-tab-agregar" role="tab" aria-selected="true" aria-controls="tab-agregar" data-tab="agregar" data-roles="admin"><span class="admin-tab-icon">＋</span><span class="admin-tab-text"><strong>Agregar producto</strong><small>Publica un jersey nuevo</small></span></button>
-                <button type="button" class="atab" id="admin-tab-editar" role="tab" aria-selected="false" aria-controls="tab-editar" data-tab="editar" data-roles="admin cajero proveedor"><span class="admin-tab-icon">▦</span><span class="admin-tab-text"><strong>Inventario</strong><small>Productos y existencias</small></span></button>
+                <button type="button" class="atab activo" id="admin-tab-agregar" role="tab" aria-selected="true" aria-controls="tab-agregar" data-tab="agregar" data-roles="admin empleado"><span class="admin-tab-icon">＋</span><span class="admin-tab-text"><strong>Agregar producto</strong><small>Publica un jersey nuevo</small></span></button>
+                <button type="button" class="atab" id="admin-tab-editar" role="tab" aria-selected="false" aria-controls="tab-editar" data-tab="editar" data-roles="admin empleado"><span class="admin-tab-icon">▦</span><span class="admin-tab-text"><strong>Inventario</strong><small>Productos y existencias</small></span></button>
                 <button type="button" class="atab" id="admin-tab-clientes" role="tab" aria-selected="false" aria-controls="tab-clientes" data-tab="clientes" data-roles="admin cajero"><span class="admin-tab-icon">♙</span><span class="admin-tab-text"><strong>Clientes y pedidos</strong><small>Revisa compras y clientes</small></span></button>
+                <button type="button" class="atab" id="admin-tab-caja" role="tab" aria-selected="false" aria-controls="tab-caja" data-tab="caja" data-roles="admin cajero"><span class="admin-tab-icon">Bs</span><span class="admin-tab-text"><strong>Caja e ingresos</strong><small>Pagos recibidos y cierre diario</small></span></button>
                 <button type="button" class="atab" id="admin-tab-encargos-admin" role="tab" aria-selected="false" aria-controls="tab-encargos-admin" data-tab="encargos-admin" data-roles="admin"><span class="admin-tab-icon">▤</span><span class="admin-tab-text"><strong>Encargos</strong><small>Atiende pedidos especiales</small></span></button>
                 <button type="button" class="atab" id="admin-tab-cupones" role="tab" aria-selected="false" aria-controls="tab-cupones" data-tab="cupones" data-roles="admin"><span class="admin-tab-icon">◇</span><span class="admin-tab-text"><strong>Cupones</strong><small>Crea promociones</small></span></button>
                 <button type="button" class="atab" id="admin-tab-resenas-admin" role="tab" aria-selected="false" aria-controls="tab-resenas-admin" data-tab="resenas-admin" data-roles="admin"><span class="admin-tab-icon">☆</span><span class="admin-tab-text"><strong>Reseñas</strong><small>Modera opiniones</small></span></button>
-                <button type="button" class="atab" id="admin-tab-equipo" role="tab" aria-selected="false" aria-controls="tab-equipo" data-tab="equipo" data-roles="admin"><span class="admin-tab-icon">♧</span><span class="admin-tab-text"><strong>Equipo</strong><small>Crea cajeros y proveedores</small></span></button>
+                <button type="button" class="atab" id="admin-tab-equipo" role="tab" aria-selected="false" aria-controls="tab-equipo" data-tab="equipo" data-roles="admin"><span class="admin-tab-icon">♧</span><span class="admin-tab-text"><strong>Equipo</strong><small>Crea cajeros y empleados</small></span></button>
             </div>
             <button type="button" onclick="cerrarAdmin()" class="btn-cerrar-admin">🚪 Cerrar sesión</button>
         </aside>
         <div class="admin-main">
     <div class="admin-tab-content" id="tab-equipo" role="tabpanel" aria-labelledby="admin-tab-equipo" tabindex="0">
         <div class="admin-panel-intro">
-            <h3>Agregar Cajero o Proveedor</h3>
-            <p>Por seguridad, las cuentas se registran en Firebase Console y el rol se asigna con una herramienta local; no se guardan claves administrativas en la tienda.</p>
+            <h3>Agregar Cajero o Empleado</h3>
+            <p>Crea una cuenta de acceso al panel. La contraseña temporal se comunica directamente a la persona.</p>
         </div>
-        <ol class="equipo-instrucciones">
-            <li><strong>Crea la cuenta:</strong> abre <a href="https://console.firebase.google.com/project/futbol-premier-6cc4e/authentication/users" target="_blank" rel="noopener noreferrer">Firebase Authentication</a> y agrega el usuario con su correo y contraseña.</li>
-            <li><strong>Copia el UID</strong> de la cuenta que acabas de crear.</li>
-            <li><strong>Asigna su rol:</strong> en la terminal, desde la carpeta del proyecto, ejecuta uno de estos comandos:
-                <pre><code>node tools/staff-roles/set-role.js UID cajero</code>
-<code>node tools/staff-roles/set-role.js UID proveedor</code></pre>
-            </li>
-            <li>El usuario debe cerrar sesión e ingresar nuevamente para que Firebase cargue su rol.</li>
-        </ol>
-        <p class="equipo-seguridad">La herramienta requiere una credencial administrativa local guardada fuera del repositorio. Nunca la compartas ni la subas a Git.</p>
+        <form id="equipo-form" class="equipo-form">
+            <label for="equipo-email">Correo de acceso</label>
+            <input id="equipo-email" type="email" autocomplete="off" required>
+            <label for="equipo-password">Contraseña temporal (mínimo 12 caracteres)</label>
+            <input id="equipo-password" type="password" minlength="12" autocomplete="new-password" required>
+            <label for="equipo-rol">Rol</label>
+            <select id="equipo-rol" required>
+                <option value="cajero">Cajero — pedidos, pagos e ingresos</option>
+                <option value="empleado">Empleado — catálogo, precios y existencias</option>
+            </select>
+            <button type="submit" id="equipo-crear">Crear acceso</button>
+            <p id="equipo-estado" role="status" aria-live="polite"></p>
+        </form>
+        <p class="equipo-seguridad">La credencial de Firebase se guarda solo en la configuración privada de Vercel y nunca en esta página.</p>
     </div>
     <div class="admin-tab-content activo" id="tab-agregar" role="tabpanel" aria-labelledby="admin-tab-agregar" tabindex="0">
         <div class="admin-panel-intro">
@@ -402,8 +407,8 @@
             <option value="player">Player Version</option>
         </select>
         <input type="number" id="precio" placeholder="Precio en Bs">
-        <input type="number" id="vendidos" placeholder="Unidades vendidas (opcional)">
-        <div class="oferta-admin">
+        <input type="number" id="vendidos" placeholder="Unidades vendidas (opcional)" data-admin-only>
+        <div class="oferta-admin" data-admin-only>
             <label class="oferta-toggle-label"><input type="checkbox" id="es-oferta"> 🔥 ¿Es oferta?</label>
             <div id="campo-precio-original" style="display:none;">
                 <input type="number" id="precio-original" placeholder="Precio original (tachado)">
@@ -456,6 +461,28 @@
         <p class="admin-resultados" id="pedidos-resultados" aria-live="polite"></p>
         <div id="lista-clientes"><p class="admin-vacio">Inicia sesión como administrador para cargar los clientes.</p></div>
     </div>
+    <div class="admin-tab-content" id="tab-caja" role="tabpanel" aria-labelledby="admin-tab-caja" tabindex="0">
+        <div class="admin-panel-intro">
+            <h3>Caja e ingresos de hoy</h3>
+            <p>Marca un pedido como pagado solo después de confirmar el efectivo o el comprobante QR. Cada pedido se registra una sola vez.</p>
+        </div>
+        <div class="caja-resumen" aria-live="polite">
+            <article><span>Efectivo recibido</span><strong id="caja-efectivo-ventas">—</strong></article>
+            <article><span>Pagos QR recibidos</span><strong id="caja-qr-total">—</strong></article>
+            <article><span>Total recibido</span><strong id="caja-total-recibido">—</strong></article>
+        </div>
+        <div class="caja-cierre">
+            <h4>Cierre diario</h4>
+            <label for="caja-fondo-inicial">Fondo inicial en efectivo (Bs)</label>
+            <input id="caja-fondo-inicial" type="number" min="0" step="0.01" value="0">
+            <label for="caja-efectivo-contado">Efectivo contado al cierre (Bs)</label>
+            <input id="caja-efectivo-contado" type="number" min="0" step="0.01">
+            <p>Efectivo esperado: <strong id="caja-efectivo-esperado">—</strong></p>
+            <p>Diferencia: <strong id="caja-diferencia">—</strong></p>
+            <button type="button" id="caja-cerrar-dia">Registrar cierre de hoy</button>
+            <p id="caja-cierre-estado" role="status" aria-live="polite"></p>
+        </div>
+    </div>
     <div class="admin-tab-content" id="tab-encargos-admin" role="tabpanel" aria-labelledby="admin-tab-encargos-admin" tabindex="0">
         <div class="clientes-toolbar">
             <div class="admin-panel-intro"><h3>Encargos personalizados</h3><p>Revisa solicitudes y actualiza su estado de atención.</p></div>
@@ -502,9 +529,9 @@
         </select>
         <input type="number" id="edit-precio" placeholder="Precio en Bs">
         <input type="number" id="edit-stock" placeholder="Stock">
-        <input type="number" id="edit-vendidos" placeholder="Vendidos">
-        <label class="oferta-toggle-label"><input type="checkbox" id="edit-es-oferta"> 🔥 ¿Es oferta?</label>
-        <div id="edit-campo-oferta" style="display:none;">
+        <input type="number" id="edit-vendidos" placeholder="Vendidos" data-admin-only>
+        <label class="oferta-toggle-label" data-admin-only><input type="checkbox" id="edit-es-oferta"> 🔥 ¿Es oferta?</label>
+        <div id="edit-campo-oferta" data-admin-only style="display:none;">
             <input type="number" id="edit-precio-original" placeholder="Precio original">
             <input type="text" id="edit-fin-oferta" placeholder="Fin oferta">
         </div>
@@ -992,6 +1019,6 @@
     firebase.appCheck().activate(FIREBASE_APP_CHECK_SITE_KEY, true);
   }
 </script>
-<script src="script.js?v=20261106-staff-local-roles"></script>
+<script src="script.js?v=20261119-cajero-empleado-caja"></script>
 </body>
 </html>

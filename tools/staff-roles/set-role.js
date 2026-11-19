@@ -2,12 +2,12 @@ const path = require("node:path");
 const admin = require("firebase-admin");
 
 const PROJECT_ID = "futbol-premier-6cc4e";
-const ROLES = new Set(["cajero", "proveedor"]);
+const ROLES = new Set(["cajero", "empleado"]);
 
 async function main() {
     const [uid, role, ...extra] = process.argv.slice(2);
     if (!uid || !role || extra.length || !/^[A-Za-z0-9_-]{1,128}$/.test(uid) || !ROLES.has(role)) {
-        throw new Error("Uso: node tools/staff-roles/set-role.js <UID> <cajero|proveedor>");
+        throw new Error("Uso: node tools/staff-roles/set-role.js <UID> <cajero|empleado>");
     }
 
     const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
