@@ -1,0 +1,10 @@
+{
+  "name": "futbol-premier-staff-roles",
+  "private": true,
+  "scripts": {
+    "set-role": "node set-role.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.10.0"
+  }
+}

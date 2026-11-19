@@ -1,0 +1,7 @@
+**/node_modules/
+.vercel/
+.firebase/
+.env*
+!.env.example
+npm-debug.log*
+yarn-debug.log*

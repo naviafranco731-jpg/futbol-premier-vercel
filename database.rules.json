@@ -1,0 +1,117 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "productos": {
+      ".read": true,
+      ".write": "auth != null && auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' && auth.token.email == 'naviafranco731@gmail.com'",
+      "$index": {
+        "stock": {
+          ".write": "$index.matches(/^[0-9]+$/) && data.parent().exists() && data.parent().child('id').isNumber() && auth != null && auth.token.role == 'proveedor' && newData.isNumber() && newData.val() >= 0 && newData.val() <= 10000 && newData.val() % 1 == 0",
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 10000 && newData.val() % 1 == 0"
+        },
+        "agotado": {
+          ".write": "$index.matches(/^[0-9]+$/) && data.parent().exists() && data.parent().child('id').isNumber() && auth != null && auth.token.role == 'proveedor' && newData.isBoolean() && newData.val() == (newData.parent().child('stock').val() == 0)",
+          ".validate": "newData.isBoolean()"
+        }
+      }
+    },
+    "nombresUsuario": {
+      ".read": true,
+      "$nombre": {
+        ".write": "auth != null && (( !data.exists() && !root.child('usuarios').child(auth.uid).exists() && newData.val() == auth.uid && $nombre != 'futadmi' && $nombre.matches(/^[a-z0-9_-]{3,20}$/)) || (data.val() == auth.uid && !newData.exists() && !root.child('usuarios').child(auth.uid).exists()))"
+      }
+    },
+    "usuarios": {
+      ".read": "auth != null && ((auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' && auth.token.email == 'naviafranco731@gmail.com') || auth.token.role == 'cajero')",
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid && !data.exists()",
+        ".validate": "newData.hasChildren(['usuario', 'correo', 'creado']) && root.child('nombresUsuario').child(newData.child('usuario').val()).val() == auth.uid",
+        "usuario": {
+          ".validate": "newData.isString() && newData.val().matches(/^[A-Za-z0-9_-]{3,20}$/)"
+        },
+        "correo": {
+          ".validate": "newData.isString() && newData.val() == auth.token.email"
+        },
+        "creado": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "pedidos": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid == $uid || (auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' && auth.token.email == 'naviafranco731@gmail.com') || auth.token.role == 'cajero')",
+        "$pedidoId": {
+          ".write": "auth != null && auth.token.email_verified == true && auth.uid == $uid && !data.exists() && newData.child('uid').val() == auth.uid && newData.child('correo').val() == auth.token.email",
+          ".validate": "newData.hasChildren(['uid', 'correo', 'numero', 'fecha', 'items', 'total', 'estado'])",
+          "numero": {
+            ".validate": "newData.isNumber()"
+          },
+          "fecha": {
+            ".validate": "newData.isString()"
+          },
+          "items": {
+            ".validate": "newData.hasChildren()"
+          },
+          "total": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "estado": {
+            ".write": "auth != null && ((auth.token.role == 'cajero') || (auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' && auth.token.email == 'naviafranco731@gmail.com'))",
+            ".validate": "newData.isString() && (newData.val() == 'pendiente' || newData.val() == 'confirmado' || newData.val() == 'preparando' || newData.val() == 'enviado' || newData.val() == 'completado' || newData.val() == 'cancelado')"
+          }
+        }
+      }
+    },
+    "encargos": {
+      ".read": "auth != null && auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' && auth.token.email == 'naviafranco731@gmail.com'",
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        "$encargoId": {
+          ".write": "auth != null && ((auth.uid == $uid && auth.token.email_verified == true && !data.exists() && newData.child('uid').val() == auth.uid && newData.child('correo').val() == auth.token.email) || (auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' && auth.token.email == 'naviafranco731@gmail.com'))",
+          ".validate": "newData.hasChildren(['uid', 'correo', 'usuario', 'camiseta', 'talla', 'nombrePersonalizado', 'dorsal', 'notas', 'fotoPath', 'estado', 'fecha'])",
+          "uid": {
+            ".validate": "newData.val() == $uid"
+          },
+          "correo": {
+            ".validate": "newData.isString() && (newData.val() == auth.token.email || auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1')"
+          },
+          "usuario": {
+            ".validate": "newData.isString() && newData.val().length <= 20"
+          },
+          "camiseta": {
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 80"
+          },
+          "talla": {
+            ".validate": "newData.isString() && newData.val().length <= 20"
+          },
+          "nombrePersonalizado": {
+            ".validate": "newData.isString() && newData.val().length <= 20"
+          },
+          "dorsal": {
+            ".validate": "newData.isString() && newData.val().length <= 2"
+          },
+          "notas": {
+            ".validate": "newData.isString() && newData.val().length <= 500"
+          },
+          "fotoPath": {
+            ".validate": "newData.isString()"
+          },
+          "estado": {
+            ".validate": "newData.val() == 'pendiente' || newData.val() == 'contactado' || newData.val() == 'en proceso' || newData.val() == 'completado' || newData.val() == 'rechazado'"
+          },
+          "fecha": {
+            ".validate": "newData.isString()"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    }
+  }
+}
