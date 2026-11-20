@@ -41,18 +41,18 @@ Las reglas permiten a Cajeros consultar perfiles y pedidos, actualizar estados y
 
 Las fotos no se suben a Firebase. El formulario guarda la solicitud en Realtime Database y, si el cliente selecciona una imagen (JPG, PNG o WebP, hasta 5 MB), le muestra un enlace de WhatsApp con los detalles del encargo. El cliente debe pulsar el enlace y adjuntar la foto en WhatsApp. Así se puede usar la función sin activar Cloud Storage ni asociar una cuenta de facturación.
 
-## 5. Configurar App Check
+## 5. CAPTCHA visual y App Check
 
-Para proteger el servicio:
+El ingreso incluye un CAPTCHA visual sencillo con un código aleatorio que la persona debe escribir. Es una ayuda básica del lado del cliente; no es una verificación de servidor ni una protección sólida contra bots. No guardes ni confíes datos sensibles basándote en esta comprobación.
 
-La casilla obligatoria del formulario de acceso es una comprobación de interfaz y no sustituye un CAPTCHA validado en servidor; no la uses como protección contra bots. Para producción, App Check es independiente y debe configurarse correctamente antes de volver obligatoria su validación.
+Para una protección más fuerte de los servicios Firebase, configura App Check:
 
 1. En **App Check**, registra la aplicación web con el proveedor reCAPTCHA v3 y agrega el dominio público autorizado.
 2. Copia la clave pública del sitio en `FIREBASE_APP_CHECK_SITE_KEY` en [index.html](./index.html).
 3. Prueba el sitio y confirma en App Check que la aplicación genera tokens válidos.
 4. Solo entonces activa la aplicación de App Check para **Realtime Database** en Firebase Console.
 
-No actives la aplicación obligatoria antes de publicar el sitio con la clave correcta: Firebase rechazará las lecturas y escrituras de catálogo, perfiles y pedidos.
+No actives la aplicación obligatoria antes de publicar el sitio con la clave correcta: Firebase rechazará las lecturas y escrituras de catálogo, perfiles y pedidos. App Check y el CAPTCHA visual tienen propósitos distintos; el código visual no envía ni valida tokens App Check.
 
 ## 6. Comprobación
 

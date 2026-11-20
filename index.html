@@ -9,7 +9,7 @@
     <meta property="og:description" content="Los mejores jerseys de fútbol.">
     <meta property="og:image" content="img/logo.png">
     <link rel="icon" type="image/png" href="img/logo.png">
-    <link rel="stylesheet" href="style.css?v=20261119-cajero-empleado-caja">
+    <link rel="stylesheet" href="style.css?v=20261120-admin-logo-visual-captcha">
 </head>
 <body>
 
@@ -310,10 +310,13 @@
 <!-- PANEL ADMIN -->
 <section class="admin" id="admin-panel" style="display:none;">
     <header class="admin-cabecera">
-        <div>
-            <p class="admin-kicker">FÚTBOL PREMIER <span>/</span> ADMINISTRACIÓN</p>
-            <h2>Panel de administración</h2>
-            <p class="admin-descripcion">Gestiona catálogo, pedidos, pagos e ingresos según tu rol.</p>
+        <div class="admin-cabecera-marca">
+            <img class="admin-logo" src="img/logo.png" alt="Logo de Fútbol Premier">
+            <div>
+                <p class="admin-kicker">FÚTBOL PREMIER <span>/</span> ADMINISTRACIÓN</p>
+                <h2>Panel de administración</h2>
+                <p class="admin-descripcion">Gestiona catálogo, pedidos, pagos e ingresos según tu rol.</p>
+            </div>
         </div>
         <div class="admin-cabecera-acciones">
             <div class="admin-identidad" id="admin-identidad" aria-live="polite">
@@ -880,10 +883,14 @@
             <input type="text" id="cuenta-email" autocomplete="username" placeholder="tu@correo.com o FUTADMI">
             <label for="cuenta-password">Contraseña</label>
             <input type="password" id="cuenta-password" autocomplete="current-password" minlength="8" placeholder="Mínimo 8 caracteres">
-            <label class="cuenta-captcha" id="cuenta-captcha-wrap">
-                <input type="checkbox" id="cuenta-captcha" required aria-required="true">
-                <span>Confirma que no eres un robot</span>
-            </label>
+            <div class="cuenta-captcha" id="cuenta-captcha-wrap">
+                <label class="cuenta-captcha-instruccion" for="cuenta-captcha-respuesta">Escribe el código de seguridad:</label>
+                <div class="cuenta-captcha-visual">
+                    <canvas id="cuenta-captcha-imagen" width="280" height="76" role="img" aria-label="Código de seguridad CAPTCHA"></canvas>
+                    <button type="button" id="cuenta-captcha-nuevo" aria-label="Generar otro código" title="Generar otro código">↻</button>
+                </div>
+                <input type="text" id="cuenta-captcha-respuesta" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="5" placeholder="Código de seguridad">
+            </div>
             <button type="button" id="cuenta-submit">Ingresar</button>
             <p class="cuenta-ayuda" id="cuenta-mensaje" role="status"></p>
         </div>
@@ -1019,6 +1026,6 @@
     firebase.appCheck().activate(FIREBASE_APP_CHECK_SITE_KEY, true);
   }
 </script>
-<script src="script.js?v=20261119-cajero-empleado-caja"></script>
+<script src="script.js?v=20261120-visual-captcha"></script>
 </body>
 </html>

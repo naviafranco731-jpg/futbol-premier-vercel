@@ -89,9 +89,55 @@ function mostrarCuenta(vista = "ingresar") {
     $("cuenta-email").type = vista === "registrar" ? "email" : "text";
     $("cuenta-email").placeholder = vista === "registrar" ? "tu@correo.com" : "tu@correo.com o FUTADMI";
     $("cuenta-email-label").textContent = vista === "registrar" ? "Correo electrónico" : "Correo electrónico o usuario administrador";
-    $("cuenta-captcha-wrap").style.display = vista === "registrar" ? "none" : "flex";
-    $("cuenta-captcha").checked = false;
+    $("cuenta-captcha-wrap").style.display = vista === "registrar" ? "none" : "grid";
+    if (vista === "ingresar") generarCodigoCaptchaVisual();
+    else {
+        codigoCaptchaVisual = "";
+        $("cuenta-captcha-respuesta").value = "";
+    }
     $$(".cuenta-tab").forEach(b => b.classList.toggle("activo", b.dataset.cuentaVista === vista));
+}
+
+let codigoCaptchaVisual = "";
+function generarCodigoCaptchaVisual() {
+    const caracteres = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    codigoCaptchaVisual = Array.from({ length: 5 }, () =>
+        caracteres[Math.floor(Math.random() * caracteres.length)]
+    ).join("");
+    $("cuenta-captcha-respuesta").value = "";
+    const canvas = $("cuenta-captcha-imagen");
+    const contexto = canvas.getContext("2d");
+    if (!contexto) {
+        codigoCaptchaVisual = "";
+        $("cuenta-mensaje").textContent = "No se pudo mostrar el CAPTCHA. Recarga la página e inténtalo otra vez.";
+        return;
+    }
+    contexto.clearRect(0, 0, canvas.width, canvas.height);
+    contexto.fillStyle = "#e8edf4";
+    contexto.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < 5; i++) {
+        contexto.beginPath();
+        contexto.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+        contexto.bezierCurveTo(
+            Math.random() * canvas.width, Math.random() * canvas.height,
+            Math.random() * canvas.width, Math.random() * canvas.height,
+            Math.random() * canvas.width, Math.random() * canvas.height
+        );
+        contexto.strokeStyle = "rgba(55, 75, 110, 0.28)";
+        contexto.lineWidth = 1 + Math.random();
+        contexto.stroke();
+    }
+
+    Array.from(codigoCaptchaVisual).forEach((caracter, indice) => {
+        contexto.save();
+        contexto.translate(30 + indice * 48, 49 + Math.random() * 9);
+        contexto.rotate((Math.random() - 0.5) * 0.3);
+        contexto.font = `bold ${30 + Math.floor(Math.random() * 7)}px Georgia`;
+        contexto.fillStyle = ["#173d68", "#3c285f", "#27384b"][indice % 3];
+        contexto.fillText(caracter, 0, 0);
+        contexto.restore();
+    });
 }
 
 function describirErrorFirebase(error) {
@@ -345,13 +391,21 @@ $("abrir-cuenta").addEventListener("click", () => {
     mostrarCuenta(usuarioActual ? vistaCuenta : "ingresar");
     renderCuentaPerfil();
 });
-$("cerrar-cuenta").addEventListener("click", () => { $("cuenta-modal").style.display = "none"; });
+$("cerrar-cuenta").addEventListener("click", () => {
+    $("cuenta-modal").style.display = "none";
+});
 $("cuenta-modal").addEventListener("click", event => {
-    if (event.target === $("cuenta-modal")) $("cuenta-modal").style.display = "none";
+    if (event.target === $("cuenta-modal")) {
+        $("cuenta-modal").style.display = "none";
+    }
 });
 $$(".cuenta-tab").forEach(button => button.addEventListener("click", () => {
     mostrarCuenta(button.dataset.cuentaVista);
 }));
+$("cuenta-captcha-nuevo").addEventListener("click", () => {
+    generarCodigoCaptchaVisual();
+    $("cuenta-mensaje").textContent = "";
+});
 $("cuenta-submit").addEventListener("click", async () => {
     const identificador = $("cuenta-email").value.trim();
     const email = identificador.toLowerCase() === "futadmi" ? ADMIN_EMAIL : identificador.toLowerCase();
@@ -359,9 +413,17 @@ $("cuenta-submit").addEventListener("click", async () => {
     const usuario = $("cuenta-usuario").value.trim();
     const salida = $("cuenta-mensaje");
     salida.textContent = "";
-    if (vistaCuenta === "ingresar" && !$("cuenta-captcha").checked) {
-        salida.textContent = "Confirma la casilla de verificación para continuar.";
-        return;
+    if (vistaCuenta === "ingresar") {
+        if (!codigoCaptchaVisual) {
+            salida.textContent = "No se pudo generar el CAPTCHA. Recarga la página e inténtalo otra vez.";
+            return;
+        }
+        if ($("cuenta-captcha-respuesta").value.trim().toUpperCase() !== codigoCaptchaVisual) {
+            generarCodigoCaptchaVisual();
+            salida.textContent = "El código no coincide. Inténtalo con el nuevo CAPTCHA.";
+            return;
+        }
+        generarCodigoCaptchaVisual();
     }
     if (vistaCuenta === "registrar") {
         if (!/^[a-zA-Z0-9_-]{3,20}$/.test(usuario)) {
