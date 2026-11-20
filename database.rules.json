@@ -12,9 +12,9 @@
         },
         "imagenes": {
           ".write": "auth != null && auth.token.role == 'empleado' && data.parent().exists() && newData.hasChildren()",
-          ".validate": "auth == null || auth.token.role != 'empleado' || (newData.hasChildren() && newData.numChildren() <= 10)",
+          ".validate": "auth == null || auth.token.role != 'empleado' || newData.hasChildren()",
           "$imagen": {
-            ".validate": "auth == null || auth.token.role != 'empleado' || (newData.isString() && newData.val().length <= 2048)"
+            ".validate": "auth == null || auth.token.role != 'empleado' || ($imagen.matches(/^[0-9]$/) && newData.isString() && newData.val().length <= 2048)"
           }
         },
         "nombre": {
