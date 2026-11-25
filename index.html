@@ -357,12 +357,17 @@
         <h3>¿Ya compraste con nosotros? Deja tu reseña</h3>
         <input type="text" id="resena-nombre" placeholder="Tu nombre" />
         <input type="text" id="resena-ciudad" placeholder="Tu ciudad" />
-        <div class="estrellas-input" id="estrellas-input">
-          <span class="estrella-inp" data-val="1">★</span>
-          <span class="estrella-inp" data-val="2">★</span>
-          <span class="estrella-inp" data-val="3">★</span>
-          <span class="estrella-inp" data-val="4">★</span>
-          <span class="estrella-inp" data-val="5">★</span>
+        <div
+          class="estrellas-input"
+          id="estrellas-input"
+          role="radiogroup"
+          aria-label="Calificación de la reseña"
+        >
+          <button type="button" class="estrella-inp" role="radio" aria-label="1 estrella" aria-checked="false" tabindex="0" data-val="1">★</button>
+          <button type="button" class="estrella-inp" role="radio" aria-label="2 estrellas" aria-checked="false" tabindex="-1" data-val="2">★</button>
+          <button type="button" class="estrella-inp" role="radio" aria-label="3 estrellas" aria-checked="false" tabindex="-1" data-val="3">★</button>
+          <button type="button" class="estrella-inp" role="radio" aria-label="4 estrellas" aria-checked="false" tabindex="-1" data-val="4">★</button>
+          <button type="button" class="estrella-inp" role="radio" aria-label="5 estrellas" aria-checked="false" tabindex="-1" data-val="5">★</button>
         </div>
         <textarea
           id="resena-texto"

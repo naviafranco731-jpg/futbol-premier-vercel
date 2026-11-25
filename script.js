@@ -2234,32 +2234,87 @@ function renderListaCupones(){const lc=$("lista-cupones");if(!cupones.length){lc
 function eliminarCupon(i){cupones.splice(i,1);localStorage.setItem("cupones",JSON.stringify(cupones));renderListaCupones();mostrarToast("🗑 Cupón eliminado");}
 
 /* =============================================   RESEÑAS   */
-$$(".estrella-inp").forEach(s=>{
-    s.addEventListener("mouseover",()=>$$(".estrella-inp").forEach((x,i)=>x.classList.toggle("activa",i<=+s.dataset.val-1)));
-    s.addEventListener("mouseout",()=>$$(".estrella-inp").forEach((x,i)=>x.classList.toggle("activa",i<=estrellasVal-1)));
-    s.addEventListener("click",()=>{estrellasVal=+s.dataset.val;$$(".estrella-inp").forEach((x,i)=>x.classList.toggle("activa",i<=estrellasVal-1));});
+function calificacionResena(resena){
+    const valor=Number(resena.estrellas);
+    return Number.isInteger(valor)&&valor>=1&&valor<=5?valor:null;
+}
+function htmlEstrellasResena(resena){
+    const valor=calificacionResena(resena);
+    if(valor===null)return `<span class="resena-estrellas" role="img" aria-label="Calificación inválida">☆☆☆☆☆</span>`;
+    return `<span class="resena-estrellas" role="img" aria-label="${valor} de 5 estrellas"><span class="resena-estrellas-activas">${"★".repeat(valor)}</span><span class="resena-estrellas-inactivas">${"☆".repeat(5-valor)}</span></span>`;
+}
+function guardarResenasYActualizarVistas(){
+    localStorage.setItem("resenas",JSON.stringify(resenas));
+    renderResenas();
+    renderResenasPendientes();
+}
+window.addEventListener("storage",event=>{
+    if(event.key!=="resenas"&&event.key!==null)return;
+    try{
+        const guardadas=event.newValue===null?[]:JSON.parse(event.newValue);
+        if(!Array.isArray(guardadas))throw new TypeError("El registro de reseñas no es una lista.");
+        resenas=guardadas;
+    }catch(error){
+        console.error("No se pudieron sincronizar las reseñas:",error);
+        return;
+    }
+    renderResenas();
+    renderResenasPendientes();
 });
+const selectorEstrellasResena=$("estrellas-input");
+const botonesEstrellasResena=[...selectorEstrellasResena.querySelectorAll(".estrella-inp")];
+function pintarEstrellasResena(valorVista=estrellasVal){
+    botonesEstrellasResena.forEach((boton,indice)=>{
+        boton.classList.toggle("activa",indice<valorVista);
+        boton.setAttribute("aria-checked",String(indice===estrellasVal-1));
+        boton.tabIndex=indice===(estrellasVal?estrellasVal-1:0)?0:-1;
+    });
+}
+function seleccionarEstrellasResena(valor,enfocar=false){
+    estrellasVal=Number(valor);
+    pintarEstrellasResena();
+    if(enfocar)botonesEstrellasResena[estrellasVal-1].focus();
+}
+botonesEstrellasResena.forEach((boton,indice)=>{
+    boton.addEventListener("mouseenter",()=>pintarEstrellasResena(indice+1));
+    boton.addEventListener("click",()=>seleccionarEstrellasResena(boton.dataset.val));
+});
+selectorEstrellasResena.addEventListener("mouseleave",()=>pintarEstrellasResena());
+selectorEstrellasResena.addEventListener("keydown",event=>{
+    const indiceActual=botonesEstrellasResena.indexOf(document.activeElement);
+    let siguiente;
+    if(event.key==="ArrowRight"||event.key==="ArrowUp")siguiente=Math.min(indiceActual+1,botonesEstrellasResena.length-1);
+    else if(event.key==="ArrowLeft"||event.key==="ArrowDown")siguiente=Math.max(indiceActual-1,0);
+    else if(event.key==="Home")siguiente=0;
+    else if(event.key==="End")siguiente=botonesEstrellasResena.length-1;
+    else return;
+    event.preventDefault();
+    seleccionarEstrellasResena(siguiente+1,true);
+});
+pintarEstrellasResena();
 $("enviar-resena").addEventListener("click",()=>{
     const nombre=$("resena-nombre").value.trim();const ciudad=$("resena-ciudad").value.trim();const texto=$("resena-texto").value.trim();
-    if(!nombre||!ciudad||!estrellasVal||!texto){mostrarToast("⚠️ Completa todos los campos");return;}
-    resenas.push({id:Date.now(),nombre,ciudad,estrellas:estrellasVal,texto,aprobada:false,fecha:new Date().toLocaleDateString("es-BO")});
-    localStorage.setItem("resenas",JSON.stringify(resenas));
-    $("resena-nombre").value="";$("resena-ciudad").value="";$("resena-texto").value="";estrellasVal=0;$$(".estrella-inp").forEach(x=>x.classList.remove("activa"));
+    if(!nombre||!ciudad||!texto){mostrarToast("⚠️ Completa todos los campos");return;}
+    const estrellas=calificacionResena({estrellas:estrellasVal});
+    if(estrellas===null){mostrarToast("⚠️ Selecciona de 1 a 5 estrellas");return;}
+    resenas.push({id:Date.now(),nombre,ciudad,estrellas,texto,aprobada:false,fecha:new Date().toLocaleDateString("es-BO")});
+    guardarResenasYActualizarVistas();
+    $("resena-nombre").value="";$("resena-ciudad").value="";$("resena-texto").value="";estrellasVal=0;pintarEstrellasResena();
     mostrarToast("✅ Reseña enviada, será revisada pronto");
 });
 function renderResenas(){
     const grid=$("resenas-grid");grid.innerHTML="";
     const aprobadas=resenas.filter(r=>r.aprobada);
     if(!aprobadas.length){grid.innerHTML=`<p style="color:var(--text3);text-align:center;grid-column:1/-1;padding:20px">Sé el primero en dejar una reseña ⭐</p>`;return;}
-    aprobadas.forEach(r=>{const d=document.createElement("div");d.className="testimonio reveal";d.innerHTML=`<div class="estrellas">${"⭐".repeat(r.estrellas)}</div><p>"${r.texto}"</p><span>— ${r.nombre}, ${r.ciudad} · ${r.fecha}</span>`;grid.appendChild(d);});initReveal();
+    aprobadas.forEach(r=>{const d=document.createElement("div");d.className="testimonio reveal";d.innerHTML=`<div class="estrellas">${htmlEstrellasResena(r)}</div><p>"${r.texto}"</p><span>— ${r.nombre}, ${r.ciudad} · ${r.fecha}</span>`;grid.appendChild(d);});initReveal();
 }
 function renderResenasPendientes(){
     const cont=$("resenas-pendientes");cont.innerHTML="";
     const pend=resenas.filter(r=>!r.aprobada);
     if(!pend.length){cont.innerHTML=`<p style="color:var(--text3);text-align:center;padding:20px">No hay reseñas pendientes ✅</p>`;return;}
-    pend.forEach(r=>{const d=document.createElement("div");d.className="resena-pend-item";d.innerHTML=`<div class="resena-pend-header"><strong>${r.nombre} — ${r.ciudad}</strong><span>${"⭐".repeat(r.estrellas)}</span></div><p>"${r.texto}"</p><div class="resena-pend-btns"><button class="btn-aprobar" data-id="${r.id}">✅ Aprobar</button><button class="btn-rechazar" data-id="${r.id}">❌ Rechazar</button></div>`;cont.appendChild(d);});
-    $$(".btn-aprobar").forEach(b=>b.addEventListener("click",()=>{const r=resenas.find(x=>x.id===+b.dataset.id);if(r){r.aprobada=true;localStorage.setItem("resenas",JSON.stringify(resenas));renderResenas();renderResenasPendientes();mostrarToast("✅ Reseña aprobada");}}));
-    $$(".btn-rechazar").forEach(b=>b.addEventListener("click",()=>{resenas=resenas.filter(x=>x.id!==+b.dataset.id);localStorage.setItem("resenas",JSON.stringify(resenas));renderResenasPendientes();mostrarToast("🗑 Reseña rechazada");}));
+    pend.forEach(r=>{const d=document.createElement("div");d.className="resena-pend-item";d.innerHTML=`<div class="resena-pend-header"><strong>${r.nombre} — ${r.ciudad}</strong>${htmlEstrellasResena(r)}</div><p>"${r.texto}"</p><div class="resena-pend-btns"><button class="btn-aprobar" data-id="${r.id}">✅ Aprobar</button><button class="btn-rechazar" data-id="${r.id}">❌ Rechazar</button></div>`;cont.appendChild(d);});
+    $$(".btn-aprobar").forEach(b=>b.addEventListener("click",()=>{const r=resenas.find(x=>x.id===+b.dataset.id);if(r){r.aprobada=true;guardarResenasYActualizarVistas();mostrarToast("✅ Reseña aprobada");}}));
+    $$(".btn-rechazar").forEach(b=>b.addEventListener("click",()=>{resenas=resenas.filter(x=>x.id!==+b.dataset.id);guardarResenasYActualizarVistas();mostrarToast("🗑 Reseña rechazada");}));
 }
 
 /* =============================================   ACCESO   */

@@ -134,15 +134,34 @@ nav.scrolled{backdrop-filter:blur(10px);box-shadow:0 5px 30px rgba(0, 0, 0, .5);
 .testimonio{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:26px;transition:.3s;text-align:left;}
 .testimonio:hover{border-color:var(--accent);transform:translateY(-4px);}
 .estrellas{font-size:1.1rem;margin-bottom:13px;}
+.resena-estrellas{display:inline-flex;white-space:nowrap;line-height:1;}
+.resena-estrellas-activas{color:#f5c542;}
+.resena-estrellas-inactivas{color:var(--text3);}
+.testimonio .resena-estrellas{font-size:1.1rem;}
+.testimonio .resena-estrellas-activas{color:#f5c542;}
+.testimonio .resena-estrellas-inactivas{color:var(--text3);}
 .testimonio p{color:var(--text2);line-height:1.7;font-style:italic;margin-bottom:13px;font-size:.9rem;}
 .testimonio span{color:var(--text3);font-size:.82rem;font-weight:bold;}
 .resena-form{background:var(--bg2);border:1px solid var(--border);border-radius:22px;padding:30px;max-width:530px;margin:0 auto;text-align:left;}
 .resena-form h3{font-size:1.2rem;margin-bottom:18px;text-align:center;}
 .resena-form input,.resena-form textarea{width:100%;padding:11px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:11px;color:var(--text);font-size:.9rem;margin-bottom:11px;transition:.3s;resize:vertical;}
 .resena-form input:focus,.resena-form textarea:focus{outline:none;border-color:var(--accent);}
-.estrellas-input{display:flex;gap:7px;font-size:1.9rem;margin-bottom:13px;cursor:pointer;}
-.estrella-inp{color:var(--text3);transition:.2s;line-height:1;}
-.estrella-inp.activa{color:#c8c8c8;}
+.estrellas-input{display:flex;gap:7px;font-size:1.9rem;margin-bottom:13px;}
+.estrellas-input .estrella-inp{
+    appearance:none;
+    width:auto;
+    margin:0;
+    padding:0;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    color:var(--text3);
+    cursor:pointer;
+    transition:color .2s;
+    line-height:1;
+}
+.estrellas-input .estrella-inp.activa{color:#f5c542;}
+.estrellas-input .estrella-inp:focus-visible{outline:2px solid #f5c542;outline-offset:3px;}
 .resena-form button{width:100%;padding:12px;border:none;border-radius:11px;background:var(--accent);color:#000000;font-weight:bold;font-size:.95rem;cursor:pointer;margin-bottom:9px;}
 .resena-nota{font-size:.78rem;color:var(--text3);text-align:center;}
 .resena-pend-item{background:var(--bg3);border:1px solid var(--border);border-radius:11px;padding:13px;margin-bottom:11px;}
