@@ -1,38 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es" data-tema="oscuro">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fútbol Premier — Jerseys </title>
-    <meta name="description" content="Los mejores jerseys de fútbol.">
-    <meta property="og:title" content="Fútbol Premier — Jerseys Originales y Retro">
-    <meta property="og:description" content="Los mejores jerseys de fútbol.">
-    <meta property="og:image" content="img/logo.png">
-    <link rel="icon" type="image/png" href="img/logo.png">
-    <link rel="stylesheet" href="style.css?v=20261120-admin-logo-visual-captcha">
-</head>
-<body>
-
-<!-- SPLASH -->
-<div class="splash" id="splash">
-    <div class="splash-inner">
-        <img src="img/logo.png" alt="Fútbol Premier" class="splash-logo">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fútbol Premier — Jerseys</title>
+    <meta name="description" content="Los mejores jerseys de fútbol." />
+    <meta
+      property="og:title"
+      content="Fútbol Premier — Jerseys Originales y Retro"
+    />
+    <meta property="og:description" content="Los mejores jerseys de fútbol." />
+    <meta property="og:image" content="img/logo.png" />
+    <link rel="icon" type="image/png" href="img/logo.png" />
+    <link
+      rel="stylesheet"
+      href="style.css?v=20261120-admin-logo-visual-captcha"
+    />
+  </head>
+  <body>
+    <!-- SPLASH -->
+    <div class="splash" id="splash">
+      <div class="splash-inner">
+        <img src="img/logo.png" alt="Fútbol Premier" class="splash-logo" />
         <h1 class="splash-titulo">FÚTBOL PREMIER</h1>
         <div class="splash-barra"><div class="splash-progreso"></div></div>
+      </div>
     </div>
-</div>
 
-<canvas id="confeti-canvas"></canvas>
+    <canvas id="confeti-canvas"></canvas>
 
-<!-- BANNER -->
-<div class="banner-top">
-    ENVÍOS A TODA BOLIVIA &nbsp;|&nbsp; PAGO SEGURO POR QR
-</div>
+    <!-- BANNER -->
+    <div class="banner-top">
+      ENVÍOS A TODA BOLIVIA &nbsp;|&nbsp; PAGO SEGURO POR QR
+    </div>
 
-<!-- NAVBAR -->
-<nav id="navbar">
-    <div class="logo"><img src="img/logo.png" alt="Fútbol Premier"></div>
-    <ul class="nav-links">
+    <!-- NAVBAR -->
+    <nav id="navbar">
+      <div class="logo"><img src="img/logo.png" alt="Fútbol Premier" /></div>
+      <ul class="nav-links">
         <li><a href="#inicio">Inicio</a></li>
         <li><a href="#ofertas">Ofertas</a></li>
         <li><a href="#catalogo">Catálogo</a></li>
@@ -40,992 +45,2373 @@
         <li><a href="#nosotros">Nosotros</a></li>
         <li><a href="#resenas">Reseñas</a></li>
         <li><a href="#entregas">Envíos</a></li>
-        <li><a href="#footer">Contacto</a></li>
-    </ul>
-    <div class="buscador-wrap">
-        <input type="text" id="buscador" placeholder="Buscar jersey..." autocomplete="off">
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <div class="buscador-wrap">
+        <input
+          type="text"
+          id="buscador"
+          placeholder="Buscar jersey..."
+          autocomplete="off"
+        />
         <div class="buscador-resultados" id="buscador-resultados"></div>
-    </div>
-    <div class="nav-acciones">
-        <button class="btn-favoritos-nav" id="btn-favoritos-nav">Favoritos <span id="contador-favoritos"></span></button>
-        <button id="abrir-cuenta" class="admin-btn">Ingresar / Mi cuenta</button>
-        <div class="carrito-icono">Carrito <span id="contador-carrito">0</span></div>
-    </div>
-</nav>
-
-<!-- CARRITO -->
-<div class="carrito-panel" id="carrito-panel">
-    <div class="carrito-header"><h2>🛒 Carrito</h2><span id="cerrar-carrito">✕</span></div>
-    <div id="items-carrito"></div>
-    <div class="cupon-box">
-        <input type="text" id="cupon-input" placeholder="Código de cupón...">
-        <button id="aplicar-cupon">Aplicar</button>
-    </div>
-    <div id="descuento-aviso" class="descuento-aviso" style="display:none;"></div>
-    <div class="carrito-footer">
-        <div class="envio-barra" id="envio-barra">
-            <div class="envio-barra-inner">
-                <div class="envio-barra-prog" id="envio-barra-prog"></div>
-            </div>
-            <p id="envio-barra-texto">Agrega productos para ver el progreso</p>
+      </div>
+      <div class="nav-acciones">
+        <button class="btn-favoritos-nav" id="btn-favoritos-nav">
+          Favoritos <span id="contador-favoritos"></span>
+        </button>
+        <button id="abrir-cuenta" class="admin-btn">
+          Ingresar / Mi cuenta
+        </button>
+        <div class="carrito-icono">
+          Carrito <span id="contador-carrito">0</span>
         </div>
-        <div class="carrito-timer" id="carrito-timer" style="display:none;">
-            ⏱ Tu carrito expira en <strong id="timer-cuenta">15:00</strong>
+      </div>
+    </nav>
+
+    <!-- CARRITO -->
+    <div class="carrito-panel" id="carrito-panel">
+      <div class="carrito-header">
+        <h2>🛒 Carrito</h2>
+        <span id="cerrar-carrito">✕</span>
+      </div>
+      <div id="items-carrito"></div>
+      <div class="cupon-box">
+        <input type="text" id="cupon-input" placeholder="Código de cupón..." />
+        <button id="aplicar-cupon">Aplicar</button>
+      </div>
+      <div
+        id="descuento-aviso"
+        class="descuento-aviso"
+        style="display: none"
+      ></div>
+      <div class="carrito-footer">
+        <div class="envio-barra" id="envio-barra">
+          <div class="envio-barra-inner">
+            <div class="envio-barra-prog" id="envio-barra-prog"></div>
+          </div>
+          <p id="envio-barra-texto">Agrega productos para ver el progreso</p>
+        </div>
+        <div class="carrito-timer" id="carrito-timer" style="display: none">
+          ⏱ Tu carrito expira en <strong id="timer-cuenta">15:00</strong>
         </div>
         <div id="resumen-precios">
-            <p>Subtotal: <span id="subtotal">0</span> Bs</p>
-            <p id="linea-descuento" style="display:none;">Descuento: -<span id="descuento-monto">0</span> Bs</p>
-            <h3>Total: <span id="total">0</span> Bs</h3>
+          <p>Subtotal: <span id="subtotal">0</span> Bs</p>
+          <p id="linea-descuento" style="display: none">
+            Descuento: -<span id="descuento-monto">0</span> Bs
+          </p>
+          <h3>Total: <span id="total">0</span> Bs</h3>
         </div>
         <button id="finalizar-compra">Finalizar Pedido 💳</button>
-        <button id="ver-historial-btn" class="btn-historial">📋 Historial</button>
-        <button id="ver-favoritos-btn" class="btn-historial">❤️ Favoritos</button>
+        <button id="ver-historial-btn" class="btn-historial">
+          📋 Historial
+        </button>
+        <button id="ver-favoritos-btn" class="btn-historial">
+          ❤️ Favoritos
+        </button>
+      </div>
     </div>
-</div>
 
-<!-- HERO SLIDER -->
-<section class="hero" id="inicio">
-    <h2 class="section-heading">INICIO</h2>
-    <div class="hero-slider" id="hero-slider">
+    <!-- HERO SLIDER -->
+    <section class="hero" id="inicio">
+      <h2 class="section-heading">INICIO</h2>
+      <div class="hero-slider" id="hero-slider">
         <div class="hero-slide activo">
-            <img class="hero-fondo" src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Cristiano_Ronaldo_-_Ballon_d%27Or_%28cropped%29.jpg" alt="Cristiano Ronaldo con uniforme blanco sosteniendo el trofeo Balón de Oro">
-            <div class="hero-content"><div class="hero-badge">BALÓN DE ORO · 2014</div><h1>CRISTIANO RONALDO</h1><p>Una leyenda que inspira a generaciones</p><div class="hero-btns"><a href="#catalogo" class="btn-primary">VER CATÁLOGO</a><a href="#ofertas" class="btn-secondary">VER OFERTAS</a></div></div>
-            <div class="hero-credit">Foto: <a href="https://commons.wikimedia.org/wiki/File:Cristiano_Ronaldo_-_Ballon_d%27Or_(cropped).jpg" target="_blank" rel="noopener noreferrer">Anish Morarji</a> · <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener noreferrer">CC BY 2.0</a></div>
+          <img
+            class="hero-fondo"
+            src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Cristiano_Ronaldo_-_Ballon_d%27Or_%28cropped%29.jpg"
+            alt="Cristiano Ronaldo con uniforme blanco sosteniendo el trofeo Balón de Oro"
+          />
+          <div class="hero-content">
+            <div class="hero-badge">BALÓN DE ORO · 2014</div>
+            <h1>CRISTIANO RONALDO</h1>
+            <p>Una leyenda que inspira a generaciones</p>
+            <div class="hero-btns">
+              <a href="#catalogo" class="btn-primary">VER CATÁLOGO</a
+              ><a href="#ofertas" class="btn-secondary">VER OFERTAS</a>
+            </div>
+          </div>
+          <div class="hero-credit">
+            Foto:
+            <a
+              href="https://commons.wikimedia.org/wiki/File:Cristiano_Ronaldo_-_Ballon_d%27Or_(cropped).jpg"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Anish Morarji</a
+            >
+            ·
+            <a
+              href="https://creativecommons.org/licenses/by/2.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >CC BY 2.0</a
+            >
+          </div>
         </div>
         <div class="hero-slide">
-            <img class="hero-fondo" src="https://upload.wikimedia.org/wikipedia/commons/a/a5/039_men_at_work_UEFA_2009%2C_Rome.jpg" alt="Lionel Messi rematando con el FC Barcelona en la final de Champions League de 2009">
-            <div class="hero-content"><div class="hero-badge">FC BARCELONA · ROMA 2009</div><h1>LIONEL MESSI</h1><p>Talento, historia y pasión por el fútbol</p><div class="hero-btns"><a href="#catalogo" class="btn-primary">VER CATÁLOGO</a><a href="#ofertas" class="btn-secondary">VER OFERTAS</a></div></div>
-            <div class="hero-credit">Foto: <a href="https://commons.wikimedia.org/wiki/File:039_men_at_work_UEFA_2009,_Rome.jpg" target="_blank" rel="noopener noreferrer">funnydae</a> · <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noopener noreferrer">CC BY 2.0</a></div>
+          <img
+            class="hero-fondo"
+            src="https://upload.wikimedia.org/wikipedia/commons/a/a5/039_men_at_work_UEFA_2009%2C_Rome.jpg"
+            alt="Lionel Messi rematando con el FC Barcelona en la final de Champions League de 2009"
+          />
+          <div class="hero-content">
+            <div class="hero-badge">FC BARCELONA · ROMA 2009</div>
+            <h1>LIONEL MESSI</h1>
+            <p>Talento, historia y pasión por el fútbol</p>
+            <div class="hero-btns">
+              <a href="#catalogo" class="btn-primary">VER CATÁLOGO</a
+              ><a href="#ofertas" class="btn-secondary">VER OFERTAS</a>
+            </div>
+          </div>
+          <div class="hero-credit">
+            Foto:
+            <a
+              href="https://commons.wikimedia.org/wiki/File:039_men_at_work_UEFA_2009,_Rome.jpg"
+              target="_blank"
+              rel="noopener noreferrer"
+              >funnydae</a
+            >
+            ·
+            <a
+              href="https://creativecommons.org/licenses/by/2.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >CC BY 2.0</a
+            >
+          </div>
         </div>
         <div class="hero-slide">
-            <img class="hero-fondo" src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Kylian_Mbapp%C3%A9_against_M%C3%A1laga%2C_match_valid_for_the_third_round_of_La_Liga_on_August_30%2C_2026.png" alt="Kylian Mbappé en acción con el Real Madrid en 2026">
-            <div class="hero-content"><div class="hero-badge">REAL MADRID · 2026</div><h1>KYLIAN MBAPPÉ</h1><p>Velocidad y determinación en cada jugada</p><div class="hero-btns"><a href="#catalogo" class="btn-primary">VER CATÁLOGO</a><a href="#ofertas" class="btn-secondary">VER OFERTAS</a></div></div>
-            <div class="hero-credit">Foto: <a href="https://commons.wikimedia.org/wiki/File:Kylian_Mbapp%C3%A9_against_M%C3%A1laga,_match_valid_for_the_third_round_of_La_Liga_on_August_30,_2026.png" target="_blank" rel="noopener noreferrer">Jester77aa08</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a></div>
+          <img
+            class="hero-fondo"
+            src="https://upload.wikimedia.org/wikipedia/commons/4/4d/Kylian_Mbapp%C3%A9_against_M%C3%A1laga%2C_match_valid_for_the_third_round_of_La_Liga_on_August_30%2C_2026.png"
+            alt="Kylian Mbappé en acción con el Real Madrid en 2026"
+          />
+          <div class="hero-content">
+            <div class="hero-badge">REAL MADRID · 2026</div>
+            <h1>KYLIAN MBAPPÉ</h1>
+            <p>Velocidad y determinación en cada jugada</p>
+            <div class="hero-btns">
+              <a href="#catalogo" class="btn-primary">VER CATÁLOGO</a
+              ><a href="#ofertas" class="btn-secondary">VER OFERTAS</a>
+            </div>
+          </div>
+          <div class="hero-credit">
+            Foto:
+            <a
+              href="https://commons.wikimedia.org/wiki/File:Kylian_Mbapp%C3%A9_against_M%C3%A1laga,_match_valid_for_the_third_round_of_La_Liga_on_August_30,_2026.png"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Jester77aa08</a
+            >
+            ·
+            <a
+              href="https://creativecommons.org/licenses/by-sa/4.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >CC BY-SA 4.0</a
+            >
+          </div>
         </div>
         <div class="hero-slide hero-slide-lamine">
-            <img class="hero-fondo" src="https://upload.wikimedia.org/wikipedia/commons/6/6c/LamineYamal_-_FCB_-_Partido_Athletic_Club_vs_FC_Barcelona.jpg" alt="Lamine Yamal celebrando una jugada con el FC Barcelona en 2026">
-            <div class="hero-content"><div class="hero-badge">FC BARCELONA · 2025/26</div><h1>LAMINE YAMAL</h1><p>El futuro del fútbol ya está aquí</p><div class="hero-btns"><a href="#catalogo" class="btn-primary">VER CATÁLOGO</a><a href="#ofertas" class="btn-secondary">VER OFERTAS</a></div></div>
-            <div class="hero-credit">Foto: <a href="https://commons.wikimedia.org/wiki/File:LamineYamal_-_FCB_-_Partido_Athletic_Club_vs_FC_Barcelona.jpg" target="_blank" rel="noopener noreferrer">FotosLaLiga</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a></div>
+          <img
+            class="hero-fondo"
+            src="https://upload.wikimedia.org/wikipedia/commons/6/6c/LamineYamal_-_FCB_-_Partido_Athletic_Club_vs_FC_Barcelona.jpg"
+            alt="Lamine Yamal celebrando una jugada con el FC Barcelona en 2026"
+          />
+          <div class="hero-content">
+            <div class="hero-badge">FC BARCELONA · 2025/26</div>
+            <h1>LAMINE YAMAL</h1>
+            <p>El futuro del fútbol ya está aquí</p>
+            <div class="hero-btns">
+              <a href="#catalogo" class="btn-primary">VER CATÁLOGO</a
+              ><a href="#ofertas" class="btn-secondary">VER OFERTAS</a>
+            </div>
+          </div>
+          <div class="hero-credit">
+            Foto:
+            <a
+              href="https://commons.wikimedia.org/wiki/File:LamineYamal_-_FCB_-_Partido_Athletic_Club_vs_FC_Barcelona.jpg"
+              target="_blank"
+              rel="noopener noreferrer"
+              >FotosLaLiga</a
+            >
+            ·
+            <a
+              href="https://creativecommons.org/licenses/by-sa/4.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >CC BY-SA 4.0</a
+            >
+          </div>
         </div>
-    </div>
-    <nav class="hero-explora" aria-label="Explorar colecciones">
+      </div>
+      <nav class="hero-explora" aria-label="Explorar colecciones">
         <span>EXPLORAR</span>
         <a href="#catalogo" data-categoria-tienda="clubes">Clubes</a>
         <a href="#catalogo" data-categoria-tienda="retro">Retro</a>
         <a href="#catalogo" data-categoria-tienda="selecciones">Selecciones</a>
         <a href="#catalogo" data-categoria-tienda="player">Player Version</a>
-    </nav>
-    <div class="hero-dots" id="hero-dots">
+      </nav>
+      <div class="hero-dots" id="hero-dots">
         <span class="hero-dot activo" data-idx="0"></span>
         <span class="hero-dot" data-idx="1"></span>
         <span class="hero-dot" data-idx="2"></span>
         <span class="hero-dot" data-idx="3"></span>
-    </div>
-    <button class="hero-arrow hero-arrow-prev" id="hero-prev">❮</button>
-    <button class="hero-arrow hero-arrow-next" id="hero-next">❯</button>
-</section>
+      </div>
+      <button class="hero-arrow hero-arrow-prev" id="hero-prev">❮</button>
+      <button class="hero-arrow hero-arrow-next" id="hero-next">❯</button>
+    </section>
 
-<!-- DESTACADO -->
-<section class="destacado reveal">
-    <div class="destacado-img"><img src="img/MU.jpg" alt="Manchester United 2008"></div>
-    <div class="destacado-info">
+    <!-- DESTACADO -->
+    <section class="destacado reveal">
+      <div class="destacado-img">
+        <img src="img/MU.jpg" alt="Manchester United 2008" />
+      </div>
+      <div class="destacado-info">
         <span>🔥 PRODUCTO DESTACADO</span>
         <h2>Manchester United 2008</h2>
-        <p>Temporada histórica de Cristiano Ronaldo. Calidad retro versión jugador.</p>
+        <p>
+          Temporada histórica de Cristiano Ronaldo. Calidad retro versión
+          jugador.
+        </p>
         <h3>330 Bs</h3>
         <a href="#catalogo">Comprar Ahora</a>
+      </div>
+    </section>
+
+    <!-- NOTIF COMPRA -->
+    <div class="notif-compra" id="notif-compra" style="display: none">
+      <span class="notif-icono">🔔</span><span id="notif-texto"></span>
     </div>
-</section>
 
-<!-- NOTIF COMPRA -->
-<div class="notif-compra" id="notif-compra" style="display:none;">
-    <span class="notif-icono">🔔</span><span id="notif-texto"></span>
-</div>
+    <!-- OFERTAS -->
+    <section class="seccion-ofertas" id="ofertas">
+      <div class="ofertas-header reveal">
+        <h2 class="section-heading">OFERTAS ESPECIALES</h2>
+        <p>Precios exclusivos por tiempo limitado</p>
+      </div>
+      <div class="catalogo ofertas-grid" id="catalogo-ofertas"></div>
+      <div class="sin-ofertas" id="sin-ofertas" style="display: none">
+        <p>No hay ofertas activas 😔</p>
+      </div>
+    </section>
 
-<!-- OFERTAS -->
-<section class="seccion-ofertas" id="ofertas">
-    <div class="ofertas-header reveal"><h2 class="section-heading">OFERTAS ESPECIALES</h2><p>Precios exclusivos por tiempo limitado</p></div>
-    <div class="catalogo ofertas-grid" id="catalogo-ofertas"></div>
-    <div class="sin-ofertas" id="sin-ofertas" style="display:none;"><p>No hay ofertas activas 😔</p></div>
-</section>
+    <!-- POR QUÉ -->
+    <section class="por-que" id="por-que">
+      <h2 class="reveal">¿Por qué elegirnos?</h2>
+      <div class="razones">
+        <div class="razon reveal">
+          <div class="razon-icono">🚚</div>
+          <h3>Envíos a Bolivia</h3>
+          <p>Enviamos a todo el país rápido y seguro</p>
+        </div>
+        <div class="razon reveal">
+          <div class="razon-icono">⭐</div>
+          <h3>Calidad Garantizada</h3>
+          <p>Jerseys originales y retro de la más alta calidad</p>
+        </div>
+        <div class="razon reveal">
+          <div class="razon-icono">🔒</div>
+          <h3>Pago Seguro</h3>
+          <p>Pagos por QR o transferencia verificados</p>
+        </div>
+        <div class="razon reveal">
+          <div class="razon-icono">💬</div>
+          <h3>Atención Directa</h3>
+          <p>Te atendemos por WhatsApp de inmediato</p>
+        </div>
+      </div>
+    </section>
 
-<!-- POR QUÉ -->
-<section class="por-que" id="por-que">
-    <h2 class="reveal">¿Por qué elegirnos?</h2>
-    <div class="razones">
-        <div class="razon reveal"><div class="razon-icono">🚚</div><h3>Envíos a Bolivia</h3><p>Enviamos a todo el país rápido y seguro</p></div>
-        <div class="razon reveal"><div class="razon-icono">⭐</div><h3>Calidad Garantizada</h3><p>Jerseys originales y retro de la más alta calidad</p></div>
-        <div class="razon reveal"><div class="razon-icono">🔒</div><h3>Pago Seguro</h3><p>Pagos por QR o transferencia verificados</p></div>
-        <div class="razon reveal"><div class="razon-icono">💬</div><h3>Atención Directa</h3><p>Te atendemos por WhatsApp de inmediato</p></div>
-    </div>
-</section>
-
-<!-- CHAT FLOTANTE FAQ -->
-<div class="chat-faq" id="chat-faq" style="display:none;">
-    <div class="chat-header"><span>💬 Preguntas frecuentes</span><button id="chat-cerrar">✕</button></div>
-    <div class="chat-body" id="chat-body">
+    <!-- CHAT FLOTANTE FAQ -->
+    <div class="chat-faq" id="chat-faq" style="display: none">
+      <div class="chat-header">
+        <span>💬 Preguntas frecuentes</span><button id="chat-cerrar">✕</button>
+      </div>
+      <div class="chat-body" id="chat-body">
         <div class="chat-msg bot">¡Hola! ¿En qué te puedo ayudar? 👋</div>
         <div class="chat-opciones">
-            <button class="chat-opcion" data-resp="envio">🚚 ¿Cuánto tarda el envío?</button>
-            <button class="chat-opcion" data-resp="tallas">📏 ¿Cómo sé mi talla?</button>
-            <button class="chat-opcion" data-resp="pago">💳 ¿Cómo pago?</button>
-            <button class="chat-opcion" data-resp="calidad">⭐ ¿Son originales?</button>
-            <button class="chat-opcion" data-resp="whatsapp">📱 Hablar con un asesor</button>
+          <button class="chat-opcion" data-resp="envio">
+            🚚 ¿Cuánto tarda el envío?
+          </button>
+          <button class="chat-opcion" data-resp="tallas">
+            📏 ¿Cómo sé mi talla?
+          </button>
+          <button class="chat-opcion" data-resp="pago">💳 ¿Cómo pago?</button>
+          <button class="chat-opcion" data-resp="calidad">
+            ⭐ ¿Son originales?
+          </button>
+          <button class="chat-opcion" data-resp="whatsapp">
+            📱 Hablar con un asesor
+          </button>
         </div>
+      </div>
     </div>
-</div>
-<button class="chat-btn" id="chat-btn">💬</button>
+    <button class="chat-btn" id="chat-btn">💬</button>
 
-<!-- RESEÑAS -->
-<section class="resenas-seccion" id="resenas">
-    <h2 class="section-heading reveal">RESEÑAS DE CLIENTES</h2>
-    <div class="resenas-grid" id="resenas-grid"></div>
-    <div class="resena-form reveal">
+    <!-- RESEÑAS -->
+    <section class="resenas-seccion" id="resenas">
+      <h2 class="section-heading reveal">RESEÑAS DE CLIENTES</h2>
+      <div class="resenas-grid" id="resenas-grid"></div>
+      <div class="resena-form reveal">
         <h3>¿Ya compraste con nosotros? Deja tu reseña</h3>
-        <input type="text" id="resena-nombre" placeholder="Tu nombre">
-        <input type="text" id="resena-ciudad" placeholder="Tu ciudad">
+        <input type="text" id="resena-nombre" placeholder="Tu nombre" />
+        <input type="text" id="resena-ciudad" placeholder="Tu ciudad" />
         <div class="estrellas-input" id="estrellas-input">
-            <span class="estrella-inp" data-val="1">★</span>
-            <span class="estrella-inp" data-val="2">★</span>
-            <span class="estrella-inp" data-val="3">★</span>
-            <span class="estrella-inp" data-val="4">★</span>
-            <span class="estrella-inp" data-val="5">★</span>
+          <span class="estrella-inp" data-val="1">★</span>
+          <span class="estrella-inp" data-val="2">★</span>
+          <span class="estrella-inp" data-val="3">★</span>
+          <span class="estrella-inp" data-val="4">★</span>
+          <span class="estrella-inp" data-val="5">★</span>
         </div>
-        <textarea id="resena-texto" placeholder="Cuéntanos tu experiencia..." rows="3"></textarea>
+        <textarea
+          id="resena-texto"
+          placeholder="Cuéntanos tu experiencia..."
+          rows="3"
+        ></textarea>
         <button id="enviar-resena">Enviar Reseña</button>
         <p class="resena-nota">Tu reseña será revisada antes de publicarse.</p>
-    </div>
-</section>
+      </div>
+    </section>
 
-<!-- NOSOTROS -->
-<section class="nosotros" id="nosotros">
-    <h2 class="section-heading">NOSOTROS</h2>
-    <div class="nosotros-contenido reveal">
+    <!-- NOSOTROS -->
+    <section class="nosotros" id="nosotros">
+      <h2 class="section-heading">NOSOTROS</h2>
+      <div class="nosotros-contenido reveal">
         <span class="nosotros-tag">🏆 Nuestra Historia</span>
         <h2>Nacimos por pasión al fútbol</h2>
-        <p>Fútbol Premier nació en 2024 con una misión: llevar los mejores jerseys a cada rincón de Bolivia.</p>
-        <p>Trabajamos con proveedores certificados para garantizar la más alta calidad en cada jersey.</p>
+        <p>
+          Fútbol Premier nació en 2024 con una misión: llevar los mejores
+          jerseys a cada rincón de Bolivia.
+        </p>
+        <p>
+          Trabajamos con proveedores certificados para garantizar la más alta
+          calidad en cada jersey.
+        </p>
         <div class="nosotros-stats">
-            <div class="stat"><h3>+700</h3><p>Clientes felices</p></div>
-            <div class="stat"><h3>+200</h3><p>Modelos distintos</p></div>
-            <div class="stat"><h3>2</h3><p>Años de experiencia</p></div>
+          <div class="stat">
+            <h3>+700</h3>
+            <p>Clientes felices</p>
+          </div>
+          <div class="stat">
+            <h3>+200</h3>
+            <p>Modelos distintos</p>
+          </div>
+          <div class="stat">
+            <h3>2</h3>
+            <p>Años de experiencia</p>
+          </div>
         </div>
-    </div>
-</section>
+      </div>
+    </section>
 
-<!-- CATÁLOGO -->
-<section class="catalogo-vista" id="catalogo-vista">
-<h2 class="section-heading">CATÁLOGO</h2>
-<!-- FILTROS -->
-<div class="filtros" id="filtros-seccion">
-    <!-- BANNER CATEGORÍA -->
-    <div class="banner-categoria" id="banner-categoria" style="display:none;">
-        <div class="banner-cat-content" id="banner-cat-content"></div>
-    </div>
-    <div class="filtros-box">
-        <label class="filtro-item"><input type="checkbox" class="filtro-check" value="clubes"> Clubes</label>
-        <label class="filtro-item"><input type="checkbox" class="filtro-check" value="retro"> Retro</label>
-        <label class="filtro-item"><input type="checkbox" class="filtro-check" value="selecciones"> Selecciones</label>
-        <label class="filtro-item"><input type="checkbox" class="filtro-check" value="player"> Player Version</label>
-    </div>
-    <!-- RANGO PRECIO -->
-    <div class="rango-precio">
-        <label>Precio: <strong id="rango-valor">0 – 1000 Bs</strong></label>
-        <div class="range-wrap">
-            <input type="range" id="precio-min" min="0" max="1000" value="0" step="10">
-            <input type="range" id="precio-max" min="0" max="1000" value="1000" step="10">
+    <!-- CATÁLOGO -->
+    <section class="catalogo-vista" id="catalogo-vista">
+      <h2 class="section-heading">CATÁLOGO</h2>
+      <!-- FILTROS -->
+      <div class="filtros" id="filtros-seccion">
+        <!-- BANNER CATEGORÍA -->
+        <div
+          class="banner-categoria"
+          id="banner-categoria"
+          style="display: none"
+        >
+          <div class="banner-cat-content" id="banner-cat-content"></div>
         </div>
-    </div>
-    <div class="ordenar-box">
-        <select id="ordenar">
+        <div class="filtros-box">
+          <label class="filtro-item"
+            ><input type="checkbox" class="filtro-check" value="clubes" />
+            Clubes</label
+          >
+          <label class="filtro-item"
+            ><input type="checkbox" class="filtro-check" value="retro" />
+            Retro</label
+          >
+          <label class="filtro-item"
+            ><input type="checkbox" class="filtro-check" value="selecciones" />
+            Selecciones</label
+          >
+          <label class="filtro-item"
+            ><input type="checkbox" class="filtro-check" value="player" />
+            Player Version</label
+          >
+        </div>
+        <!-- RANGO PRECIO -->
+        <div class="rango-precio">
+          <label>Precio: <strong id="rango-valor">0 – 1000 Bs</strong></label>
+          <div class="range-wrap">
+            <input
+              type="range"
+              id="precio-min"
+              min="0"
+              max="1000"
+              value="0"
+              step="10"
+            />
+            <input
+              type="range"
+              id="precio-max"
+              min="0"
+              max="1000"
+              value="1000"
+              step="10"
+            />
+          </div>
+        </div>
+        <div class="ordenar-box">
+          <select id="ordenar">
             <option value="">Ordenar por...</option>
             <option value="menor">Precio: Menor a Mayor</option>
             <option value="mayor">Precio: Mayor a Menor</option>
             <option value="oferta">Solo Ofertas</option>
             <option value="vendidos">Más vendidos</option>
             <option value="agotado">Ocultar Agotados</option>
-        </select>
-    </div>
-</div>
+          </select>
+        </div>
+      </div>
 
-<!-- SKELETON -->
-<div class="skeleton-grid" id="skeleton-grid">
-    <div class="skeleton-card"><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line sk-short"></div><div class="sk-line sk-btn"></div></div>
-    <div class="skeleton-card"><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line sk-short"></div><div class="sk-line sk-btn"></div></div>
-    <div class="skeleton-card"><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line sk-short"></div><div class="sk-line sk-btn"></div></div>
-</div>
+      <!-- SKELETON -->
+      <div class="skeleton-grid" id="skeleton-grid">
+        <div class="skeleton-card">
+          <div class="sk-img"></div>
+          <div class="sk-line"></div>
+          <div class="sk-line sk-short"></div>
+          <div class="sk-line sk-btn"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="sk-img"></div>
+          <div class="sk-line"></div>
+          <div class="sk-line sk-short"></div>
+          <div class="sk-line sk-btn"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="sk-img"></div>
+          <div class="sk-line"></div>
+          <div class="sk-line sk-short"></div>
+          <div class="sk-line sk-btn"></div>
+        </div>
+      </div>
 
-<!-- CATÁLOGO -->
-<section class="catalogo" id="catalogo"></section>
-</section>
+      <!-- CATÁLOGO -->
+      <section class="catalogo" id="catalogo"></section>
+    </section>
 
-<!-- ENCARGOS PERSONALIZADOS -->
-<section class="encargos-seccion" id="encargos">
-    <h2 class="section-heading">ENCARGOS</h2>
-    <div class="encargos-intro">
+    <!-- ENCARGOS PERSONALIZADOS -->
+    <section class="encargos-seccion" id="encargos">
+      <h2 class="section-heading">ENCARGOS</h2>
+      <div class="encargos-intro">
         <span class="encargos-etiqueta">DISEÑA TU PRÓXIMA CAMISETA</span>
         <h2>¿No encuentras la que buscas?</h2>
-        <p>Cuéntanos qué camiseta quieres. Revisaremos tu solicitud y te contactaremos para confirmar disponibilidad y precio.</p>
-    </div>
-    <form class="encargos-form" id="encargo-form">
+        <p>
+          Cuéntanos qué camiseta quieres. Revisaremos tu solicitud y te
+          contactaremos para confirmar disponibilidad y precio.
+        </p>
+      </div>
+      <form class="encargos-form" id="encargo-form">
         <div class="encargos-campos">
-            <label>Equipo, selección o camiseta que buscas
-                <input type="text" id="encargo-camiseta" maxlength="80" required placeholder="Ej. Bolivia, camiseta retro del Milan">
-            </label>
-            <label>Talla deseada
-                <select id="encargo-talla" required>
-                    <option value="">Selecciona una talla</option>
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
-                    <option value="XXL">XXL</option>
-                    <option value="Por confirmar">Por confirmar</option>
-                </select>
-            </label>
-            <label>Nombre para personalizar <span>(opcional)</span>
-                <input type="text" id="encargo-nombre" maxlength="20" placeholder="Ej. NAVIA">
-            </label>
-            <label>Dorsal <span>(opcional)</span>
-                <input type="text" id="encargo-dorsal" maxlength="2" inputmode="numeric" pattern="[0-9]{1,2}" placeholder="Ej. 10">
-            </label>
+          <label
+            >Equipo, selección o camiseta que buscas
+            <input
+              type="text"
+              id="encargo-camiseta"
+              maxlength="80"
+              required
+              placeholder="Ej. Bolivia, camiseta retro del Milan"
+            />
+          </label>
+          <label
+            >Talla deseada
+            <select id="encargo-talla" required>
+              <option value="">Selecciona una talla</option>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
+              <option value="Por confirmar">Por confirmar</option>
+            </select>
+          </label>
+          <label
+            >Nombre para personalizar <span>(opcional)</span>
+            <input
+              type="text"
+              id="encargo-nombre"
+              maxlength="20"
+              placeholder="Ej. NAVIA"
+            />
+          </label>
+          <label
+            >Dorsal <span>(opcional)</span>
+            <input
+              type="text"
+              id="encargo-dorsal"
+              maxlength="2"
+              inputmode="numeric"
+              pattern="[0-9]{1,2}"
+              placeholder="Ej. 10"
+            />
+          </label>
         </div>
-        <label class="encargo-foto-label" for="encargo-foto">Foto de referencia <span>(opcional, JPG/PNG/WebP, máximo 5 MB; se envía por WhatsApp)</span></label>
-        <input type="file" id="encargo-foto" accept="image/jpeg,image/png,image/webp">
-        <div class="encargo-foto-preview" id="encargo-foto-preview" hidden></div>
-        <label class="encargo-notas-label" for="encargo-notas">Detalles adicionales <span>(opcional)</span></label>
-        <textarea id="encargo-notas" rows="4" maxlength="500" placeholder="Temporada, color, versión o cualquier detalle que debamos saber..."></textarea>
-        <p class="encargo-ayuda" id="encargo-mensaje" role="status">Para enviar un encargo debes iniciar sesión y verificar tu correo.</p>
-        <button class="encargo-enviar" id="encargo-enviar" type="submit">⚽ Enviar mi encargo</button>
-    </form>
-</section>
+        <label class="encargo-foto-label" for="encargo-foto"
+          >Foto de referencia
+          <span
+            >(opcional, JPG/PNG/WebP, máximo 5 MB; se envía por WhatsApp)</span
+          ></label
+        >
+        <input
+          type="file"
+          id="encargo-foto"
+          accept="image/jpeg,image/png,image/webp"
+        />
+        <div
+          class="encargo-foto-preview"
+          id="encargo-foto-preview"
+          hidden
+        ></div>
+        <label class="encargo-notas-label" for="encargo-notas"
+          >Detalles adicionales <span>(opcional)</span></label
+        >
+        <textarea
+          id="encargo-notas"
+          rows="4"
+          maxlength="500"
+          placeholder="Temporada, color, versión o cualquier detalle que debamos saber..."
+        ></textarea>
+        <p class="encargo-ayuda" id="encargo-mensaje" role="status">
+          Para enviar un encargo debes iniciar sesión y verificar tu correo.
+        </p>
+        <button class="encargo-enviar" id="encargo-enviar" type="submit">
+          ⚽ Enviar mi encargo
+        </button>
+      </form>
+    </section>
 
-<!-- COMPARAR BARRA -->
-<div class="comparar-barra" id="comparar-barra" style="display:none;">
-    <div id="comparar-items"></div>
-    <button id="btn-comparar">⚖️ Comparar</button>
-    <button id="btn-limpiar-comparar">✕ Limpiar</button>
-</div>
+    <!-- COMPARAR BARRA -->
+    <div class="comparar-barra" id="comparar-barra" style="display: none">
+      <div id="comparar-items"></div>
+      <button id="btn-comparar">⚖️ Comparar</button>
+      <button id="btn-limpiar-comparar">✕ Limpiar</button>
+    </div>
 
-<!-- PANEL ADMIN -->
-<section class="admin" id="admin-panel" style="display:none;">
-    <header class="admin-cabecera">
+    <!-- PANEL ADMIN -->
+    <section class="admin" id="admin-panel" style="display: none">
+      <header class="admin-cabecera">
         <div class="admin-cabecera-marca">
-            <img class="admin-logo" src="img/logo.png" alt="Logo de Fútbol Premier">
-            <div>
-                <p class="admin-kicker">FÚTBOL PREMIER <span>/</span> ADMINISTRACIÓN</p>
-                <h2>Panel de administración</h2>
-                <p class="admin-descripcion">Gestiona catálogo, pedidos, pagos e ingresos según tu rol.</p>
-            </div>
+          <img
+            class="admin-logo"
+            src="img/logo.png"
+            alt="Logo de Fútbol Premier"
+          />
+          <div>
+            <p class="admin-kicker">
+              FÚTBOL PREMIER <span>/</span> ADMINISTRACIÓN
+            </p>
+            <h2>ADM-FP</h2>
+            <p class="admin-descripcion">
+              Gestiona catálogo, pedidos, pagos e ingresos según tu rol.
+            </p>
+          </div>
         </div>
         <div class="admin-cabecera-acciones">
-            <div class="admin-identidad" id="admin-identidad" aria-live="polite">
-                <span class="admin-identidad-icono" aria-hidden="true">♙</span>
-                <span><strong id="admin-identidad-nombre">Usuario</strong><small id="admin-identidad-rol">Personal</small></span>
-            </div>
-            <button type="button" class="admin-accion-secundaria" id="admin-actualizar">↻ Actualizar</button>
-            <button type="button" class="admin-accion-secundaria" id="admin-ver-tienda">Ver tienda ↗</button>
+          <div class="admin-identidad" id="admin-identidad" aria-live="polite">
+            <span class="admin-identidad-icono" aria-hidden="true">♙</span>
+            <span
+              ><strong id="admin-identidad-nombre">Usuario</strong
+              ><small id="admin-identidad-rol">Personal</small></span
+            >
+          </div>
+          <button
+            type="button"
+            class="admin-accion-secundaria"
+            id="admin-actualizar"
+          >
+            ↻ Actualizar
+          </button>
+          <button
+            type="button"
+            class="admin-accion-secundaria"
+            id="admin-ver-tienda"
+          >
+            Ver tienda ↗
+          </button>
         </div>
-    </header>
-    <div class="admin-resumen-cabecera">
-        <h3>Resumen de la tienda</h3>
-        <p id="admin-resumen-nota">Los montos corresponden a pedidos registrados y no incluyen pedidos cancelados.</p>
-    </div>
-    <div class="admin-stats" id="admin-stats" aria-label="Resumen de la tienda"></div>
-    <p class="admin-resumen-estado" id="admin-resumen-ventas-estado" role="status" hidden></p>
-    <section class="admin-alertas-stock" id="admin-alertas-stock" aria-labelledby="admin-alertas-titulo" aria-live="polite">
-        <div class="admin-alertas-cabecera">
-            <div>
-                <h3 id="admin-alertas-titulo">Alertas de inventario</h3>
-                <p>Productos agotados o con 3 unidades o menos.</p>
-            </div>
-            <button type="button" class="admin-accion-secundaria" id="admin-ver-inventario">Ver inventario</button>
-        </div>
-        <div class="admin-alertas-lista" id="admin-alertas-lista"></div>
-    </section>
-    <div class="admin-workspace">
+      </header>
+      <div class="admin-workspace">
         <aside class="admin-sidebar">
-            <p class="admin-menu-titulo">MENÚ ADMINISTRADOR</p>
-            <div class="admin-tabs" role="tablist" aria-label="Secciones de administración" aria-orientation="vertical">
-                <button type="button" class="atab activo" id="admin-tab-agregar" role="tab" aria-selected="true" aria-controls="tab-agregar" data-tab="agregar" data-roles="admin empleado"><span class="admin-tab-icon">＋</span><span class="admin-tab-text"><strong>Agregar producto</strong><small>Publica un jersey nuevo</small></span></button>
-                <button type="button" class="atab" id="admin-tab-editar" role="tab" aria-selected="false" aria-controls="tab-editar" data-tab="editar" data-roles="admin empleado"><span class="admin-tab-icon">▦</span><span class="admin-tab-text"><strong>Inventario</strong><small>Productos y existencias</small></span></button>
-                <button type="button" class="atab" id="admin-tab-clientes" role="tab" aria-selected="false" aria-controls="tab-clientes" data-tab="clientes" data-roles="admin cajero"><span class="admin-tab-icon">♙</span><span class="admin-tab-text"><strong>Clientes y pedidos</strong><small>Revisa compras y clientes</small></span></button>
-                <button type="button" class="atab" id="admin-tab-caja" role="tab" aria-selected="false" aria-controls="tab-caja" data-tab="caja" data-roles="admin cajero"><span class="admin-tab-icon">Bs</span><span class="admin-tab-text"><strong>Caja e ingresos</strong><small>Pagos recibidos y cierre diario</small></span></button>
-                <button type="button" class="atab" id="admin-tab-encargos-admin" role="tab" aria-selected="false" aria-controls="tab-encargos-admin" data-tab="encargos-admin" data-roles="admin"><span class="admin-tab-icon">▤</span><span class="admin-tab-text"><strong>Encargos</strong><small>Atiende pedidos especiales</small></span></button>
-                <button type="button" class="atab" id="admin-tab-cupones" role="tab" aria-selected="false" aria-controls="tab-cupones" data-tab="cupones" data-roles="admin"><span class="admin-tab-icon">◇</span><span class="admin-tab-text"><strong>Cupones</strong><small>Crea promociones</small></span></button>
-                <button type="button" class="atab" id="admin-tab-resenas-admin" role="tab" aria-selected="false" aria-controls="tab-resenas-admin" data-tab="resenas-admin" data-roles="admin"><span class="admin-tab-icon">☆</span><span class="admin-tab-text"><strong>Reseñas</strong><small>Modera opiniones</small></span></button>
-                <button type="button" class="atab" id="admin-tab-equipo" role="tab" aria-selected="false" aria-controls="tab-equipo" data-tab="equipo" data-roles="admin"><span class="admin-tab-icon">♧</span><span class="admin-tab-text"><strong>Equipo</strong><small>Crea cajeros y empleados</small></span></button>
-            </div>
-            <button type="button" onclick="cerrarAdmin()" class="btn-cerrar-admin">🚪 Cerrar sesión</button>
+          <p class="admin-menu-titulo">MENÚ ADMINISTRADOR</p>
+          <div
+            class="admin-tabs"
+            role="tablist"
+            aria-label="Secciones de administración"
+            aria-orientation="vertical"
+          >
+            <button
+              type="button"
+              class="atab activo"
+              id="admin-tab-dashboard"
+              role="tab"
+              aria-selected="true"
+              aria-controls="tab-dashboard"
+              data-tab="dashboard"
+              data-roles="admin cajero empleado"
+            >
+              <span class="admin-tab-icon">⌂</span>
+
+              <span class="admin-tab-text">
+                <strong>Dashboard</strong>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="atab"
+              id="admin-tab-agregar"
+              role="tab"
+              aria-selected="false"
+              aria-controls="tab-agregar"
+              data-tab="agregar"
+              data-roles="admin empleado"
+            >
+              <span class="admin-tab-icon">＋</span
+              ><span class="admin-tab-text"
+                ><strong>Agregar producto</strong
+                ></span
+              >
+            </button>
+            <button
+              type="button"
+              class="atab"
+              id="admin-tab-editar"
+              role="tab"
+              aria-selected="false"
+              aria-controls="tab-editar"
+              data-tab="editar"
+              data-roles="admin empleado"
+            >
+              <span class="admin-tab-icon">▦</span
+              ><span class="admin-tab-text"
+                ><strong>Inventario</strong
+                ></span
+              >
+            </button>
+            <button
+              type="button"
+              class="atab"
+              id="admin-tab-clientes"
+              role="tab"
+              aria-selected="false"
+              aria-controls="tab-clientes"
+              data-tab="clientes"
+              data-roles="admin cajero"
+            >
+              <span class="admin-tab-icon">♙</span
+              ><span class="admin-tab-text"
+                ><strong>Clientes y pedidos</strong
+                ></span
+              >
+            </button>
+            <button
+              type="button"
+              class="atab"
+              id="admin-tab-caja"
+              role="tab"
+              aria-selected="false"
+              aria-controls="tab-caja"
+              data-tab="caja"
+              data-roles="admin cajero"
+            >
+              <span class="admin-tab-icon">Bs</span
+              ><span class="admin-tab-text"
+                ><strong>Caja e ingresos</strong
+                ></span
+              >
+            </button>
+            <button
+              type="button"
+              class="atab"
+              id="admin-tab-encargos-admin"
+              role="tab"
+              aria-selected="false"
+              aria-controls="tab-encargos-admin"
+              data-tab="encargos-admin"
+              data-roles="admin"
+            >
+              <span class="admin-tab-icon">▤</span
+              ><span class="admin-tab-text"
+                ><strong>Encargos</strong
+                ></span
+              >
+            </button>
+            <button
+              type="button"
+              class="atab"
+              id="admin-tab-cupones"
+              role="tab"
+              aria-selected="false"
+              aria-controls="tab-cupones"
+              data-tab="cupones"
+              data-roles="admin"
+            >
+              <span class="admin-tab-icon">◇</span
+              ><span class="admin-tab-text"
+                ><strong>Cupones</strong></span
+              >
+            </button>
+            <button
+              type="button"
+              class="atab"
+              id="admin-tab-resenas-admin"
+              role="tab"
+              aria-selected="false"
+              aria-controls="tab-resenas-admin"
+              data-tab="resenas-admin"
+              data-roles="admin"
+            >
+              <span class="admin-tab-icon">☆</span
+              ><span class="admin-tab-text"
+                ><strong>Reseñas</strong></span
+              >
+            </button>
+            <button
+              type="button"
+              class="atab"
+              id="admin-tab-equipo"
+              role="tab"
+              aria-selected="false"
+              aria-controls="tab-equipo"
+              data-tab="equipo"
+              data-roles="admin"
+            >
+              <span class="admin-tab-icon">♧</span
+              ><span class="admin-tab-text"
+                ><strong>Equipo</strong
+                ></span
+              >
+            </button>
+          </div>
+          <button
+            type="button"
+            onclick="cerrarAdmin()"
+            class="btn-cerrar-admin"
+          >
+            🚪 Cerrar sesión
+          </button>
         </aside>
         <div class="admin-main">
-    <div class="admin-tab-content" id="tab-equipo" role="tabpanel" aria-labelledby="admin-tab-equipo" tabindex="0">
-        <div class="admin-panel-intro">
-            <h3>Agregar Cajero o Empleado</h3>
-            <p>Crea una cuenta de acceso al panel. La contraseña temporal se comunica directamente a la persona.</p>
-        </div>
-        <form id="equipo-form" class="equipo-form">
-            <label for="equipo-email">Correo de acceso</label>
-            <input id="equipo-email" type="email" autocomplete="off" required>
-            <label for="equipo-password">Contraseña temporal (mínimo 12 caracteres)</label>
-            <input id="equipo-password" type="password" minlength="12" autocomplete="new-password" required>
-            <label for="equipo-rol">Rol</label>
-            <select id="equipo-rol" required>
-                <option value="cajero">Cajero — pedidos, pagos e ingresos</option>
-                <option value="empleado">Empleado — catálogo, precios y existencias</option>
+          <div
+            class="admin-tab-content activo"
+            id="tab-dashboard"
+            role="tabpanel"
+            aria-labelledby="admin-tab-dashboard"
+            tabindex="0"
+          >
+            <div class="admin-resumen-cabecera">
+              <h3>Resumen de la tienda</h3>
+              <p id="admin-resumen-nota">
+                Los montos corresponden a pedidos registrados y no incluyen
+                pedidos cancelados.
+              </p>
+            </div>
+            <div
+              class="admin-stats"
+              id="admin-stats"
+              aria-label="Resumen de la tienda"
+            ></div>
+            <p
+              class="admin-resumen-estado"
+              id="admin-resumen-ventas-estado"
+              role="status"
+              hidden
+            ></p>
+            <section
+              class="admin-alertas-stock"
+              id="admin-alertas-stock"
+              aria-labelledby="admin-alertas-titulo"
+              aria-live="polite"
+            >
+              <div class="admin-alertas-cabecera">
+                <div>
+                  <h3 id="admin-alertas-titulo">Alertas de inventario</h3>
+                  <p>Productos agotados o con 3 unidades o menos.</p>
+                </div>
+                <button
+                  type="button"
+                  class="admin-accion-secundaria"
+                  id="admin-ver-inventario"
+                >
+                  Ver inventario
+                </button>
+              </div>
+              <div class="admin-alertas-lista" id="admin-alertas-lista"></div>
+            </section>
+          </div>
+          <div
+            class="admin-tab-content"
+            id="tab-equipo"
+            role="tabpanel"
+            aria-labelledby="admin-tab-equipo"
+            tabindex="0"
+          >
+            <div class="admin-panel-intro">
+              <h3>Agregar Cajero o Empleado</h3>
+              <p>
+                Crea una cuenta de acceso al panel. La contraseña temporal se
+                comunica directamente a la persona.
+              </p>
+            </div>
+            <form id="equipo-form" class="equipo-form">
+              <label for="equipo-email">Correo de acceso</label>
+              <input
+                id="equipo-email"
+                type="email"
+                autocomplete="off"
+                required
+              />
+              <label for="equipo-password"
+                >Contraseña temporal (mínimo 12 caracteres)</label
+              >
+              <input
+                id="equipo-password"
+                type="password"
+                minlength="12"
+                autocomplete="new-password"
+                required
+              />
+              <label for="equipo-rol">Rol</label>
+              <select id="equipo-rol" required>
+                <option value="cajero">
+                  Cajero — pedidos, pagos e ingresos
+                </option>
+                <option value="empleado">
+                  Empleado — catálogo, precios y existencias
+                </option>
+              </select>
+              <button type="submit" id="equipo-crear">Crear acceso</button>
+              <p id="equipo-estado" role="status" aria-live="polite"></p>
+            </form>
+            <p class="equipo-seguridad">
+              La credencial de Firebase se guarda solo en la configuración
+              privada de Vercel y nunca en esta página.
+            </p>
+          </div>
+          <div
+            class="admin-tab-content activo"
+            id="tab-agregar"
+            role="tabpanel"
+            aria-labelledby="admin-tab-agregar"
+            tabindex="0"
+          >
+            <div class="admin-panel-intro">
+              <h3>Agregar producto</h3>
+              <p>
+                Completa los datos del jersey para publicarlo en el catálogo.
+              </p>
+            </div>
+            <input type="file" id="imagen" multiple accept="image/*,video/*" />
+            <div id="preview-imagenes" class="preview-imagenes-grid"></div>
+            <input
+              type="text"
+              id="img-url"
+              placeholder="O pega una URL de imagen (opcional)"
+            />
+            <input type="text" id="nombre" placeholder="Nombre del jersey" />
+            <div class="tallas-check-wrap">
+              <label class="tallas-check-titulo">Tallas disponibles:</label>
+              <div class="tallas-check-grid">
+                <label class="talla-check-item"
+                  ><input type="checkbox" class="talla-check" value="S" />
+                  S</label
+                >
+                <label class="talla-check-item"
+                  ><input type="checkbox" class="talla-check" value="M" />
+                  M</label
+                >
+                <label class="talla-check-item"
+                  ><input type="checkbox" class="talla-check" value="L" />
+                  L</label
+                >
+                <label class="talla-check-item"
+                  ><input type="checkbox" class="talla-check" value="XL" />
+                  XL</label
+                >
+                <label class="talla-check-item"
+                  ><input type="checkbox" class="talla-check" value="XXL" />
+                  XXL</label
+                >
+              </div>
+              <input
+                type="text"
+                id="tallas"
+                placeholder="O escribe tallas personalizadas (ej: S,M,L,XL)"
+                style="margin-top: 8px"
+              />
+            </div>
+            <input
+              type="text"
+              id="dorsales"
+              placeholder="Dorsales (ej: 7,10,cualquiera)"
+            />
+            <input
+              type="text"
+              id="calidad"
+              placeholder="Calidad (ej: AAA, Player Version)"
+            />
+            <input
+              type="text"
+              id="colores"
+              placeholder="Colores disponibles (ej: Rojo,Azul,Blanco)"
+            />
+            <textarea
+              id="descripcion"
+              placeholder="Descripción larga..."
+              rows="3"
+            ></textarea>
+            <select id="categoria">
+              <option value="clubes">Clubes</option>
+              <option value="retro">Retro</option>
+              <option value="selecciones">Selecciones</option>
+              <option value="player">Player Version</option>
             </select>
-            <button type="submit" id="equipo-crear">Crear acceso</button>
-            <p id="equipo-estado" role="status" aria-live="polite"></p>
-        </form>
-        <p class="equipo-seguridad">La credencial de Firebase se guarda solo en la configuración privada de Vercel y nunca en esta página.</p>
-    </div>
-    <div class="admin-tab-content activo" id="tab-agregar" role="tabpanel" aria-labelledby="admin-tab-agregar" tabindex="0">
-        <div class="admin-panel-intro">
-            <h3>Agregar producto</h3>
-            <p>Completa los datos del jersey para publicarlo en el catálogo.</p>
-        </div>
-        <input type="file" id="imagen" multiple accept="image/*,video/*">
-        <div id="preview-imagenes" class="preview-imagenes-grid"></div>
-        <input type="text" id="img-url" placeholder="O pega una URL de imagen (opcional)">
-        <input type="text" id="nombre" placeholder="Nombre del jersey">
-        <div class="tallas-check-wrap">
-            <label class="tallas-check-titulo">Tallas disponibles:</label>
-            <div class="tallas-check-grid">
-                <label class="talla-check-item"><input type="checkbox" class="talla-check" value="S"> S</label>
-                <label class="talla-check-item"><input type="checkbox" class="talla-check" value="M"> M</label>
-                <label class="talla-check-item"><input type="checkbox" class="talla-check" value="L"> L</label>
-                <label class="talla-check-item"><input type="checkbox" class="talla-check" value="XL"> XL</label>
-                <label class="talla-check-item"><input type="checkbox" class="talla-check" value="XXL"> XXL</label>
+            <input type="number" id="precio" placeholder="Precio en Bs" />
+            <input
+              type="number"
+              id="vendidos"
+              placeholder="Unidades vendidas (opcional)"
+              data-admin-only
+            />
+            <div class="oferta-admin" data-admin-only>
+              <label class="oferta-toggle-label"
+                ><input type="checkbox" id="es-oferta" /> 🔥 ¿Es oferta?</label
+              >
+              <div id="campo-precio-original" style="display: none">
+                <input
+                  type="number"
+                  id="precio-original"
+                  placeholder="Precio original (tachado)"
+                />
+                <input
+                  type="text"
+                  id="fin-oferta"
+                  placeholder="Fin oferta (ej: 2026-07-01T23:59)"
+                />
+              </div>
             </div>
-            <input type="text" id="tallas" placeholder="O escribe tallas personalizadas (ej: S,M,L,XL)" style="margin-top:8px;">
-        </div>
-        <input type="text" id="dorsales" placeholder="Dorsales (ej: 7,10,cualquiera)">
-        <input type="text" id="calidad" placeholder="Calidad (ej: AAA, Player Version)">
-        <input type="text" id="colores" placeholder="Colores disponibles (ej: Rojo,Azul,Blanco)">
-        <textarea id="descripcion" placeholder="Descripción larga..." rows="3"></textarea>
-        <select id="categoria">
-            <option value="clubes">Clubes</option>
-            <option value="retro">Retro</option>
-            <option value="selecciones">Selecciones</option>
-            <option value="player">Player Version</option>
-        </select>
-        <input type="number" id="precio" placeholder="Precio en Bs">
-        <input type="number" id="vendidos" placeholder="Unidades vendidas (opcional)" data-admin-only>
-        <div class="oferta-admin" data-admin-only>
-            <label class="oferta-toggle-label"><input type="checkbox" id="es-oferta"> 🔥 ¿Es oferta?</label>
-            <div id="campo-precio-original" style="display:none;">
-                <input type="number" id="precio-original" placeholder="Precio original (tachado)">
-                <input type="text" id="fin-oferta" placeholder="Fin oferta (ej: 2026-07-01T23:59)">
+            <input type="number" id="stock" placeholder="Stock disponible" />
+            <button onclick="agregarProducto()">➕ Agregar Jersey</button>
+          </div>
+          <div
+            class="admin-tab-content"
+            id="tab-editar"
+            role="tabpanel"
+            aria-labelledby="admin-tab-editar"
+            tabindex="0"
+          >
+            <div class="admin-panel-intro">
+              <h3>Inventario</h3>
+              <p>
+                Consulta existencias, disponibilidad y rendimiento de tus
+                productos.
+              </p>
             </div>
-        </div>
-        <input type="number" id="stock" placeholder="Stock disponible">
-        <button onclick="agregarProducto()">➕ Agregar Jersey</button>
-    </div>
-    <div class="admin-tab-content" id="tab-editar" role="tabpanel" aria-labelledby="admin-tab-editar" tabindex="0">
-        <div class="admin-panel-intro">
-            <h3>Inventario</h3>
-            <p>Consulta existencias, disponibilidad y rendimiento de tus productos.</p>
-        </div>
-        <div class="inventario-toolbar">
-            <label for="inventario-buscar">Buscar en inventario
-                <input type="search" id="inventario-buscar" placeholder="Nombre, categoría o talla...">
-            </label>
-            <label for="inventario-filtro-stock">Disponibilidad
+            <div class="inventario-toolbar">
+              <label for="inventario-buscar"
+                >Buscar en inventario
+                <input
+                  type="search"
+                  id="inventario-buscar"
+                  placeholder="Nombre, categoría o talla..."
+                />
+              </label>
+              <label for="inventario-filtro-stock"
+                >Disponibilidad
                 <select id="inventario-filtro-stock">
-                    <option value="todos">Todo el inventario</option>
-                    <option value="bajo">Stock bajo (3 o menos)</option>
-                    <option value="agotado">Agotados</option>
-                    <option value="sin-registro">Stock sin registrar</option>
+                  <option value="todos">Todo el inventario</option>
+                  <option value="bajo">Stock bajo (3 o menos)</option>
+                  <option value="agotado">Agotados</option>
+                  <option value="sin-registro">Stock sin registrar</option>
                 </select>
-            </label>
-        </div>
-        <div class="inventario-resumen" id="inventario-resumen"></div>
-        <p class="admin-resultados" id="inventario-resultados" aria-live="polite"></p>
-        <div id="lista-admin"></div>
-    </div>
-    <div class="admin-tab-content" id="tab-clientes" role="tabpanel" aria-labelledby="admin-tab-clientes" tabindex="0">
-        <div class="clientes-toolbar">
-            <div class="admin-panel-intro"><h3>Clientes y pedidos</h3><p>Consulta las cuentas registradas y sus compras.</p></div>
-            <div class="admin-lista-acciones">
-                <label for="pedidos-filtro-estado">Mostrar pedidos
-                    <select id="pedidos-filtro-estado">
-                        <option value="todos">Todos los pedidos</option>
-                        <option value="pendiente">Pendientes</option>
-                        <option value="confirmado">Confirmados</option>
-                        <option value="preparando">En preparación</option>
-                        <option value="enviado">Enviados</option>
-                        <option value="completado">Completados</option>
-                        <option value="cancelado">Cancelados</option>
-                    </select>
-                </label>
-                <button type="button" id="recargar-clientes">↻ Actualizar</button>
+              </label>
             </div>
+            <div class="inventario-resumen" id="inventario-resumen"></div>
+            <p
+              class="admin-resultados"
+              id="inventario-resultados"
+              aria-live="polite"
+            ></p>
+            <div id="lista-admin"></div>
+          </div>
+          <div
+            class="admin-tab-content"
+            id="tab-clientes"
+            role="tabpanel"
+            aria-labelledby="admin-tab-clientes"
+            tabindex="0"
+          >
+            <div class="clientes-toolbar">
+              <div class="admin-panel-intro">
+                <h3>Clientes y pedidos</h3>
+                <p>Consulta las cuentas registradas y sus compras.</p>
+              </div>
+              <div class="admin-lista-acciones">
+                <label for="pedidos-filtro-estado"
+                  >Mostrar pedidos
+                  <select id="pedidos-filtro-estado">
+                    <option value="todos">Todos los pedidos</option>
+                    <option value="pendiente">Pendientes</option>
+                    <option value="confirmado">Confirmados</option>
+                    <option value="preparando">En preparación</option>
+                    <option value="enviado">Enviados</option>
+                    <option value="completado">Completados</option>
+                    <option value="cancelado">Cancelados</option>
+                  </select>
+                </label>
+                <button type="button" id="recargar-clientes">
+                  ↻ Actualizar
+                </button>
+              </div>
+            </div>
+            <p
+              class="admin-resultados"
+              id="pedidos-resultados"
+              aria-live="polite"
+            ></p>
+            <div id="lista-clientes">
+              <p class="admin-vacio">
+                Inicia sesión como administrador para cargar los clientes.
+              </p>
+            </div>
+          </div>
+          <div
+            class="admin-tab-content"
+            id="tab-caja"
+            role="tabpanel"
+            aria-labelledby="admin-tab-caja"
+            tabindex="0"
+          >
+            <div class="admin-panel-intro">
+              <h3>Caja e ingresos de hoy</h3>
+              <p>
+                Marca un pedido como pagado solo después de confirmar el
+                efectivo o el comprobante QR. Cada pedido se registra una sola
+                vez.
+              </p>
+            </div>
+            <div class="caja-resumen" aria-live="polite">
+              <article>
+                <span>Efectivo recibido</span
+                ><strong id="caja-efectivo-ventas">—</strong>
+              </article>
+              <article>
+                <span>Pagos QR recibidos</span
+                ><strong id="caja-qr-total">—</strong>
+              </article>
+              <article>
+                <span>Total recibido</span
+                ><strong id="caja-total-recibido">—</strong>
+              </article>
+            </div>
+            <div class="caja-cierre">
+              <h4>Cierre diario</h4>
+              <label for="caja-fondo-inicial"
+                >Fondo inicial en efectivo (Bs)</label
+              >
+              <input
+                id="caja-fondo-inicial"
+                type="number"
+                min="0"
+                step="0.01"
+                value="0"
+              />
+              <label for="caja-efectivo-contado"
+                >Efectivo contado al cierre (Bs)</label
+              >
+              <input
+                id="caja-efectivo-contado"
+                type="number"
+                min="0"
+                step="0.01"
+              />
+              <p>
+                Efectivo esperado:
+                <strong id="caja-efectivo-esperado">—</strong>
+              </p>
+              <p>Diferencia: <strong id="caja-diferencia">—</strong></p>
+              <button type="button" id="caja-cerrar-dia">
+                Registrar cierre de hoy
+              </button>
+              <p id="caja-cierre-estado" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+          <div
+            class="admin-tab-content"
+            id="tab-encargos-admin"
+            role="tabpanel"
+            aria-labelledby="admin-tab-encargos-admin"
+            tabindex="0"
+          >
+            <div class="clientes-toolbar">
+              <div class="admin-panel-intro">
+                <h3>Encargos personalizados</h3>
+                <p>Revisa solicitudes y actualiza su estado de atención.</p>
+              </div>
+              <button type="button" id="recargar-encargos">↻ Actualizar</button>
+            </div>
+            <div id="lista-encargos-admin">
+              <p class="admin-vacio">
+                Inicia sesión como administrador para cargar los encargos.
+              </p>
+            </div>
+          </div>
+          <div
+            class="admin-tab-content"
+            id="tab-cupones"
+            role="tabpanel"
+            aria-labelledby="admin-tab-cupones"
+            tabindex="0"
+          >
+            <div class="admin-panel-intro">
+              <h3>Cupones de descuento</h3>
+              <p>Crea códigos promocionales para tus clientes.</p>
+            </div>
+            <input
+              type="text"
+              id="cupon-codigo"
+              placeholder="Código (ej: PREMIER10)"
+            />
+            <input
+              type="number"
+              id="cupon-descuento"
+              placeholder="% de descuento"
+            />
+            <button onclick="crearCupon()">🎟 Crear Cupón</button>
+            <div id="lista-cupones"></div>
+          </div>
+          <div
+            class="admin-tab-content"
+            id="tab-resenas-admin"
+            role="tabpanel"
+            aria-labelledby="admin-tab-resenas-admin"
+            tabindex="0"
+          >
+            <div class="admin-panel-intro">
+              <h3>Reseñas pendientes</h3>
+              <p>Modera las opiniones antes de mostrarlas en la tienda.</p>
+            </div>
+            <div id="resenas-pendientes"></div>
+          </div>
         </div>
-        <p class="admin-resultados" id="pedidos-resultados" aria-live="polite"></p>
-        <div id="lista-clientes"><p class="admin-vacio">Inicia sesión como administrador para cargar los clientes.</p></div>
-    </div>
-    <div class="admin-tab-content" id="tab-caja" role="tabpanel" aria-labelledby="admin-tab-caja" tabindex="0">
-        <div class="admin-panel-intro">
-            <h3>Caja e ingresos de hoy</h3>
-            <p>Marca un pedido como pagado solo después de confirmar el efectivo o el comprobante QR. Cada pedido se registra una sola vez.</p>
-        </div>
-        <div class="caja-resumen" aria-live="polite">
-            <article><span>Efectivo recibido</span><strong id="caja-efectivo-ventas">—</strong></article>
-            <article><span>Pagos QR recibidos</span><strong id="caja-qr-total">—</strong></article>
-            <article><span>Total recibido</span><strong id="caja-total-recibido">—</strong></article>
-        </div>
-        <div class="caja-cierre">
-            <h4>Cierre diario</h4>
-            <label for="caja-fondo-inicial">Fondo inicial en efectivo (Bs)</label>
-            <input id="caja-fondo-inicial" type="number" min="0" step="0.01" value="0">
-            <label for="caja-efectivo-contado">Efectivo contado al cierre (Bs)</label>
-            <input id="caja-efectivo-contado" type="number" min="0" step="0.01">
-            <p>Efectivo esperado: <strong id="caja-efectivo-esperado">—</strong></p>
-            <p>Diferencia: <strong id="caja-diferencia">—</strong></p>
-            <button type="button" id="caja-cerrar-dia">Registrar cierre de hoy</button>
-            <p id="caja-cierre-estado" role="status" aria-live="polite"></p>
-        </div>
-    </div>
-    <div class="admin-tab-content" id="tab-encargos-admin" role="tabpanel" aria-labelledby="admin-tab-encargos-admin" tabindex="0">
-        <div class="clientes-toolbar">
-            <div class="admin-panel-intro"><h3>Encargos personalizados</h3><p>Revisa solicitudes y actualiza su estado de atención.</p></div>
-            <button type="button" id="recargar-encargos">↻ Actualizar</button>
-        </div>
-        <div id="lista-encargos-admin"><p class="admin-vacio">Inicia sesión como administrador para cargar los encargos.</p></div>
-    </div>
-    <div class="admin-tab-content" id="tab-cupones" role="tabpanel" aria-labelledby="admin-tab-cupones" tabindex="0">
-        <div class="admin-panel-intro">
-            <h3>Cupones de descuento</h3>
-            <p>Crea códigos promocionales para tus clientes.</p>
-        </div>
-        <input type="text" id="cupon-codigo" placeholder="Código (ej: PREMIER10)">
-        <input type="number" id="cupon-descuento" placeholder="% de descuento">
-        <button onclick="crearCupon()">🎟 Crear Cupón</button>
-        <div id="lista-cupones"></div>
-    </div>
-    <div class="admin-tab-content" id="tab-resenas-admin" role="tabpanel" aria-labelledby="admin-tab-resenas-admin" tabindex="0">
-        <div class="admin-panel-intro">
-            <h3>Reseñas pendientes</h3>
-            <p>Modera las opiniones antes de mostrarlas en la tienda.</p>
-        </div>
-        <div id="resenas-pendientes"></div>
-    </div>
-        </div>
-    </div>
-</section>
+      </div>
+      <!-- FOOTER -->
+      <footer class="footer" id="footer">
+        <div class="footer-grid">
+          <div class="footer-col footer-marca">
+            <div class="footer-logo">
+              <img src="img/logo.png" alt="Fútbol Premier" />
+              <h2>FÚTBOL PREMIER</h2>
+            </div>
+            <p class="footer-text">
+              Los mejores jerseys de fútbol, enviados a toda Bolivia.
+            </p>
+            <div class="footer-redes-iconos">
+              <a
+                href="https://www.instagram.com/futbol.premier_10"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Instagram</a
+              >
+              <a
+                href="https://www.tiktok.com/@ftbol_premier"
+                target="_blank"
+                rel="noopener noreferrer"
+                >TikTok</a
+              >
+            </div>
+          </div>
 
-<!-- MODAL EDITAR -->
-<div class="editar-modal" id="editar-modal">
-    <div class="editar-contenido">
+          <div class="footer-col">
+            <h3>Navegación</h3>
+            <ul class="footer-links">
+              <li><a href="#inicio">Inicio</a></li>
+              <li><a href="#ofertas">Ofertas</a></li>
+              <li><a href="#catalogo">Catálogo</a></li>
+              <li><a href="#nosotros">Nosotros</a></li>
+              <li><a href="#resenas">Reseñas</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h3>Ayuda</h3>
+            <ul class="footer-links">
+              <li><a href="#entregas">Envíos y entregas</a></li>
+              <li><a href="#encargos">Encargos personalizados</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h3>Contacto</h3>
+            <p class="footer-ubicacion">📍 Calle Murillo, La Paz</p>
+            <p class="footer-ubicacion">🕐 Lun a Sáb: 9:00 – 19:00</p>
+            <div class="footer-redes">
+              <a
+                href="https://wa.me/59171208827"
+                target="_blank"
+                rel="noopener noreferrer"
+                >WhatsApp</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-barra">
+          <p class="copy">
+            © 2026 Fútbol Premier - Todos los derechos reservados
+          </p>
+        </div>
+      </footer>
+    </section>
+
+    <!-- MODAL EDITAR -->
+    <div class="editar-modal" id="editar-modal">
+      <div class="editar-contenido">
         <button class="editar-cerrar" id="editar-cerrar">✕</button>
         <h2>✏️ Editar Jersey</h2>
-        <input type="hidden" id="edit-id">
-        <input type="text" id="edit-nombre" placeholder="Nombre">
-        <input type="text" id="edit-tallas" placeholder="Tallas">
-        <input type="text" id="edit-dorsales" placeholder="Dorsales">
-        <input type="text" id="edit-calidad" placeholder="Calidad">
-        <input type="text" id="edit-colores" placeholder="Colores">
-        <textarea id="edit-descripcion" rows="3" placeholder="Descripción"></textarea>
+        <input type="hidden" id="edit-id" />
+        <input type="text" id="edit-nombre" placeholder="Nombre" />
+        <input type="text" id="edit-tallas" placeholder="Tallas" />
+        <input type="text" id="edit-dorsales" placeholder="Dorsales" />
+        <input type="text" id="edit-calidad" placeholder="Calidad" />
+        <input type="text" id="edit-colores" placeholder="Colores" />
+        <textarea
+          id="edit-descripcion"
+          rows="3"
+          placeholder="Descripción"
+        ></textarea>
         <select id="edit-categoria">
-            <option value="clubes">Clubes</option><option value="retro">Retro</option>
-            <option value="selecciones">Selecciones</option><option value="player">Player Version</option>
+          <option value="clubes">Clubes</option>
+          <option value="retro">Retro</option>
+          <option value="selecciones">Selecciones</option>
+          <option value="player">Player Version</option>
         </select>
-        <input type="number" id="edit-precio" placeholder="Precio en Bs">
-        <input type="number" id="edit-stock" placeholder="Stock">
-        <input type="number" id="edit-vendidos" placeholder="Vendidos" data-admin-only>
-        <label class="oferta-toggle-label" data-admin-only><input type="checkbox" id="edit-es-oferta"> 🔥 ¿Es oferta?</label>
-        <div id="edit-campo-oferta" data-admin-only style="display:none;">
-            <input type="number" id="edit-precio-original" placeholder="Precio original">
-            <input type="text" id="edit-fin-oferta" placeholder="Fin oferta">
+        <input type="number" id="edit-precio" placeholder="Precio en Bs" />
+        <input type="number" id="edit-stock" placeholder="Stock" />
+        <input
+          type="number"
+          id="edit-vendidos"
+          placeholder="Vendidos"
+          data-admin-only
+        />
+        <label class="oferta-toggle-label" data-admin-only
+          ><input type="checkbox" id="edit-es-oferta" /> 🔥 ¿Es oferta?</label
+        >
+        <div id="edit-campo-oferta" data-admin-only style="display: none">
+          <input
+            type="number"
+            id="edit-precio-original"
+            placeholder="Precio original"
+          />
+          <input type="text" id="edit-fin-oferta" placeholder="Fin oferta" />
         </div>
         <button onclick="guardarEdicion()">💾 Guardar Cambios</button>
+      </div>
     </div>
-</div>
 
-<!-- MODAL SELECCIONAR TALLA (desde card) -->
-<div id="talla-selector-modal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.88);backdrop-filter:blur(8px);align-items:center;justify-content:center;">
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:22px;padding:28px;width:90%;max-width:440px;max-height:90vh;overflow-y:auto;position:relative;animation:aparecer .3s ease;">
-        <button id="talla-sel-cerrar" style="position:absolute;top:13px;right:17px;background:var(--bg3);border:1px solid var(--border);color:var(--text);width:32px;height:32px;border-radius:50%;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+    <!-- MODAL SELECCIONAR TALLA (desde card) -->
+    <div
+      id="talla-selector-modal"
+      style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: rgba(0, 0, 0, 0.88);
+        backdrop-filter: blur(8px);
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <div
+        style="
+          background: var(--bg2);
+          border: 1px solid var(--border);
+          border-radius: 22px;
+          padding: 28px;
+          width: 90%;
+          max-width: 440px;
+          max-height: 90vh;
+          overflow-y: auto;
+          position: relative;
+          animation: aparecer 0.3s ease;
+        "
+      >
+        <button
+          id="talla-sel-cerrar"
+          style="
+            position: absolute;
+            top: 13px;
+            right: 17px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            color: var(--text);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          ✕
+        </button>
 
         <!-- Header producto -->
-        <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--border);">
-            <img id="talla-sel-img" src="" alt="" style="width:75px;height:75px;object-fit:cover;border-radius:11px;flex-shrink:0;">
-            <div>
-                <h2 id="talla-sel-nombre" style="font-size:1.05rem;margin-bottom:6px;"></h2>
-                <div id="talla-sel-precio"></div>
-                <div id="talla-sel-visores"></div>
-            </div>
+        <div
+          style="
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin-bottom: 18px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+          "
+        >
+          <img
+            id="talla-sel-img"
+            src=""
+            alt=""
+            style="
+              width: 75px;
+              height: 75px;
+              object-fit: cover;
+              border-radius: 11px;
+              flex-shrink: 0;
+            "
+          />
+          <div>
+            <h2
+              id="talla-sel-nombre"
+              style="font-size: 1.05rem; margin-bottom: 6px"
+            ></h2>
+            <div id="talla-sel-precio"></div>
+            <div id="talla-sel-visores"></div>
+          </div>
         </div>
 
         <!-- Tallas -->
-        <div style="margin-bottom:16px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                <label style="font-size:.8rem;color:var(--text3);font-weight:bold;letter-spacing:1px;">TALLA <span style="color:#fff;">*</span></label>
-                <button id="btn-guia-tallas2" style="background:none;border:1px solid var(--border);color:var(--text3);padding:4px 10px;border-radius:8px;cursor:pointer;font-size:.74rem;">📏 Guía de tallas</button>
-            </div>
-            <div id="talla-sel-btns" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
-            <p id="talla-sel-error" style="display:none;color:#fff;font-size:.78rem;margin-top:6px;">⚠️ Por favor selecciona una talla</p>
+        <div style="margin-bottom: 16px">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 10px;
+            "
+          >
+            <label
+              style="
+                font-size: 0.8rem;
+                color: var(--text3);
+                font-weight: bold;
+                letter-spacing: 1px;
+              "
+              >TALLA <span style="color: #fff">*</span></label
+            >
+            <button
+              id="btn-guia-tallas2"
+              style="
+                background: none;
+                border: 1px solid var(--border);
+                color: var(--text3);
+                padding: 4px 10px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 0.74rem;
+              "
+            >
+              📏 Guía de tallas
+            </button>
+          </div>
+          <div
+            id="talla-sel-btns"
+            style="display: flex; gap: 8px; flex-wrap: wrap"
+          ></div>
+          <p
+            id="talla-sel-error"
+            style="
+              display: none;
+              color: #fff;
+              font-size: 0.78rem;
+              margin-top: 6px;
+            "
+          >
+            ⚠️ Por favor selecciona una talla
+          </p>
         </div>
 
         <!-- Dorsales -->
-        <div style="margin-bottom:16px;">
-            <label style="display:block;font-size:.8rem;color:var(--text3);font-weight:bold;letter-spacing:1px;margin-bottom:10px;">DORSAL <span style="color:#fff;">*</span></label>
-            <div id="dorsal-sel-btns" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
-            <p id="dorsal-sel-error" style="display:none;color:#fff;font-size:.78rem;margin-top:6px;">⚠️ Por favor selecciona un dorsal</p>
+        <div style="margin-bottom: 16px">
+          <label
+            style="
+              display: block;
+              font-size: 0.8rem;
+              color: var(--text3);
+              font-weight: bold;
+              letter-spacing: 1px;
+              margin-bottom: 10px;
+            "
+            >DORSAL <span style="color: #fff">*</span></label
+          >
+          <div
+            id="dorsal-sel-btns"
+            style="display: flex; gap: 8px; flex-wrap: wrap"
+          ></div>
+          <p
+            id="dorsal-sel-error"
+            style="
+              display: none;
+              color: #fff;
+              font-size: 0.78rem;
+              margin-top: 6px;
+            "
+          >
+            ⚠️ Por favor selecciona un dorsal
+          </p>
         </div>
 
         <!-- Color (opcional) -->
-        <div id="color-sel-wrap" style="display:none;margin-bottom:16px;">
-            <label style="display:block;font-size:.8rem;color:var(--text3);font-weight:bold;letter-spacing:1px;margin-bottom:10px;">COLOR</label>
-            <div id="color-sel-btns" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+        <div id="color-sel-wrap" style="display: none; margin-bottom: 16px">
+          <label
+            style="
+              display: block;
+              font-size: 0.8rem;
+              color: var(--text3);
+              font-weight: bold;
+              letter-spacing: 1px;
+              margin-bottom: 10px;
+            "
+            >COLOR</label
+          >
+          <div
+            id="color-sel-btns"
+            style="display: flex; gap: 8px; flex-wrap: wrap"
+          ></div>
         </div>
 
         <!-- Stock aviso -->
-        <p id="talla-sel-stock" style="display:none;color:#fff;font-weight:bold;font-size:.84rem;margin-bottom:12px;"></p>
+        <p
+          id="talla-sel-stock"
+          style="
+            display: none;
+            color: #fff;
+            font-weight: bold;
+            font-size: 0.84rem;
+            margin-bottom: 12px;
+          "
+        ></p>
 
         <!-- Garantías -->
-        <div style="display:flex;gap:8px;flex-wrap:wrap;padding:10px;background:var(--bg3);border-radius:10px;margin-bottom:14px;">
-            <span style="font-size:.74rem;color:var(--text2);">🔒 Pago seguro</span>
-            <span style="font-size:.74rem;color:var(--text2);">🚚 Envío a Bolivia</span>
-            <span style="font-size:.74rem;color:var(--text2);">⭐ Calidad garantizada</span>
+        <div
+          style="
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding: 10px;
+            background: var(--bg3);
+            border-radius: 10px;
+            margin-bottom: 14px;
+          "
+        >
+          <span style="font-size: 0.74rem; color: var(--text2)"
+            >🔒 Pago seguro</span
+          >
+          <span style="font-size: 0.74rem; color: var(--text2)"
+            >🚚 Envío a Bolivia</span
+          >
+          <span style="font-size: 0.74rem; color: var(--text2)"
+            >⭐ Calidad garantizada</span
+          >
         </div>
 
         <!-- Botones -->
-        <div style="display:flex;gap:8px;margin-bottom:8px;">
-            <button id="talla-sel-agregar" style="flex:1;padding:13px;border:none;border-radius:11px;background:var(--text);color:var(--bg);font-weight:bold;font-size:.9rem;cursor:pointer;">🛒 Agregar al carrito</button>
-            <button id="talla-sel-comprar-ya" style="flex:1;padding:13px;border:none;border-radius:11px;background:#fff;color:#000;font-weight:bold;font-size:.9rem;cursor:pointer;">⚡ Comprar ahora</button>
+        <div style="display: flex; gap: 8px; margin-bottom: 8px">
+          <button
+            id="talla-sel-agregar"
+            style="
+              flex: 1;
+              padding: 13px;
+              border: none;
+              border-radius: 11px;
+              background: var(--text);
+              color: var(--bg);
+              font-weight: bold;
+              font-size: 0.9rem;
+              cursor: pointer;
+            "
+          >
+            🛒 Agregar al carrito
+          </button>
+          <button
+            id="talla-sel-comprar-ya"
+            style="
+              flex: 1;
+              padding: 13px;
+              border: none;
+              border-radius: 11px;
+              background: #fff;
+              color: #000;
+              font-weight: bold;
+              font-size: 0.9rem;
+              cursor: pointer;
+            "
+          >
+            ⚡ Comprar ahora
+          </button>
         </div>
-        <button id="talla-sel-wsp" style="width:100%;padding:11px;border:1px solid #fff;border-radius:11px;background:transparent;color:#fff;font-weight:bold;font-size:.84rem;cursor:pointer;">💬 Consultar por WhatsApp</button>
+        <button
+          id="talla-sel-wsp"
+          style="
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #fff;
+            border-radius: 11px;
+            background: transparent;
+            color: #fff;
+            font-weight: bold;
+            font-size: 0.84rem;
+            cursor: pointer;
+          "
+        >
+          💬 Consultar por WhatsApp
+        </button>
+      </div>
     </div>
-</div>
 
-<!-- POPUP SALIDA -->
-<div class="exit-popup" id="exit-popup">
-    <div class="exit-contenido">
+    <!-- POPUP SALIDA -->
+    <div class="exit-popup" id="exit-popup">
+      <div class="exit-contenido">
         <button class="exit-cerrar" id="exit-cerrar">✕</button>
         <div class="exit-icono">🎁</div>
         <h2>¡Espera! Tenemos una oferta para ti</h2>
-        <p>Antes de irte, usa este cupón y obtén <strong>10% de descuento</strong> en tu primer pedido</p>
+        <p>
+          Antes de irte, usa este cupón y obtén
+          <strong>10% de descuento</strong> en tu primer pedido
+        </p>
         <div class="exit-cupon">PREMIER10</div>
         <button class="exit-btn" id="exit-btn">Ver ofertas ahora</button>
         <p class="exit-nota">Válido por tiempo limitado</p>
+      </div>
     </div>
-</div>
 
-<!-- MODAL GUÍA TALLAS -->
-<div class="talla-guia-modal" id="talla-guia-modal">
-    <div class="talla-guia-contenido">
+    <!-- MODAL GUÍA TALLAS -->
+    <div class="talla-guia-modal" id="talla-guia-modal">
+      <div class="talla-guia-contenido">
         <button class="talla-guia-cerrar" id="talla-guia-cerrar">✕</button>
         <h2>📏 Guía de Tallas</h2>
         <table class="tabla-tallas">
-            <thead><tr><th>Talla</th><th>Pecho (cm)</th><th>Largo (cm)</th><th>Hombros (cm)</th></tr></thead>
-            <tbody>
-                <tr><td><strong>S</strong></td><td>88–96</td><td>68</td><td>42</td></tr>
-                <tr><td><strong>M</strong></td><td>96–104</td><td>70</td><td>44</td></tr>
-                <tr><td><strong>L</strong></td><td>104–112</td><td>72</td><td>46</td></tr>
-                <tr><td><strong>XL</strong></td><td>112–120</td><td>74</td><td>48</td></tr>
-                <tr><td><strong>XXL</strong></td><td>120–128</td><td>76</td><td>50</td></tr>
-            </tbody>
+          <thead>
+            <tr>
+              <th>Talla</th>
+              <th>Pecho (cm)</th>
+              <th>Largo (cm)</th>
+              <th>Hombros (cm)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>S</strong></td>
+              <td>88–96</td>
+              <td>68</td>
+              <td>42</td>
+            </tr>
+            <tr>
+              <td><strong>M</strong></td>
+              <td>96–104</td>
+              <td>70</td>
+              <td>44</td>
+            </tr>
+            <tr>
+              <td><strong>L</strong></td>
+              <td>104–112</td>
+              <td>72</td>
+              <td>46</td>
+            </tr>
+            <tr>
+              <td><strong>XL</strong></td>
+              <td>112–120</td>
+              <td>74</td>
+              <td>48</td>
+            </tr>
+            <tr>
+              <td><strong>XXL</strong></td>
+              <td>120–128</td>
+              <td>76</td>
+              <td>50</td>
+            </tr>
+          </tbody>
         </table>
-        <p class="talla-nota">💡 Si dudas entre dos tallas, elige la más grande.</p>
+        <p class="talla-nota">
+          💡 Si dudas entre dos tallas, elige la más grande.
+        </p>
+      </div>
     </div>
-</div>
 
-<!-- MODAL COMPARAR -->
-<div class="comparar-modal" id="comparar-modal">
-    <div class="comparar-contenido">
+    <!-- MODAL COMPARAR -->
+    <div class="comparar-modal" id="comparar-modal">
+      <div class="comparar-contenido">
         <button class="comparar-cerrar" id="comparar-cerrar">✕</button>
         <h2>⚖️ Comparar Jerseys</h2>
         <div class="comparar-grid" id="comparar-grid"></div>
+      </div>
     </div>
-</div>
 
-<!-- VISOR GALERÍA -->
-<div class="galeria-modal" id="galeria-modal">
-    <div class="galeria-overlay"></div>
-    <button class="galeria-cerrar" id="galeria-cerrar">✕</button>
-    <button class="galeria-flecha galeria-prev" id="galeria-prev">&#10094;</button>
-    <div class="galeria-contenido">
-        <img class="galeria-img" id="galeria-img" src="" alt="">
+    <!-- VISOR GALERÍA -->
+    <div class="galeria-modal" id="galeria-modal">
+      <div class="galeria-overlay"></div>
+      <button class="galeria-cerrar" id="galeria-cerrar">✕</button>
+      <button class="galeria-flecha galeria-prev" id="galeria-prev">
+        &#10094;
+      </button>
+      <div class="galeria-contenido">
+        <img class="galeria-img" id="galeria-img" src="" alt="" />
         <div class="galeria-contador" id="galeria-contador">1 / 1</div>
+      </div>
+      <button class="galeria-flecha galeria-next" id="galeria-next">
+        &#10095;
+      </button>
+      <div class="galeria-thumbs" id="galeria-thumbs"></div>
     </div>
-    <button class="galeria-flecha galeria-next" id="galeria-next">&#10095;</button>
-    <div class="galeria-thumbs" id="galeria-thumbs"></div>
-</div>
 
-<!-- MODAL DETALLE -->
-<div class="detalle-modal" id="detalle-modal">
-    <div class="detalle-overlay" id="detalle-overlay"></div>
-    <div class="detalle-contenido">
+    <!-- MODAL DETALLE -->
+    <div class="detalle-modal" id="detalle-modal">
+      <div class="detalle-overlay" id="detalle-overlay"></div>
+      <div class="detalle-contenido">
         <button class="detalle-cerrar" id="detalle-cerrar">✕</button>
         <div class="detalle-body">
-            <div class="detalle-galeria">
-                <div class="zoom-wrap">
-                    <img class="detalle-img-principal" id="detalle-img-principal" src="" alt="">
-                    <div class="zoom-lupa" id="zoom-lupa"></div>
-                </div>
-                <div class="detalle-thumbs" id="detalle-thumbs"></div>
+          <div class="detalle-galeria">
+            <div class="zoom-wrap">
+              <img
+                class="detalle-img-principal"
+                id="detalle-img-principal"
+                src=""
+                alt=""
+              />
+              <div class="zoom-lupa" id="zoom-lupa"></div>
             </div>
-            <div class="detalle-info">
-                <div id="detalle-badges"></div>
-                <h2 id="detalle-nombre"></h2>
-                <div id="detalle-visitas" class="detalle-visitas"></div>
-                <div id="detalle-vendidos" class="detalle-vendidos"></div>
-                <div id="detalle-precio"></div>
-                <div id="detalle-countdown" class="detalle-countdown" style="display:none;"></div>
-                <p id="detalle-descripcion" class="detalle-desc"></p>
-                <div class="detalle-campo">
-                    <div class="talla-label-row">
-                        <label>Talla: <span class="campo-req">*</span></label>
-                        <button class="btn-guia-tallas" id="btn-guia-tallas">📏 Guía</button>
-                    </div>
-                    <div class="tallas-btns" id="tallas-btns"></div>
-                </div>
-                <div class="detalle-campo"><label>Dorsal: <span class="campo-req">*</span></label><div class="dorsales-btns" id="dorsales-btns"></div></div>
-                <div class="detalle-campo" id="colores-campo" style="display:none;"><label>Color:</label><div class="colores-btns" id="colores-btns"></div></div>
-                <p id="detalle-stock-aviso" class="stock-aviso" style="display:none;"></p>
-                <div class="detalle-acciones">
-                    <button class="detalle-agregar" id="detalle-agregar">🛒 Agregar al carrito</button>
-                    <button class="detalle-fav" id="detalle-fav">🤍</button>
-                    <button class="detalle-compartir" id="detalle-compartir">📤</button>
-                </div>
-                <div class="tambien-gusta" id="tambien-gusta"></div>
+            <div class="detalle-thumbs" id="detalle-thumbs"></div>
+          </div>
+          <div class="detalle-info">
+            <div id="detalle-badges"></div>
+            <h2 id="detalle-nombre"></h2>
+            <div id="detalle-visitas" class="detalle-visitas"></div>
+            <div id="detalle-vendidos" class="detalle-vendidos"></div>
+            <div id="detalle-precio"></div>
+            <div
+              id="detalle-countdown"
+              class="detalle-countdown"
+              style="display: none"
+            ></div>
+            <p id="detalle-descripcion" class="detalle-desc"></p>
+            <div class="detalle-campo">
+              <div class="talla-label-row">
+                <label>Talla: <span class="campo-req">*</span></label>
+                <button class="btn-guia-tallas" id="btn-guia-tallas">
+                  📏 Guía
+                </button>
+              </div>
+              <div class="tallas-btns" id="tallas-btns"></div>
             </div>
+            <div class="detalle-campo">
+              <label>Dorsal: <span class="campo-req">*</span></label>
+              <div class="dorsales-btns" id="dorsales-btns"></div>
+            </div>
+            <div class="detalle-campo" id="colores-campo" style="display: none">
+              <label>Color:</label>
+              <div class="colores-btns" id="colores-btns"></div>
+            </div>
+            <p
+              id="detalle-stock-aviso"
+              class="stock-aviso"
+              style="display: none"
+            ></p>
+            <div class="detalle-acciones">
+              <button class="detalle-agregar" id="detalle-agregar">
+                🛒 Agregar al carrito
+              </button>
+              <button class="detalle-fav" id="detalle-fav">🤍</button>
+              <button class="detalle-compartir" id="detalle-compartir">
+                📤
+              </button>
+            </div>
+            <div class="tambien-gusta" id="tambien-gusta"></div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
-<!-- MODAL FAVORITOS -->
-<div class="favoritos-modal" id="favoritos-modal">
-    <div class="favoritos-contenido">
+    <!-- MODAL FAVORITOS -->
+    <div class="favoritos-modal" id="favoritos-modal">
+      <div class="favoritos-contenido">
         <button class="favoritos-cerrar" id="favoritos-cerrar">✕</button>
         <h2>❤️ Mis Favoritos</h2>
         <div id="favoritos-lista"></div>
+      </div>
     </div>
-</div>
 
-<!-- MODAL CONFIRMACIÓN -->
-<div class="confirmacion-modal" id="confirmacion-modal">
-    <div class="confirmacion-contenido">
+    <!-- MODAL CONFIRMACIÓN -->
+    <div class="confirmacion-modal" id="confirmacion-modal">
+      <div class="confirmacion-contenido">
         <div class="confirmacion-icono">🎉</div>
         <h2>¡Pedido Enviado!</h2>
-        <p class="conf-numero">Pedido <strong id="conf-numero-pedido">#0000</strong></p>
-        <p class="conf-texto">Tu pedido fue enviado por WhatsApp. Te contactaremos a la brevedad.</p>
+        <p class="conf-numero">
+          Pedido <strong id="conf-numero-pedido">#0000</strong>
+        </p>
+        <p class="conf-texto">
+          Tu pedido fue enviado por WhatsApp. Te contactaremos a la brevedad.
+        </p>
         <div class="conf-resumen" id="conf-resumen"></div>
         <button id="conf-cerrar">✓ Entendido</button>
+      </div>
     </div>
-</div>
 
-<!-- HISTORIAL -->
-<div class="historial-modal" id="historial-modal">
-    <div class="historial-contenido">
+    <!-- HISTORIAL -->
+    <div class="historial-modal" id="historial-modal">
+      <div class="historial-contenido">
         <button class="historial-cerrar" id="historial-cerrar">✕</button>
         <h2>📋 Historial de Pedidos</h2>
         <div id="historial-lista"></div>
+      </div>
     </div>
-</div>
 
-<!-- MODAL PAGO -->
-<div class="pago-modal" id="pago-modal">
-    <div class="pago-contenido">
+    <!-- MODAL PAGO -->
+    <div class="pago-modal" id="pago-modal">
+      <div class="pago-contenido">
         <span id="cerrar-pago">✕</span>
         <h2>💳 Finalizar Compra</h2>
         <!-- RESUMEN CON TALLAS -->
         <div class="pago-resumen" id="pago-resumen"></div>
         <!-- RESUMEN ENTREGAS RÁPIDO -->
         <div class="pago-entregas-resumen">
-            <h4>📦 Opciones de entrega disponibles</h4>
-            <div class="pago-entregas-grid">
-                <div class="pago-entrega-item">
-                    <span class="pe-icono">🏙️</span>
-                    <div>
-                        <strong>La Paz</strong>
-                        <p>San Francisco 15:00 · Correos 15:30 · Teleférico 16:00</p>
-                    </div>
-                </div>
-                <div class="pago-entrega-item">
-                    <span class="pe-icono">🌆</span>
-                    <div>
-                        <strong>El Alto</strong>
-                        <p>Teleférico 16:45 · Terminal 17:15 · Villa Adela 17:15</p>
-                    </div>
-                </div>
-                <div class="pago-entrega-item">
-                    <span class="pe-icono">🇧🇴</span>
-                    <div>
-                        <strong>Envíos Nacionales</strong>
-                        <p>Cochabamba, SCZ, Tarija, Oruro y más — desde 10 Bs</p>
-                    </div>
-                </div>
-                <div class="pago-entrega-item">
-                    <span class="pe-icono">🛵</span>
-                    <div>
-                        <strong>Delivery</strong>
-                        <p>A domicilio en La Paz y El Alto — 10 a 15 Bs</p>
-                    </div>
-                </div>
+          <h4>📦 Opciones de entrega disponibles</h4>
+          <div class="pago-entregas-grid">
+            <div class="pago-entrega-item">
+              <span class="pe-icono">🏙️</span>
+              <div>
+                <strong>La Paz</strong>
+                <p>San Francisco 15:00 · Correos 15:30 · Teleférico 16:00</p>
+              </div>
             </div>
+            <div class="pago-entrega-item">
+              <span class="pe-icono">🌆</span>
+              <div>
+                <strong>El Alto</strong>
+                <p>Teleférico 16:45 · Terminal 17:15 · Villa Adela 17:15</p>
+              </div>
+            </div>
+            <div class="pago-entrega-item">
+              <span class="pe-icono">🇧🇴</span>
+              <div>
+                <strong>Envíos Nacionales</strong>
+                <p>Cochabamba, SCZ, Tarija, Oruro y más — desde 10 Bs</p>
+              </div>
+            </div>
+            <div class="pago-entrega-item">
+              <span class="pe-icono">🛵</span>
+              <div>
+                <strong>Delivery</strong>
+                <p>A domicilio en La Paz y El Alto — 10 a 15 Bs</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- SELECTOR ENTREGA/ENVÍO -->
         <div class="envio-selector">
-            <h4>🚚 ¿Cómo quieres recibir tu pedido?</h4>
-            <div class="envio-opciones">
-                <label class="envio-opcion" id="op-lapaz">
-                    <input type="radio" name="tipo-envio" value="lapaz"> 🏙️ Entrega en La Paz
-                </label>
-                <label class="envio-opcion" id="op-elalto">
-                    <input type="radio" name="tipo-envio" value="elalto"> 🌆 Entrega en El Alto
-                </label>
-                <label class="envio-opcion" id="op-nacional">
-                    <input type="radio" name="tipo-envio" value="nacional"> 🇧🇴 Envío Nacional
-                </label>
-                <label class="envio-opcion" id="op-delivery">
-                    <input type="radio" name="tipo-envio" value="delivery"> 🛵 Delivery a domicilio
-                </label>
-            </div>
+          <h4>🚚 ¿Cómo quieres recibir tu pedido?</h4>
+          <div class="envio-opciones">
+            <label class="envio-opcion" id="op-lapaz">
+              <input type="radio" name="tipo-envio" value="lapaz" /> 🏙️ Entrega
+              en La Paz
+            </label>
+            <label class="envio-opcion" id="op-elalto">
+              <input type="radio" name="tipo-envio" value="elalto" /> 🌆 Entrega
+              en El Alto
+            </label>
+            <label class="envio-opcion" id="op-nacional">
+              <input type="radio" name="tipo-envio" value="nacional" /> 🇧🇴 Envío
+              Nacional
+            </label>
+            <label class="envio-opcion" id="op-delivery">
+              <input type="radio" name="tipo-envio" value="delivery" /> 🛵
+              Delivery a domicilio
+            </label>
+          </div>
 
-            <!-- DETALLE LA PAZ -->
-            <div class="envio-detalle" id="detalle-lapaz" style="display:none;">
-                <select id="punto-lapaz">
-                    <option value="">Elige punto de entrega...</option>
-                    <option value="San Francisco — 15:00 pm">📍 San Francisco — 15:00 pm</option>
-                    <option value="Correos — 15:30 pm">📍 Correos — 15:30 pm</option>
-                    <option value="Teleférico Morado — 16:00 pm">📍 Teleférico Morado (La Paz) — 16:00 pm</option>
-                </select>
-            </div>
+          <!-- DETALLE LA PAZ -->
+          <div class="envio-detalle" id="detalle-lapaz" style="display: none">
+            <select id="punto-lapaz">
+              <option value="">Elige punto de entrega...</option>
+              <option value="San Francisco — 15:00 pm">
+                📍 San Francisco — 15:00 pm
+              </option>
+              <option value="Correos — 15:30 pm">📍 Correos — 15:30 pm</option>
+              <option value="Teleférico Morado — 16:00 pm">
+                📍 Teleférico Morado (La Paz) — 16:00 pm
+              </option>
+            </select>
+          </div>
 
-            <!-- DETALLE EL ALTO -->
-            <div class="envio-detalle" id="detalle-elalto" style="display:none;">
-                <select id="punto-elalto">
-                    <option value="">Elige punto de entrega...</option>
-                    <option value="Teleférico Morado Faro Murillo — 16:45 pm">📍 Teleférico Morado Faro Murillo — 16:45 pm</option>
-                    <option value="Teleférico Morado 6 de Marzo — 16:45 pm">📍 Teleférico Morado 6 de Marzo — 16:45 pm</option>
-                    <option value="Terminal Metropolitana — 17:15 pm">📍 Terminal Metropolitana — 17:15 pm</option>
-                    <option value="Cruce Villa Adela — 17:15 pm">📍 Cruce Villa Adela — 17:15 pm</option>
-                </select>
-            </div>
+          <!-- DETALLE EL ALTO -->
+          <div class="envio-detalle" id="detalle-elalto" style="display: none">
+            <select id="punto-elalto">
+              <option value="">Elige punto de entrega...</option>
+              <option value="Teleférico Morado Faro Murillo — 16:45 pm">
+                📍 Teleférico Morado Faro Murillo — 16:45 pm
+              </option>
+              <option value="Teleférico Morado 6 de Marzo — 16:45 pm">
+                📍 Teleférico Morado 6 de Marzo — 16:45 pm
+              </option>
+              <option value="Terminal Metropolitana — 17:15 pm">
+                📍 Terminal Metropolitana — 17:15 pm
+              </option>
+              <option value="Cruce Villa Adela — 17:15 pm">
+                📍 Cruce Villa Adela — 17:15 pm
+              </option>
+            </select>
+          </div>
 
-            <!-- DETALLE NACIONAL -->
-            <div class="envio-detalle" id="detalle-nacional" style="display:none;">
-                <select id="ciudad-nacional">
-                    <option value="">Elige tu ciudad...</option>
-                    <option value="Cochabamba — 10 Bs">📦 Cochabamba — 10 Bs</option>
-                    <option value="Santa Cruz — 10 Bs">📦 Santa Cruz — 10 Bs</option>
-                    <option value="Tarija — 10 Bs">📦 Tarija — 10 Bs</option>
-                    <option value="Oruro — 10 Bs">📦 Oruro — 10 Bs</option>
-                    <option value="Potosí — 10 Bs">📦 Potosí — 10 Bs</option>
-                    <option value="Sucre — 10 Bs">📦 Sucre — 10 Bs</option>
-                    <option value="Beni — 15 Bs">📦 Beni — 15 Bs</option>
-                    <option value="Cobija — 15 Bs">📦 Cobija — 15 Bs</option>
-                    <option value="Otra ciudad — consultar">📦 Otra ciudad (consultar)</option>
-                </select>
-            </div>
+          <!-- DETALLE NACIONAL -->
+          <div
+            class="envio-detalle"
+            id="detalle-nacional"
+            style="display: none"
+          >
+            <select id="ciudad-nacional">
+              <option value="">Elige tu ciudad...</option>
+              <option value="Cochabamba — 10 Bs">📦 Cochabamba — 10 Bs</option>
+              <option value="Santa Cruz — 10 Bs">📦 Santa Cruz — 10 Bs</option>
+              <option value="Tarija — 10 Bs">📦 Tarija — 10 Bs</option>
+              <option value="Oruro — 10 Bs">📦 Oruro — 10 Bs</option>
+              <option value="Potosí — 10 Bs">📦 Potosí — 10 Bs</option>
+              <option value="Sucre — 10 Bs">📦 Sucre — 10 Bs</option>
+              <option value="Beni — 15 Bs">📦 Beni — 15 Bs</option>
+              <option value="Cobija — 15 Bs">📦 Cobija — 15 Bs</option>
+              <option value="Otra ciudad — consultar">
+                📦 Otra ciudad (consultar)
+              </option>
+            </select>
+          </div>
 
-            <!-- DETALLE DELIVERY -->
-            <div class="envio-detalle" id="detalle-delivery" style="display:none;">
-                <input type="text" id="direccion-delivery" placeholder="Tu dirección completa...">
-                <p class="delivery-nota">🛵 Costo: 10–15 Bs según distancia. Te confirmamos el precio por WhatsApp.</p>
-            </div>
+          <!-- DETALLE DELIVERY -->
+          <div
+            class="envio-detalle"
+            id="detalle-delivery"
+            style="display: none"
+          >
+            <input
+              type="text"
+              id="direccion-delivery"
+              placeholder="Tu dirección completa..."
+            />
+            <p class="delivery-nota">
+              🛵 Costo: 10–15 Bs según distancia. Te confirmamos el precio por
+              WhatsApp.
+            </p>
+          </div>
         </div>
 
-        <p class="pago-total">Total: <span id="total-pago">0</span> Bs <span id="costo-envio-badge" class="costo-envio-badge" style="display:none;"></span></p>
-        <img src="img/qr1.jpg" class="qr-img">
+        <p class="pago-total">
+          Total: <span id="total-pago">0</span> Bs
+          <span
+            id="costo-envio-badge"
+            class="costo-envio-badge"
+            style="display: none"
+          ></span>
+        </p>
+        <img src="img/qr1.jpg" class="qr-img" />
         <div class="datos-pago">
-            <h3>Pago por Transferencia</h3>
-            <p>Banco: MERCANTIL SCZ</p><p>Cuenta: 1016631325</p>
-            <p>Titular: Rodrigo Franco Navia Rojas</p>
+          <h3>Pago por Transferencia</h3>
+          <p>Banco: MERCANTIL SCZ</p>
+          <p>Cuenta: 1016631325</p>
+          <p>Titular: Rodrigo Franco Navia Rojas</p>
         </div>
         <!-- CAMPO REFERENCIA -->
         <div class="voucher-seccion">
-            <label class="voucher-label">📋 Número de referencia / transacción (opcional)</label>
-            <input type="text" id="num-referencia" placeholder="Ej: 123456789">
+          <label class="voucher-label"
+            >📋 Número de referencia / transacción (opcional)</label
+          >
+          <input type="text" id="num-referencia" placeholder="Ej: 123456789" />
         </div>
 
         <!-- INSTRUCCIÓN VOUCHER -->
         <div class="voucher-instruccion">
-            <div class="voucher-paso">
-                <span class="voucher-num">1</span>
-                <p>Haz tu pago por QR o transferencia</p>
-            </div>
-            <div class="voucher-paso">
-                <span class="voucher-num">2</span>
-                <p>Toca el botón de abajo — se abrirá WhatsApp con tu pedido listo</p>
-            </div>
-            <div class="voucher-paso">
-                <span class="voucher-num">3</span>
-                <p><strong>Adjunta la foto de tu voucher</strong> en WhatsApp antes de enviar el mensaje</p>
-            </div>
+          <div class="voucher-paso">
+            <span class="voucher-num">1</span>
+            <p>Haz tu pago por QR o transferencia</p>
+          </div>
+          <div class="voucher-paso">
+            <span class="voucher-num">2</span>
+            <p>
+              Toca el botón de abajo — se abrirá WhatsApp con tu pedido listo
+            </p>
+          </div>
+          <div class="voucher-paso">
+            <span class="voucher-num">3</span>
+            <p>
+              <strong>Adjunta la foto de tu voucher</strong> en WhatsApp antes
+              de enviar el mensaje
+            </p>
+          </div>
         </div>
         <div class="voucher-alerta">
-            📸 <strong>Importante:</strong> Sin comprobante no podemos confirmar tu pedido
+          📸 <strong>Importante:</strong> Sin comprobante no podemos confirmar
+          tu pedido
         </div>
 
-        <button id="enviar-whatsapp">📱 Ya pagué — Enviar pedido + voucher</button>
+        <button id="enviar-whatsapp">
+          📱 Ya pagué — Enviar pedido + voucher
+        </button>
+      </div>
     </div>
-</div>
 
-<!-- CUENTA DE CLIENTE -->
-<div class="login-modal" id="cuenta-modal" style="display:none;">
-    <div class="login-box cuenta-box">
-        <button class="modal-cerrar" id="cerrar-cuenta" type="button" aria-label="Cerrar">✕</button>
-        <h2>Acceso a tu cuenta</h2>
-        <div id="cuenta-form">
+    <!-- CUENTA DE CLIENTE -->
+    <!-- CUENTA DE CLIENTE -->
+    <div class="login-modal" id="cuenta-modal" style="display: none">
+      <div class="login-box cuenta-box" id="cuenta-box">
+        <aside class="cuenta-bienvenida" id="cuenta-bienvenida" hidden>
+          <img
+            src="img/logo.png"
+            alt="Fútbol Premier"
+            class="cuenta-bienvenida-logo"
+          />
+          <p class="cuenta-bienvenida-kicker">FÚTBOL PREMIER</p>
+          <h2>Bienvenido al sistema ADM-FP</h2>
+          <p>
+            Gestiona el catálogo, los pedidos, los pagos y los ingresos de la
+            tienda según tu rol.
+          </p>
+        </aside>
+
+        <div class="cuenta-contenido">
+          <button
+            class="modal-cerrar"
+            id="cerrar-cuenta"
+            type="button"
+            aria-label="Cerrar"
+          >
+            ✕
+          </button>
+          <h2 id="cuenta-titulo">Acceso a tu cuenta</h2>
+
+          <div id="cuenta-form">
             <div class="cuenta-tabs">
-                <button type="button" class="cuenta-tab activo" data-cuenta-vista="ingresar">Ingresar</button>
-                <button type="button" class="cuenta-tab" data-cuenta-vista="registrar">Crear cuenta</button>
+              <button
+                type="button"
+                class="cuenta-tab activo"
+                data-cuenta-vista="ingresar"
+              >
+                Ingresar
+              </button>
+              <button
+                type="button"
+                class="cuenta-tab"
+                data-cuenta-vista="registrar"
+              >
+                Crear cuenta
+              </button>
             </div>
-            <div id="cuenta-registro-campos" style="display:none;">
-                <label for="cuenta-usuario">Usuario</label>
-                <input type="text" id="cuenta-usuario" autocomplete="username" minlength="3" maxlength="20" value="Rodrigo" placeholder="Ej. jugador10">
+            <div id="cuenta-registro-campos" style="display: none">
+              <label for="cuenta-usuario">Usuario</label>
+              <input
+                type="text"
+                id="cuenta-usuario"
+                autocomplete="username"
+                minlength="3"
+                maxlength="20"
+                placeholder="Ej. jugador10"
+              />
             </div>
-            <label for="cuenta-email" id="cuenta-email-label">Correo electrónico</label>
-            <input type="text" id="cuenta-email" autocomplete="username" placeholder="tu@correo.com o FUTADMI">
+            <label for="cuenta-email" id="cuenta-email-label"
+              >Correo electrónico</label
+            >
+            <input
+              type="text"
+              id="cuenta-email"
+              autocomplete="username"
+              placeholder="tu@correo.com"
+            />
             <label for="cuenta-password">Contraseña</label>
-            <input type="password" id="cuenta-password" autocomplete="current-password" minlength="8" placeholder="Mínimo 8 caracteres">
+            <input
+              type="password"
+              id="cuenta-password"
+              autocomplete="current-password"
+              minlength="8"
+              placeholder="Mínimo 8 caracteres"
+            />
             <div class="cuenta-captcha" id="cuenta-captcha-wrap">
-                <label class="cuenta-captcha-instruccion" for="cuenta-captcha-respuesta">Escribe el código de seguridad:</label>
-                <div class="cuenta-captcha-visual">
-                    <canvas id="cuenta-captcha-imagen" width="280" height="76" role="img" aria-label="Código de seguridad CAPTCHA"></canvas>
-                    <button type="button" id="cuenta-captcha-nuevo" aria-label="Generar otro código" title="Generar otro código">↻</button>
-                </div>
-                <input type="text" id="cuenta-captcha-respuesta" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="5" placeholder="Código de seguridad">
+              <label
+                class="cuenta-captcha-instruccion"
+                for="cuenta-captcha-respuesta"
+                >Escribe el código de seguridad:</label
+              >
+              <div class="cuenta-captcha-visual">
+                <canvas
+                  id="cuenta-captcha-imagen"
+                  width="280"
+                  height="76"
+                  role="img"
+                  aria-label="Código de seguridad CAPTCHA"
+                ></canvas>
+                <button
+                  type="button"
+                  id="cuenta-captcha-nuevo"
+                  aria-label="Generar otro código"
+                  title="Generar otro código"
+                >
+                  ↻
+                </button>
+              </div>
+              <input
+                type="text"
+                id="cuenta-captcha-respuesta"
+                inputmode="text"
+                autocomplete="off"
+                autocapitalize="characters"
+                spellcheck="false"
+                maxlength="5"
+                placeholder="Código de seguridad"
+              />
             </div>
             <button type="button" id="cuenta-submit">Ingresar</button>
             <p class="cuenta-ayuda" id="cuenta-mensaje" role="status"></p>
+            <button
+              type="button"
+              class="cuenta-modo-personal"
+              id="cuenta-modo-personal"
+            >
+              Acceso del personal
+            </button>
+          </div>
+
+          <div id="cuenta-perfil" style="display: none"></div>
         </div>
-        <div id="cuenta-perfil" style="display:none;"></div>
+      </div>
     </div>
-</div>
-
-
-<!-- SECCIÓN ENTREGAS Y ENVÍOS -->
-<section class="entregas-seccion" id="entregas">
-    <div class="entregas-header reveal">
+    <!-- SECCIÓN ENTREGAS Y ENVÍOS -->
+    <section class="entregas-seccion" id="entregas">
+      <div class="entregas-header reveal">
         <h2 class="section-heading">ENTREGAS Y ENVÍOS</h2>
         <p>Elige la opción más cómoda para recibir tu jersey</p>
-    </div>
-    <div class="entregas-grid">
-
+      </div>
+      <div class="entregas-grid">
         <!-- LA PAZ -->
         <div class="entrega-card reveal">
-            <div class="entrega-ciudad-header">
-                <span class="entrega-icono">🏙️</span>
-                <div>
-                    <h3>Entregas La Paz</h3>
-                    <span class="entrega-precio-tag">Delivery 10–15 Bs</span>
-                </div>
+          <div class="entrega-ciudad-header">
+            <span class="entrega-icono">🏙️</span>
+            <div>
+              <h3>Entregas La Paz</h3>
+              <span class="entrega-precio-tag">Delivery 10–15 Bs</span>
             </div>
-            <ul class="entrega-lista">
-                <li>
-                    <span class="entrega-punto">📍 San Francisco</span>
-                    <span class="entrega-hora">15:00 pm</span>
-                </li>
-                <li>
-                    <span class="entrega-punto">📍 Correos</span>
-                    <span class="entrega-hora">15:30 pm</span>
-                </li>
-                <li>
-                    <span class="entrega-punto">📍 Teleférico Morado (Ciudad de La Paz)</span>
-                    <span class="entrega-hora">16:00 pm</span>
-                </li>
-            </ul>
-            <div class="entrega-nota">🛵 Delivery a domicilio disponible</div>
+          </div>
+          <ul class="entrega-lista">
+            <li>
+              <span class="entrega-punto">📍 San Francisco</span>
+              <span class="entrega-hora">15:00 pm</span>
+            </li>
+            <li>
+              <span class="entrega-punto">📍 Correos</span>
+              <span class="entrega-hora">15:30 pm</span>
+            </li>
+            <li>
+              <span class="entrega-punto"
+                >📍 Teleférico Morado (Ciudad de La Paz)</span
+              >
+              <span class="entrega-hora">16:00 pm</span>
+            </li>
+          </ul>
+          <div class="entrega-nota">🛵 Delivery a domicilio disponible</div>
         </div>
 
         <!-- EL ALTO -->
         <div class="entrega-card reveal">
-            <div class="entrega-ciudad-header">
-                <span class="entrega-icono">🌆</span>
-                <div>
-                    <h3>Entregas El Alto</h3>
-                    <span class="entrega-precio-tag">Delivery 10–15 Bs</span>
-                </div>
+          <div class="entrega-ciudad-header">
+            <span class="entrega-icono">🌆</span>
+            <div>
+              <h3>Entregas El Alto</h3>
+              <span class="entrega-precio-tag">Delivery 10–15 Bs</span>
             </div>
-            <ul class="entrega-lista">
-                <li>
-                    <span class="entrega-punto">📍 Teleférico Morado (Faro Murillo o 6 de Marzo)</span>
-                    <span class="entrega-hora">16:45 pm</span>
-                </li>
-                <li>
-                    <span class="entrega-punto">📍 Terminal Metropolitana</span>
-                    <span class="entrega-hora">17:15 pm</span>
-                </li>
-                <li>
-                    <span class="entrega-punto">📍 Cruce Villa Adela</span>
-                    <span class="entrega-hora">17:15 pm</span>
-                </li>
-            </ul>
-            <div class="entrega-nota">🛵 Delivery a domicilio disponible</div>
+          </div>
+          <ul class="entrega-lista">
+            <li>
+              <span class="entrega-punto"
+                >📍 Teleférico Morado (Faro Murillo o 6 de Marzo)</span
+              >
+              <span class="entrega-hora">16:45 pm</span>
+            </li>
+            <li>
+              <span class="entrega-punto">📍 Terminal Metropolitana</span>
+              <span class="entrega-hora">17:15 pm</span>
+            </li>
+            <li>
+              <span class="entrega-punto">📍 Cruce Villa Adela</span>
+              <span class="entrega-hora">17:15 pm</span>
+            </li>
+          </ul>
+          <div class="entrega-nota">🛵 Delivery a domicilio disponible</div>
         </div>
 
         <!-- ENVÍOS NACIONALES -->
         <div class="entrega-card entrega-nacional reveal">
-            <div class="entrega-ciudad-header">
-                <span class="entrega-icono">🇧🇴</span>
-                <div>
-                    <h3>Envíos Nacionales</h3>
-                    <span class="entrega-precio-tag">Desde 10 Bs</span>
-                </div>
+          <div class="entrega-ciudad-header">
+            <span class="entrega-icono">🇧🇴</span>
+            <div>
+              <h3>Envíos Nacionales</h3>
+              <span class="entrega-precio-tag">Desde 10 Bs</span>
             </div>
-            <div class="envios-grid">
-                <div class="envio-ciudad"><span>📦 Cochabamba</span><span class="envio-precio">10 Bs</span></div>
-                <div class="envio-ciudad"><span>📦 Santa Cruz</span><span class="envio-precio">10 Bs</span></div>
-                <div class="envio-ciudad"><span>📦 Tarija</span><span class="envio-precio">10 Bs</span></div>
-                <div class="envio-ciudad"><span>📦 Oruro</span><span class="envio-precio">10 Bs</span></div>
-                <div class="envio-ciudad"><span>📦 Potosí</span><span class="envio-precio">10 Bs</span></div>
-                <div class="envio-ciudad"><span>📦 Sucre</span><span class="envio-precio">10 Bs</span></div>
-                <div class="envio-ciudad"><span>📦 Beni</span><span class="envio-precio">15 Bs</span></div>
-                <div class="envio-ciudad"><span>📦 Cobija</span><span class="envio-precio">15 Bs</span></div>
+          </div>
+          <div class="envios-grid">
+            <div class="envio-ciudad">
+              <span>📦 Cochabamba</span><span class="envio-precio">10 Bs</span>
             </div>
-            <div class="entrega-nota">📞 Otras ciudades: consultar por WhatsApp</div>
+            <div class="envio-ciudad">
+              <span>📦 Santa Cruz</span><span class="envio-precio">10 Bs</span>
+            </div>
+            <div class="envio-ciudad">
+              <span>📦 Tarija</span><span class="envio-precio">10 Bs</span>
+            </div>
+            <div class="envio-ciudad">
+              <span>📦 Oruro</span><span class="envio-precio">10 Bs</span>
+            </div>
+            <div class="envio-ciudad">
+              <span>📦 Potosí</span><span class="envio-precio">10 Bs</span>
+            </div>
+            <div class="envio-ciudad">
+              <span>📦 Sucre</span><span class="envio-precio">10 Bs</span>
+            </div>
+            <div class="envio-ciudad">
+              <span>📦 Beni</span><span class="envio-precio">15 Bs</span>
+            </div>
+            <div class="envio-ciudad">
+              <span>📦 Cobija</span><span class="envio-precio">15 Bs</span>
+            </div>
+          </div>
+          <div class="entrega-nota">
+            📞 Otras ciudades: consultar por WhatsApp
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- SECCIÓN CONTACTO -->
+    <!-- SECCIÓN CONTACTO -->
+    <section class="contacto-seccion" id="contacto">
+      <h2 class="section-heading">CONTACTO</h2>
+      <div class="contacto-grid">
+        <div class="contacto-card">
+          <span class="contacto-icono">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.7-5.4A8.4 8.4 0 1 1 21 11.5z"
+              />
+              <path
+                d="M9 9.5c.2 2.2 2.3 4.3 4.5 4.5l1.3-1.3-1.8-1.1-.9.6c-.8-.4-1.5-1.1-1.9-1.9l.6-.9L9.7 7.6 9 9.5z"
+              />
+            </svg>
+          </span>
+          <h3>WhatsApp</h3>
+          <p>Atención directa y rápida para pedidos y consultas.</p>
+          <a
+            href="https://wa.me/59171208827"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Escribir ahora</a
+          >
         </div>
 
-    </div>
-</section>
+        <div class="contacto-card">
+          <span class="contacto-icono">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"
+              />
+              <circle cx="12" cy="9.5" r="2.6" />
+            </svg>
+          </span>
+          <h3>Ubicación</h3>
+          <p>Calle Murillo, La Paz, Bolivia</p>
+        </div>
 
-<!-- FOOTER -->
-<footer class="footer" id="footer">
-    <h2 class="section-heading">CONTACTO</h2>
-    <div class="footer-logo"><img src="img/logo.png" alt="Fútbol Premier"><h2>FÚTBOL PREMIER</h2></div>
-    <p class="footer-text">Vive el fútbol con los mejores jerseys</p>
-    <p class="footer-ubicacion">Ubicación: Calle Murillo-La Paz</p>
-    <div class="footer-redes">
-        <a href="https://wa.me/59171208827" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-        <a href="https://www.instagram.com/futbol.premier_10" target="_blank" rel="noopener noreferrer">Instagram</a>
-        <a href="https://www.tiktok.com/@ftbol_premier" target="_blank" rel="noopener noreferrer">TikTok</a>
-    </div>
-    <p class="copy">© 2026 Fútbol Premier - Todos los derechos reservados</p>
-</footer>
+        <div class="contacto-card">
+          <span class="contacto-icono">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 7v5l3.2 2" />
+            </svg>
+          </span>
+          <h3>Horario</h3>
+          <p>Lunes a sábado<br />9:00 – 19:00</p>
+        </div>
 
-<div id="toast"></div>
-<a href="https://wa.me/59171208827" target="_blank" rel="noopener noreferrer" class="whatsapp-flotante" aria-label="Contactar por WhatsApp"><img src="img/whatsapp.png" alt=""></a>
-<button class="volver-arriba" id="volver-arriba">↑</button>
+        <div class="contacto-card">
+          <span class="contacto-icono">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.2" cy="6.8" r=".6" fill="currentColor" />
+            </svg>
+          </span>
+          <h3>Redes sociales</h3>
+          <p>Síguenos para ver novedades y ofertas.</p>
+          <div class="contacto-redes">
+            <a
+              href="https://www.instagram.com/futbol.premier_10"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Instagram</a
+            >
+            <a
+              href="https://www.tiktok.com/@ftbol_premier"
+              target="_blank"
+              rel="noopener noreferrer"
+              >TikTok</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- FOOTER -->
+    <footer class="footer" id="footer">
+      <div class="footer-grid">
+        <div class="footer-col footer-marca">
+          <div class="footer-logo">
+            <img src="img/logo.png" alt="Fútbol Premier" />
+            <h2>FÚTBOL PREMIER</h2>
+          </div>
+          <p class="footer-text">
+            Los mejores jerseys de fútbol, enviados a toda Bolivia.
+          </p>
+          <div class="footer-redes-iconos">
+            <a
+              href="https://www.instagram.com/futbol.premier_10"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Instagram</a
+            >
+            <a
+              href="https://www.tiktok.com/@ftbol_premier"
+              target="_blank"
+              rel="noopener noreferrer"
+              >TikTok</a
+            >
+          </div>
+        </div>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check-compat.js"></script>
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyCdqsnWoGHfkj653COVGFXyjMEWuKvLyrY",
-    authDomain: "futbol-premier-6cc4e.firebaseapp.com",
-    databaseURL: "https://futbol-premier-6cc4e-default-rtdb.firebaseio.com",
-    projectId: "futbol-premier-6cc4e",
-    storageBucket: "futbol-premier-6cc4e.firebasestorage.app",
-    messagingSenderId: "232505548680",
-    appId: "1:232505548680:web:34397c38cad10d2b6a43d",
-    measurementId: "G-B3V4HY4ZTQ"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-  const auth = firebase.auth();
-  const FIREBASE_APP_CHECK_SITE_KEY = "";
-  if (FIREBASE_APP_CHECK_SITE_KEY) {
-    firebase.appCheck().activate(FIREBASE_APP_CHECK_SITE_KEY, true);
-  }
-</script>
-<script src="script.js?v=20261120-visual-captcha"></script>
-</body>
+        <div class="footer-col">
+          <h3>Navegación</h3>
+          <ul class="footer-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#ofertas">Ofertas</a></li>
+            <li><a href="#catalogo">Catálogo</a></li>
+            <li><a href="#nosotros">Nosotros</a></li>
+            <li><a href="#resenas">Reseñas</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Ayuda</h3>
+          <ul class="footer-links">
+            <li><a href="#entregas">Envíos y entregas</a></li>
+            <li><a href="#encargos">Encargos personalizados</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Contacto</h3>
+          <p class="footer-ubicacion">📍 Calle Murillo, La Paz</p>
+          <p class="footer-ubicacion">🕐 Lun a Sáb: 9:00 – 19:00</p>
+          <div class="footer-redes">
+            <a
+              href="https://wa.me/59171208827"
+              target="_blank"
+              rel="noopener noreferrer"
+              >WhatsApp</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-barra">
+        <p class="copy">
+          © 2026 Fútbol Premier - Todos los derechos reservados
+        </p>
+      </div>
+    </footer>
+
+    <div id="toast"></div>
+    <a
+      href="https://wa.me/59171208827"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="whatsapp-flotante"
+      aria-label="Contactar por WhatsApp"
+      ><img src="img/whatsapp.png" alt=""
+    /></a>
+    <button class="volver-arriba" id="volver-arriba">↑</button>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check-compat.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyCdqsnWoGHfkj653COVGFXyjMEWuKvLyrY",
+        authDomain: "futbol-premier-6cc4e.firebaseapp.com",
+        databaseURL: "https://futbol-premier-6cc4e-default-rtdb.firebaseio.com",
+        projectId: "futbol-premier-6cc4e",
+        storageBucket: "futbol-premier-6cc4e.firebasestorage.app",
+        messagingSenderId: "232505548680",
+        appId: "1:232505548680:web:34397c38cad10d2b6a43d",
+        measurementId: "G-B3V4HY4ZTQ",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.database();
+      const auth = firebase.auth();
+      const FIREBASE_APP_CHECK_SITE_KEY = "";
+      if (FIREBASE_APP_CHECK_SITE_KEY) {
+        firebase.appCheck().activate(FIREBASE_APP_CHECK_SITE_KEY, true);
+      }
+    </script>
+    <script src="script.js?v=20261120-visual-captcha"></script>
+  </body>
 </html>

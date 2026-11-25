@@ -87,8 +87,8 @@ function mostrarCuenta(vista = "ingresar") {
     $("cuenta-submit").textContent = vista === "registrar" ? "Crear cuenta" : "Ingresar";
     $("cuenta-password").setAttribute("autocomplete", vista === "registrar" ? "new-password" : "current-password");
     $("cuenta-email").type = vista === "registrar" ? "email" : "text";
-    $("cuenta-email").placeholder = vista === "registrar" ? "tu@correo.com" : "tu@correo.com o FUTADMI";
-    $("cuenta-email-label").textContent = vista === "registrar" ? "Correo electrónico" : "Correo electrónico o usuario administrador";
+    $("cuenta-email").placeholder = modoPersonal && vista === "ingresar" ? "Correo o usuario del personal" : "tu@correo.com";
+$("cuenta-email-label").textContent = modoPersonal && vista === "ingresar" ? "Correo o usuario del personal" : "Correo electrónico";
     $("cuenta-captcha-wrap").style.display = vista === "registrar" ? "none" : "grid";
     if (vista === "ingresar") generarCodigoCaptchaVisual();
     else {
@@ -164,6 +164,7 @@ function renderCuentaPerfil() {
         return;
     }
     form.style.display = "none";
+    aplicarModoPersonal(false);
     perfil.style.display = "block";
     const nombreGuardado = perfilActual?.usuario;
     const nombre = nombreGuardado
@@ -391,13 +392,13 @@ $("abrir-cuenta").addEventListener("click", () => {
     mostrarCuenta(usuarioActual ? vistaCuenta : "ingresar");
     renderCuentaPerfil();
 });
-$("cerrar-cuenta").addEventListener("click", () => {
+function cerrarCuentaModal() {
     $("cuenta-modal").style.display = "none";
-});
+    aplicarModoPersonal(false);
+}
+$("cerrar-cuenta").addEventListener("click", cerrarCuentaModal);
 $("cuenta-modal").addEventListener("click", event => {
-    if (event.target === $("cuenta-modal")) {
-        $("cuenta-modal").style.display = "none";
-    }
+    if (event.target === $("cuenta-modal")) cerrarCuentaModal();
 });
 $$(".cuenta-tab").forEach(button => button.addEventListener("click", () => {
     mostrarCuenta(button.dataset.cuentaVista);
@@ -475,8 +476,9 @@ $("cuenta-submit").addEventListener("click", async () => {
     }
     try {
         await auth.signInWithEmailAndPassword(email, password);
-        $("cuenta-password").value = "";
-        $("cuenta-modal").style.display = "none";
+$("cuenta-password").value = "";
+$("cuenta-modal").style.display = "none";
+aplicarModoPersonal(false);
     } catch (error) {
         salida.textContent = describirErrorFirebase(error);
     }
@@ -600,28 +602,10 @@ const destinosVista = {
     nosotros: ["nosotros"],
     resenas: ["resenas"],
     entregas: ["entregas"],
-    footer: ["footer"]
+    footer: ["contacto"],
+    contacto: ["contacto"]
 };
 function ajustarVistaCompleta() {
-    if (!document.body.classList.contains("vista-seccion")) return;
-    const footer = $("footer");
-    const activa = document.querySelector(".vista-activa");
-    const top = $("navbar").getBoundingClientRect().bottom;
-    if (activa === footer) {
-        footer.style.top = `${top}px`;
-        footer.style.bottom = "0";
-        footer.style.height = "auto";
-        footer.style.minHeight = "0";
-        return;
-    }
-    footer.style.top = "";
-    footer.style.bottom = "";
-    footer.style.height = "";
-    footer.style.minHeight = "";
-    if (!activa) return;
-    const alto = Math.max(0, window.innerHeight - top - footer.getBoundingClientRect().height);
-    activa.style.height = `${alto}px`;
-    activa.style.minHeight = "0";
 }
 $$('a[href^="#"]').forEach(a=>a.addEventListener("click",e=>{
     const id=a.getAttribute("href").slice(1);
@@ -2388,3 +2372,16 @@ function guardarLS(){
     }
 }
 function limpiarFormulario(){["imagen","img-url","nombre","tallas","dorsales","calidad","colores","descripcion","precio","vendidos","precio-original","fin-oferta","stock"].forEach(id=>{if($(id))$(id).value="";});$("es-oferta").checked=false;$("campo-precio-original").style.display="none";}
+let modoPersonal = false;
+function aplicarModoPersonal(activo) {
+    modoPersonal = activo;
+    $("cuenta-box").classList.toggle("cuenta-box-dividida", activo);
+    $("cuenta-bienvenida").hidden = !activo;
+    $("cuenta-titulo").textContent = activo ? "Acceso del personal" : "Acceso a tu cuenta";
+    $("cuenta-modo-personal").textContent = activo ? "← Volver al acceso de clientes" : "Acceso del personal";
+    $("cuenta-email").placeholder = activo ? "Correo o usuario del personal" : "tu@correo.com";
+    $("cuenta-email-label").textContent = activo ? "Correo o usuario del personal" : "Correo electrónico";
+    document.querySelector(".cuenta-tabs").style.display = activo ? "none" : "flex";
+    if (activo) document.querySelector('.cuenta-tab[data-cuenta-vista="ingresar"]').click();
+}
+$("cuenta-modo-personal").addEventListener("click", () => aplicarModoPersonal(!modoPersonal));

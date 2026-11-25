@@ -897,17 +897,18 @@ body.vista-seccion[data-vista="admin-panel"]>#admin-panel.vista-activa{
 .admin-cabecera-marca{
     display:flex;
     align-items:center;
-    gap:16px;
+    gap:12px;
     min-width:0;
 }
 .admin-logo{
-    width:76px;
-    height:76px;
-    flex:0 0 76px;
+    width:88px;
+    height:88px;
+    flex:0 0 88px;
     object-fit:contain;
-    border:1px solid var(--border);
-    border-radius:16px;
-    background:var(--bg3);
+    border:0;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
 }
 .admin-kicker{
     color:var(--text3);
@@ -1086,7 +1087,7 @@ body.vista-seccion[data-vista="admin-panel"]>#admin-panel.vista-activa{
 @media(max-width:480px){
     #admin-panel.admin{width:100%;padding:18px 12px;}
     .admin-cabecera-marca{gap:12px;}
-    .admin-logo{width:58px;height:58px;flex-basis:58px;border-radius:12px;}
+    .admin-logo{width:64px;height:64px;flex-basis:64px;}
     .admin-cabecera-acciones{width:100%;}
     .admin-cabecera-acciones button{flex:1;}
     #admin-panel .admin-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}
@@ -1105,7 +1106,7 @@ body.vista-seccion[data-vista="admin-panel"]>#admin-panel.vista-activa{
     display:grid;
     grid-template-columns:260px minmax(0,1fr);
     gap:22px;
-    align-items:start;
+    align-items:stretch;
 }
 .admin-sidebar{
     position:sticky;
@@ -1349,30 +1350,6 @@ body.vista-seccion[data-vista="admin-panel"]>#admin-panel.vista-activa{
     .hero-explora a{min-height:28px;padding:4px 8px;font-size:.69rem;}
 }
 
-#admin-panel.admin{
-    width:100%;
-    max-width:none;
-    min-height:calc(100vh - 220px);
-    margin:0;
-    padding:190px clamp(20px,3vw,38px) clamp(20px,3vw,38px);
-    border-radius:0;
-}
-#admin-panel .admin-cabecera{
-    position:fixed;
-    top:0;
-    right:0;
-    left:0;
-    z-index:1000;
-    width:auto;
-    max-width:none;
-    padding:14px clamp(20px,3vw,38px) 20px;
-    margin:0;
-    border-bottom:1px solid var(--border);
-    background:var(--bg);
-}
-#admin-panel .admin-workspace{grid-template-columns:280px minmax(0,1fr);gap:24px;}
-#admin-panel .admin-sidebar{top:156px;min-height:calc(100vh - 280px);}
-#admin-panel .admin-tab-content{min-height:calc(100vh - 385px);}
 #admin-panel .atab{
     display:flex;
     align-items:center;
@@ -1398,7 +1375,6 @@ body.vista-seccion[data-vista="admin-panel"]>#admin-panel.vista-activa{
 #admin-panel .atab.activo .admin-tab-text small{color:var(--text2);}
 @media(max-width:760px){
     #admin-panel .admin-workspace{grid-template-columns:minmax(0,1fr);gap:14px;}
-    #admin-panel.admin{padding-top:280px;}
     #admin-panel .admin-sidebar{top:250px;min-height:0;}
     #admin-panel .admin-tab-content{min-height:0;}
     #admin-panel .atab{min-height:76px;padding:10px;align-items:flex-start;}
@@ -1406,6 +1382,394 @@ body.vista-seccion[data-vista="admin-panel"]>#admin-panel.vista-activa{
     #admin-panel .admin-tab-text small{font-size:.74rem;}
 }
 @media(max-width:480px){
-    #admin-panel.admin{padding-top:320px;}
     #admin-panel .admin-sidebar{top:290px;}
+}
+/* ===== FOOTER NORMAL EN COLUMNAS ===== */
+body{padding-bottom:0!important;}
+
+body > .footer,
+body.vista-seccion>.footer.vista-activa{
+    position:static!important;
+    top:auto!important;bottom:auto!important;left:auto!important;right:auto!important;
+    height:auto!important;min-height:0!important;max-height:none!important;
+    overflow:visible!important;
+    display:block!important;
+    margin:60px 0 0!important;
+    padding:46px 32px 22px!important;
+    background:#000;
+    border-top:1px solid var(--border);
+    text-align:left;
+}
+
+/* Cuadrícula de columnas */
+.footer-grid{
+    display:grid;
+    grid-template-columns:1.5fr 1fr 1fr 1.2fr;
+    gap:36px;
+    max-width:1200px;
+    margin:0 auto 32px;
+}
+.footer-col h3{
+    font-size:.95rem;letter-spacing:.12em;text-transform:uppercase;
+    margin:0 0 16px;color:#fff;
+}
+
+/* Marca */
+.footer-logo{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.footer-logo img{width:64px;margin:0;}
+.footer-logo h2{font-size:1.1rem;letter-spacing:.08em;margin:0;}
+.footer-text{color:var(--text2);font-size:.92rem;line-height:1.6;margin:0;max-width:300px;}
+.footer-redes-iconos{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+.footer-redes-iconos a{
+    color:var(--text2);text-decoration:none;font-size:.88rem;
+    border:1px solid var(--border);padding:6px 14px;border-radius:999px;transition:.2s;
+}
+.footer-redes-iconos a:hover{background:#fff;color:#000;border-color:#fff;}
+
+/* Listas de enlaces */
+.footer-links{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;}
+.footer-links li{list-style:none;}
+.footer-links a{
+    color:var(--text2);text-decoration:none;font-size:.92rem;
+    display:inline-block;transition:color .2s,transform .2s;
+}
+.footer-links a:hover{color:#fff;transform:translateX(4px);}
+
+/* Contacto */
+.footer-ubicacion{color:var(--text2);font-size:.92rem;line-height:1.6;margin:0 0 10px;}
+.footer-redes{display:flex;flex-direction:column;align-items:flex-start;gap:8px;margin-top:14px;}
+.footer-redes a{
+    color:var(--text);text-decoration:none;font-size:.9rem;
+    border:1px solid var(--border);padding:8px 18px;border-radius:999px;transition:.2s;
+}
+.footer-redes a:hover{background:#fff;color:#000;border-color:#fff;}
+
+/* Barra inferior */
+.footer-barra{
+    display:flex;justify-content:space-between;align-items:center;
+    flex-wrap:wrap;gap:10px 20px;
+    max-width:1200px;margin:0 auto;
+    padding-top:18px;border-top:1px solid var(--border);
+}
+.footer-barra .copy{border:0;padding:0;margin:0;text-align:left;font-size:.85rem;color:var(--text3);}
+.footer-pagos{color:var(--text3);font-size:.85rem;margin:0;}
+
+/* Tablet */
+@media(max-width:900px){
+    .footer-grid{grid-template-columns:1fr 1fr;gap:30px;}
+}
+
+/* Móvil */
+@media(max-width:560px){
+    .footer,body.vista-seccion>.footer.vista-activa{padding:36px 18px 20px!important;}
+    .footer-grid{grid-template-columns:1fr;gap:26px;}
+    .footer-text{max-width:none;}
+    .footer-barra{flex-direction:column;align-items:flex-start;}
+}
+/* ===== SECCIÓN CONTACTO ===== */
+.contacto-seccion{padding:28px 32px;}
+.contacto-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:1200px;margin:0 auto;}
+.contacto-card{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:26px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;transition:.3s;}
+.contacto-card:hover{border-color:#fff;transform:translateY(-5px);}
+
+/* Icono SVG en cuadro redondeado */
+.contacto-icono{
+    display:grid;place-items:center;
+    width:52px;height:52px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:var(--bg3);
+    color:#fff;
+    transition:.3s;
+}
+.contacto-icono svg{width:26px;height:26px;display:block;}
+.contacto-card:hover .contacto-icono{background:#fff;color:#000;border-color:#fff;}
+
+.contacto-card h3{font-size:1.1rem;}
+.contacto-card p{color:var(--text2);font-size:.92rem;line-height:1.6;}
+.contacto-card a{display:inline-block;padding:8px 18px;border:1px solid var(--border);border-radius:999px;color:var(--text);text-decoration:none;font-size:.9rem;transition:.2s;}
+.contacto-card a:hover{background:#fff;color:#000;}
+.contacto-redes{display:flex;flex-wrap:wrap;gap:8px;}
+
+/* Altura de las vistas aisladas */
+.vista-seccion>.vista-activa{min-height:0!important;}
+.vista-seccion>#inicio.vista-activa{min-height:calc(100vh - 245px)!important;}
+/* ===== LOGIN: modo cliente / modo personal ===== */
+.cuenta-box{display:flex;max-width:375px;padding:0;overflow:hidden;transition:max-width .3s ease;}
+.cuenta-contenido{position:relative;flex:1;min-width:0;padding:36px;}
+.cuenta-box .modal-cerrar{z-index:2;}
+
+.cuenta-modo-personal{
+    width:auto!important;margin:14px auto 0!important;padding:6px 10px!important;
+    background:transparent!important;border:0!important;
+    color:var(--text3)!important;font-size:.78rem!important;font-weight:600;
+    text-decoration:underline;text-underline-offset:3px;
+}
+.cuenta-modo-personal:hover{color:#fff!important;transform:none!important;}
+
+/* Modo personal: hoja dividida a la mitad */
+.cuenta-box.cuenta-box-dividida{max-width:820px;}
+.cuenta-bienvenida{
+    flex:1 1 50%;
+    display:flex;flex-direction:column;justify-content:center;gap:14px;
+    padding:44px 36px;text-align:left;
+    background:linear-gradient(160deg,#1c1c1c,#050505);
+    border-right:1px solid var(--border);
+}
+.cuenta-bienvenida[hidden]{display:none;}
+.cuenta-bienvenida-logo{width:84px;border:1px solid var(--border);border-radius:16px;}
+.cuenta-bienvenida-kicker{color:var(--text3);font-size:.75rem;font-weight:700;letter-spacing:.16em;}
+.cuenta-bienvenida h2{font-size:1.7rem;line-height:1.2;margin:0;text-align:left;}
+.cuenta-bienvenida p:last-child{color:var(--text2);font-size:.92rem;line-height:1.6;}
+.cuenta-box.cuenta-box-dividida .cuenta-contenido{flex:1 1 50%;}
+
+@media(max-width:700px){
+    .cuenta-box.cuenta-box-dividida{flex-direction:column;max-width:375px;max-height:92vh;overflow-y:auto;}
+    .cuenta-bienvenida{padding:24px;border-right:0;border-bottom:1px solid var(--border);}
+    .cuenta-bienvenida h2{font-size:1.3rem;}
+}
+
+/* =========================================
+   PANEL ADMINISTRADOR - ESTRUCTURA GENERAL
+========================================= */
+
+/* Panel completo */
+#admin-panel.admin {
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    outline: none;
+    box-shadow: none;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* Encabezado normal, sin posición fija */
+#admin-panel .admin-cabecera {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    z-index: 20;
+
+    width: 100%;
+    padding: 14px clamp(18px, 3vw, 42px);
+    margin: 0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+}
+
+/* Resumen */
+#admin-panel .admin-resumen-cabecera {
+    margin: 28px 32px 14px;
+}
+
+#admin-panel .admin-stats {
+    margin: 0 32px 20px;
+}
+
+/* Alertas */
+#admin-panel .admin-alertas-stock {
+    margin: 0 32px 22px;
+}
+
+/* Área principal */
+#admin-panel .admin-workspace {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    align-items: stretch;
+    gap: 22px;
+
+    width: 100%;
+    padding: 0 32px 0 0;
+
+    flex: 1 0 auto;
+}
+
+/* Menú lateral */
+#admin-panel .admin-sidebar {
+    position: relative;
+    top: auto;
+
+    width: 100%;
+    min-height: 0;
+    height: auto;
+    align-self: stretch;
+
+    padding: 18px;
+    margin: 0;
+    border: 0;
+    border-right: 1px solid var(--border);
+    border-radius: 0;
+
+    background: var(--bg2);
+}
+
+/* Opciones del menú */
+#admin-panel .admin-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+/* Contenido principal */
+#admin-panel .admin-main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    align-self: stretch;
+}
+
+/* Pestañas */
+#admin-panel .admin-tab-content {
+    flex: 1;
+    width: 100%;
+    min-height: 400px;
+    padding: 26px;
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    background: var(--bg2);
+}
+
+/* Footer dentro del administrador */
+#admin-panel > .footer {
+    position: static !important;
+    width: 100%;
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 45px 32px 22px !important;
+
+    background: #000;
+    border-top: 1px solid var(--border);
+
+    display: block !important;
+}
+
+/* Columnas del footer */
+#admin-panel .footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+    gap: 30px;
+
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 30px;
+}
+
+/* Derechos reservados */
+#admin-panel .footer-barra {
+    width: 100%;
+    text-align: center;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+
+    #admin-panel .admin-workspace {
+        grid-template-columns: 1fr;
+        padding-left: 0;
+    }
+
+    #admin-panel .admin-sidebar {
+        position: relative;
+        top: auto;
+    }
+
+    #admin-panel .admin-tabs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #admin-panel .footer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+
+    #admin-panel .admin-cabecera {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    #admin-panel .admin-cabecera-acciones {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    #admin-panel .admin-resumen-cabecera,
+    #admin-panel .admin-stats,
+    #admin-panel .admin-alertas-stock {
+        margin-left: 14px;
+        margin-right: 14px;
+    }
+
+    #admin-panel .admin-workspace {
+        padding: 0 14px 0 0;
+    }
+
+    #admin-panel .admin-tabs {
+        grid-template-columns: 1fr;
+    }
+
+    #admin-panel .admin-tab-content {
+        padding: 16px;
+    }
+
+    #admin-panel .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    #admin-panel > .footer {
+        padding: 30px 18px 20px !important;
+    }
+}
+
+/* =========================================
+   CORRECCIÓN FINAL DEL PANEL ADMINISTRADOR
+========================================= */
+
+/* El panel debe crecer según su contenido */
+body.vista-seccion[data-vista="admin-panel"] > #admin-panel.vista-activa {
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+
+    margin: 0 !important;
+    overflow: visible !important;
+    box-sizing: border-box;
+}
+
+#admin-panel #tab-dashboard .admin-resumen-cabecera {
+    margin: 0 0 14px;
+}
+
+#admin-panel #tab-dashboard .admin-stats {
+    margin: 0 0 20px;
+}
+
+#admin-panel #tab-dashboard .admin-alertas-stock {
+    margin: 0 0 22px;
 }
