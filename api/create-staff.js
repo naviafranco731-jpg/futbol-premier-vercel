@@ -126,9 +126,10 @@ function getAdminApp() {
     }
 }
 
-function sendError(res, status, message, code) {
+function sendError(res, status, message, code, causeCode) {
     const response = { error: message };
     if (code) response.code = code;
+    if (causeCode) response.causeCode = causeCode;
     res.status(status).json(response);
 }
 
@@ -156,11 +157,14 @@ module.exports = async function createStaff(req, res) {
             code,
             causeCode: causeCode || undefined
         });
+        const message = INITIALIZATION_ERRORS[code] || INITIALIZATION_ERRORS.FIREBASE_ADMIN_INIT_FAILED;
+        const diagnostic = causeCode ? ` Código de causa: ${causeCode}.` : "";
         return sendError(
             res,
             500,
-            INITIALIZATION_ERRORS[code] || INITIALIZATION_ERRORS.FIREBASE_ADMIN_INIT_FAILED,
-            code
+            `${message}${diagnostic}`,
+            code,
+            causeCode
         );
     }
 
