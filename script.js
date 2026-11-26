@@ -768,7 +768,22 @@ $("equipo-form").addEventListener("submit", async event => {
     estado.textContent = "Creando cuenta…";
     boton.disabled = true;
     try {
-        const token = await usuarioActual.getIdToken();
+        const usuarioAutenticado = auth.currentUser;
+        if (
+            !usuarioAutenticado
+            || usuarioAutenticado.uid !== usuarioActual.uid
+            || usuarioAutenticado.uid !== ADMIN_UID
+            || usuarioAutenticado.email !== ADMIN_EMAIL
+        ) {
+            throw new Error("La sesión de administrador cambió o expiró. Vuelve a iniciar sesión.");
+        }
+        if (auth.app.options.projectId !== "futbol-premier-6cc4e") {
+            throw new Error("La sesión está conectada a un proyecto Firebase distinto al del servidor.");
+        }
+        const token = await usuarioAutenticado.getIdToken(true);
+        if (typeof token !== "string" || !token.trim()) {
+            throw new Error("Firebase no devolvió un token de sesión válido. Vuelve a iniciar sesión.");
+        }
         let response;
         try {
             response = await fetch("/api/create-staff", {
