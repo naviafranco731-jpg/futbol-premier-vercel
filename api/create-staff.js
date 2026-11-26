@@ -20,11 +20,12 @@ const INITIALIZATION_ERRORS = {
 };
 
 class FirebaseAdminInitializationError extends Error {
-    constructor(code, causeCode, causeName) {
+    constructor(code, causeCode, causeName, stage) {
         super(code);
         this.code = code;
         this.causeCode = causeCode;
         this.causeName = causeName;
+        this.stage = stage;
     }
 }
 
@@ -38,6 +39,15 @@ function safeErrorName(error) {
     return typeof error?.name === "string" && /^[A-Za-z][A-Za-z0-9._-]{0,79}$/.test(error.name)
         ? error.name
         : undefined;
+}
+
+function withDiagnosticStage(error, stage, fallbackCode = "FIREBASE_ADMIN_INIT_FAILED") {
+    return new FirebaseAdminInitializationError(
+        error instanceof FirebaseAdminInitializationError ? error.code : fallbackCode,
+        error instanceof FirebaseAdminInitializationError ? error.causeCode : safeErrorCode(error),
+        error instanceof FirebaseAdminInitializationError ? error.causeName : safeErrorName(error),
+        stage
+    );
 }
 
 function readServiceAccount() {
@@ -112,39 +122,56 @@ function existingAdminApp() {
 }
 
 function getAdminApp() {
-    const existingApp = existingAdminApp();
+    let existingApp;
+    try {
+        existingApp = existingAdminApp();
+    } catch (error) {
+        throw withDiagnosticStage(error, "CHECK_EXISTING_APP");
+    }
     if (existingApp) return existingApp;
 
-    const serviceAccount = readServiceAccount();
+    let serviceAccount;
+    try {
+        serviceAccount = readServiceAccount();
+    } catch (error) {
+        throw withDiagnosticStage(error, "READ_SERVICE_ACCOUNT");
+    }
+
     let credential;
     try {
         credential = admin.credential.cert(serviceAccount);
     } catch (error) {
-        throw new FirebaseAdminInitializationError(
+        throw withDiagnosticStage(new FirebaseAdminInitializationError(
             "SERVICE_ACCOUNT_CREDENTIAL_INVALID",
             safeErrorCode(error),
             safeErrorName(error)
-        );
+        ), "CREATE_CREDENTIAL");
     }
 
     try {
         return admin.initializeApp({ credential, projectId: PROJECT_ID }, APP_NAME);
     } catch (error) {
-        const app = existingAdminApp();
+        let app;
+        try {
+            app = existingAdminApp();
+        } catch (checkError) {
+            throw withDiagnosticStage(checkError, "CHECK_EXISTING_APP");
+        }
         if (app) return app;
-        throw new FirebaseAdminInitializationError(
+        throw withDiagnosticStage(new FirebaseAdminInitializationError(
             "FIREBASE_ADMIN_INIT_FAILED",
             safeErrorCode(error),
             safeErrorName(error)
-        );
+        ), "INITIALIZE_ADMIN");
     }
 }
 
-function sendError(res, status, message, code, causeCode, causeName) {
+function sendError(res, status, message, code, causeCode, causeName, stage) {
     const response = { error: message };
     if (code) response.code = code;
     if (causeCode) response.causeCode = causeCode;
     if (causeName) response.causeName = causeName;
+    if (stage) response.stage = stage;
     res.status(status).json(response);
 }
 
@@ -171,10 +198,14 @@ module.exports = async function createStaff(req, res) {
         const causeName = error instanceof FirebaseAdminInitializationError
             ? error.causeName
             : safeErrorName(error);
+        const stage = error instanceof FirebaseAdminInitializationError
+            ? error.stage
+            : undefined;
         console.error("Firebase Admin initialization failed:", {
             code,
             causeCode: causeCode || undefined,
-            causeName: causeName || undefined
+            causeName: causeName || undefined,
+            stage: stage || undefined
         });
         return sendError(
             res,
@@ -182,7 +213,8 @@ module.exports = async function createStaff(req, res) {
             INITIALIZATION_ERRORS[code] || INITIALIZATION_ERRORS.FIREBASE_ADMIN_INIT_FAILED,
             code,
             causeCode,
-            causeName
+            causeName,
+            stage
         );
     }
 
