@@ -113,7 +113,7 @@ function readServiceAccount() {
 }
 
 function existingAdminApp() {
-    const app = admin.apps.find(candidate => candidate.name === APP_NAME);
+    const app = admin.getApps().find(candidate => candidate.name === APP_NAME);
     if (!app) return null;
     if (app.options.projectId !== PROJECT_ID) {
         throw new FirebaseAdminInitializationError("FIREBASE_ADMIN_APP_CONFLICT");
