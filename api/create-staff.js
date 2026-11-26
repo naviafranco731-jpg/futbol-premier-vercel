@@ -20,16 +20,23 @@ const INITIALIZATION_ERRORS = {
 };
 
 class FirebaseAdminInitializationError extends Error {
-    constructor(code, causeCode) {
+    constructor(code, causeCode, causeName) {
         super(code);
         this.code = code;
         this.causeCode = causeCode;
+        this.causeName = causeName;
     }
 }
 
 function safeErrorCode(error) {
     return typeof error?.code === "string" && /^[a-zA-Z0-9/_-]{1,80}$/.test(error.code)
         ? error.code
+        : undefined;
+}
+
+function safeErrorName(error) {
+    return typeof error?.name === "string" && /^[A-Za-z][A-Za-z0-9._-]{0,79}$/.test(error.name)
+        ? error.name
         : undefined;
 }
 
@@ -121,15 +128,17 @@ function getAdminApp() {
         if (app) return app;
         throw new FirebaseAdminInitializationError(
             "FIREBASE_ADMIN_INIT_FAILED",
-            safeErrorCode(error)
+            safeErrorCode(error),
+            safeErrorName(error)
         );
     }
 }
 
-function sendError(res, status, message, code, causeCode) {
+function sendError(res, status, message, code, causeCode, causeName) {
     const response = { error: message };
     if (code) response.code = code;
     if (causeCode) response.causeCode = causeCode;
+    if (causeName) response.causeName = causeName;
     res.status(status).json(response);
 }
 
@@ -148,18 +157,24 @@ module.exports = async function createStaff(req, res) {
         app = getAdminApp();
     } catch (error) {
         const code = "FIREBASE_ADMIN_INIT_FAILED";
-        const causeCode = (error instanceof FirebaseAdminInitializationError && error.causeCode)
-            || safeErrorCode(error);
+        const causeCode = error instanceof FirebaseAdminInitializationError
+            ? error.causeCode
+            : safeErrorCode(error);
+        const causeName = error instanceof FirebaseAdminInitializationError
+            ? error.causeName
+            : safeErrorName(error);
         console.error("Firebase Admin initialization failed:", {
             code,
-            causeCode: causeCode || undefined
+            causeCode: causeCode || undefined,
+            causeName: causeName || undefined
         });
         return sendError(
             res,
             500,
             "Firebase Admin no pudo inicializarse.",
             code,
-            causeCode
+            causeCode,
+            causeName
         );
     }
 
