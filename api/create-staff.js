@@ -53,7 +53,11 @@ function readServiceAccount() {
             serviceAccount = JSON.parse(serviceAccount);
         }
     } catch (error) {
-        throw new FirebaseAdminInitializationError("SERVICE_ACCOUNT_INVALID_JSON");
+        throw new FirebaseAdminInitializationError(
+            "SERVICE_ACCOUNT_INVALID_JSON",
+            safeErrorCode(error),
+            safeErrorName(error)
+        );
     }
 
     if (!serviceAccount || typeof serviceAccount !== "object" || Array.isArray(serviceAccount)) {
@@ -85,7 +89,8 @@ function readServiceAccount() {
     } catch (error) {
         throw new FirebaseAdminInitializationError(
             "SERVICE_ACCOUNT_PRIVATE_KEY_INVALID",
-            safeErrorCode(error)
+            safeErrorCode(error),
+            safeErrorName(error)
         );
     }
 
@@ -117,7 +122,8 @@ function getAdminApp() {
     } catch (error) {
         throw new FirebaseAdminInitializationError(
             "SERVICE_ACCOUNT_CREDENTIAL_INVALID",
-            safeErrorCode(error)
+            safeErrorCode(error),
+            safeErrorName(error)
         );
     }
 
@@ -156,10 +162,12 @@ module.exports = async function createStaff(req, res) {
     try {
         app = getAdminApp();
     } catch (error) {
-        const code = "FIREBASE_ADMIN_INIT_FAILED";
+        const code = error instanceof FirebaseAdminInitializationError
+            ? error.code
+            : safeErrorCode(error) || "FIREBASE_ADMIN_INIT_FAILED";
         const causeCode = error instanceof FirebaseAdminInitializationError
             ? error.causeCode
-            : safeErrorCode(error);
+            : undefined;
         const causeName = error instanceof FirebaseAdminInitializationError
             ? error.causeName
             : safeErrorName(error);
@@ -171,7 +179,7 @@ module.exports = async function createStaff(req, res) {
         return sendError(
             res,
             500,
-            "Firebase Admin no pudo inicializarse.",
+            INITIALIZATION_ERRORS[code] || INITIALIZATION_ERRORS.FIREBASE_ADMIN_INIT_FAILED,
             code,
             causeCode,
             causeName
