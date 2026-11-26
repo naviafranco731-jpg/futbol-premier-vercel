@@ -1,5 +1,6 @@
 const admin = require("firebase-admin");
 const { cert } = require("firebase-admin/app");
+const { getAuth } = require("firebase-admin/auth");
 const { createPrivateKey } = require("node:crypto");
 
 const PROJECT_ID = "futbol-premier-6cc4e";
@@ -221,7 +222,7 @@ module.exports = async function createStaff(req, res) {
 
     let decoded;
     try {
-        decoded = await admin.auth(app).verifyIdToken(match[1], true);
+        decoded = await getAuth(app).verifyIdToken(match[1], true);
     } catch (error) {
         return sendError(res, 401, "La sesión expiró. Vuelve a iniciar sesión.");
     }
@@ -248,13 +249,13 @@ module.exports = async function createStaff(req, res) {
 
     let user;
     try {
-        user = await admin.auth(app).createUser({ email, password });
-        await admin.auth(app).setCustomUserClaims(user.uid, { role });
+        user = await getAuth(app).createUser({ email, password });
+        await getAuth(app).setCustomUserClaims(user.uid, { role });
         return res.status(201).json({ uid: user.uid, email: user.email, role });
     } catch (error) {
         if (user) {
             try {
-                await admin.auth(app).deleteUser(user.uid);
+                await getAuth(app).deleteUser(user.uid);
             } catch (rollbackError) {
                 console.error("No se pudo revertir la cuenta sin rol:", rollbackError.message);
             }
