@@ -1,4 +1,5 @@
 const admin = require("firebase-admin");
+const { cert } = require("firebase-admin/app");
 const { createPrivateKey } = require("node:crypto");
 
 const PROJECT_ID = "futbol-premier-6cc4e";
@@ -139,7 +140,7 @@ function getAdminApp() {
 
     let credential;
     try {
-        credential = admin.credential.cert(serviceAccount);
+        credential = cert(serviceAccount);
     } catch (error) {
         throw withDiagnosticStage(new FirebaseAdminInitializationError(
             "SERVICE_ACCOUNT_CREDENTIAL_INVALID",
