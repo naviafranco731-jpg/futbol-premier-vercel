@@ -14,7 +14,7 @@
     <link rel="icon" type="image/png" href="img/logo.png" />
     <link
       rel="stylesheet"
-      href="style.css?v=20261120-admin-logo-visual-captcha"
+      href="style.css?v=20261126-offer-modal-visible"
     />
   </head>
   <body>
@@ -733,6 +733,21 @@
             <button
               type="button"
               class="atab"
+              id="admin-tab-reportes"
+              role="tab"
+              aria-selected="false"
+              aria-controls="tab-reportes"
+              data-tab="reportes"
+              data-roles="admin"
+            >
+              <span class="admin-tab-icon">▥</span
+              ><span class="admin-tab-text"
+                ><strong>Reportes</strong></span
+              >
+            </button>
+            <button
+              type="button"
+              class="atab"
               id="admin-tab-encargos-admin"
               role="tab"
               aria-selected="false"
@@ -893,10 +908,6 @@
               <button type="submit" id="equipo-crear">Crear acceso</button>
               <p id="equipo-estado" role="status" aria-live="polite"></p>
             </form>
-            <p class="equipo-seguridad">
-              La credencial de Firebase se guarda solo en la configuración
-              privada de Vercel y nunca en esta página.
-            </p>
           </div>
           <div
             class="admin-tab-content activo"
@@ -1148,6 +1159,106 @@
           </div>
           <div
             class="admin-tab-content"
+            id="tab-reportes"
+            role="tabpanel"
+            aria-labelledby="admin-tab-reportes"
+            tabindex="0"
+          >
+            <div class="admin-panel-intro">
+              <h3>Reportes</h3>
+              <p>
+                Consulta ventas, pedidos e inventario. Los cobros se agrupan
+                por fecha de caja y los pedidos por fecha de creación.
+              </p>
+            </div>
+            <form id="reportes-form" class="reportes-filtros">
+              <div class="reportes-filtros-campos">
+                <label for="reportes-desde">
+                  Fecha desde
+                  <input id="reportes-desde" type="date" required />
+                </label>
+                <label for="reportes-hasta">
+                  Fecha hasta
+                  <input id="reportes-hasta" type="date" required />
+                </label>
+              </div>
+              <div class="reportes-acciones">
+                <button type="submit" id="reportes-generar">
+                  Generar reporte
+                </button>
+                <button type="button" id="reportes-exportar" disabled>
+                  Exportar a Excel
+                </button>
+                <p id="reportes-estado" role="status" aria-live="polite">
+                  Selecciona un periodo y genera el reporte.
+                </p>
+              </div>
+            </form>
+            <div id="reportes-resultado" class="reportes-resultado" hidden>
+              <p id="reportes-periodo" class="reportes-periodo"></p>
+              <section class="reportes-seccion">
+                <h4>Indicadores generales</h4>
+                <div id="reportes-indicadores" class="reportes-metricas"></div>
+              </section>
+              <section class="reportes-seccion">
+                <h4>Ventas e ingresos por día</h4>
+                <div id="reportes-grafico" class="reportes-grafico"></div>
+                <div id="reportes-metodos-pago" class="reportes-metricas"></div>
+              </section>
+              <section class="reportes-seccion">
+                <h4>Productos más vendidos</h4>
+                <div class="reportes-tabla-wrap">
+                  <table class="reportes-tabla">
+                    <thead>
+                      <tr>
+                        <th>Posición</th>
+                        <th>Jersey</th>
+                        <th>Unidades</th>
+                        <th>Importe bruto</th>
+                      </tr>
+                    </thead>
+                    <tbody id="reportes-productos"></tbody>
+                  </table>
+                </div>
+              </section>
+              <section class="reportes-seccion">
+                <h4>Inventario actual</h4>
+                <div id="reportes-inventario-indicadores" class="reportes-metricas"></div>
+                <div class="reportes-tabla-wrap">
+                  <table class="reportes-tabla">
+                    <thead>
+                      <tr>
+                        <th>Jersey</th>
+                        <th>Stock registrado</th>
+                        <th>Estado</th>
+                      </tr>
+                    </thead>
+                    <tbody id="reportes-inventario"></tbody>
+                  </table>
+                </div>
+              </section>
+              <section class="reportes-seccion">
+                <h4>Pedidos del periodo</h4>
+                <div id="reportes-estados-pedidos" class="reportes-metricas"></div>
+                <div class="reportes-tabla-wrap">
+                  <table class="reportes-tabla">
+                    <thead>
+                      <tr>
+                        <th>Número</th>
+                        <th>Fecha</th>
+                        <th>Estado actual</th>
+                        <th>Total</th>
+                        <th>Pago</th>
+                      </tr>
+                    </thead>
+                    <tbody id="reportes-pedidos"></tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+          </div>
+          <div
+            class="admin-tab-content"
             id="tab-encargos-admin"
             role="tabpanel"
             aria-labelledby="admin-tab-encargos-admin"
@@ -1276,10 +1387,18 @@
 
     <!-- MODAL EDITAR -->
     <div class="editar-modal" id="editar-modal">
-      <div class="editar-contenido">
-        <button class="editar-cerrar" id="editar-cerrar">✕</button>
-        <h2>✏️ Editar Jersey</h2>
+      <form class="editar-contenido" id="editar-form">
+        <div class="editar-cabecera">
+          <h2>✏️ Editar Jersey</h2>
+          <button class="editar-cerrar" id="editar-cerrar" type="button">✕</button>
+        </div>
         <input type="hidden" id="edit-id" />
+        <input
+          type="text"
+          id="edit-imagenes"
+          placeholder="URLs de imágenes separadas por coma"
+          data-admin-only
+        />
         <input type="text" id="edit-nombre" placeholder="Nombre" />
         <input type="text" id="edit-tallas" placeholder="Tallas" />
         <input type="text" id="edit-dorsales" placeholder="Dorsales" />
@@ -1315,8 +1434,10 @@
           />
           <input type="text" id="edit-fin-oferta" placeholder="Fin oferta" />
         </div>
-        <button onclick="guardarEdicion()">💾 Guardar Cambios</button>
-      </div>
+        <button id="guardar-edicion" type="submit">
+          💾 Guardar Cambios
+        </button>
+      </form>
     </div>
 
     <!-- MODAL SELECCIONAR TALLA (desde card) -->
@@ -2417,6 +2538,6 @@
         firebase.appCheck().activate(FIREBASE_APP_CHECK_SITE_KEY, true);
       }
     </script>
-    <script src="script.js?v=20261120-visual-captcha"></script>
+    <script src="script.js?v=20261126-inventario-edit-click"></script>
   </body>
 </html>

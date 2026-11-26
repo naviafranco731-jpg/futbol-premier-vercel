@@ -66,3 +66,13 @@ No actives la aplicación obligatoria antes de publicar el sitio con la clave co
 - Prueba desde una sesión no autenticada que el catálogo se puede leer, pero que no se pueden modificar productos ni consultar datos personales.
 
 Los pedidos de este sitio registran la solicitud enviada a WhatsApp; el pago se verifica manualmente con el comprobante. Los artículos y los importes provienen del navegador del comprador, así que revísalos con el mensaje de WhatsApp antes de aceptar el pedido. No se deben tratar como pagos confirmados automáticamente.
+
+## 7. Reportes administrativos
+
+La pestaña **Reportes** es exclusiva del administrador y consulta Firebase en modo de solo lectura: obtiene productos de `/productos`, usuarios de `/usuarios` y pedidos de `/pedidos/{uid}` para los UID listados en `/usuarios`.
+
+- Los pedidos se filtran por `fechaISO` de creación y sus estados reflejan el estado actual, no un historial. `completado` se muestra como entregado; `preparando` y `enviado` se agrupan como en proceso.
+- Los ingresos y las unidades vendidas se filtran por `pago.fechaCaja` y consideran solo pagos con `pago.estado == "pagado"`. Los métodos implementados son `efectivo` y `qr`; no se reportan pagos con tarjeta como si existieran.
+- El ranking usa los artículos (`items`) guardados en los pedidos pagados. Su importe es bruto (`precio × cantidad`): Firebase guarda el descuento en el pedido y no permite atribuirlo a cada jersey. El campo `productos.vendidos` no tiene fechas y no se usa para filtrar periodos.
+- El inventario es una lectura actual, no histórica. Se consideran con stock bajo los productos con 1–3 unidades; agotados los marcados `agotado` o con stock cero. Los registros sin stock se identifican y no se clasifican como agotados.
+- **Exportar a Excel** genera un `.xlsx` con cinco hojas. La librería de Excel se carga desde el CDN de SheetJS solo al exportar, por lo que esa acción requiere conexión a Internet; los datos del reporte se procesan en el navegador.

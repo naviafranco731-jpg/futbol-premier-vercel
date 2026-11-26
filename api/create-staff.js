@@ -1,4 +1,5 @@
 const admin = require("firebase-admin");
+const { createPrivateKey } = require("node:crypto");
 
 const PROJECT_ID = "futbol-premier-6cc4e";
 const ADMIN_UID = "gvP0Hsrh1pTtOAwr5ewCy3NEwdn1";
@@ -6,24 +7,129 @@ const ADMIN_EMAIL = "naviafranco731@gmail.com";
 const STAFF_ROLES = new Set(["cajero", "empleado"]);
 const APP_NAME = "futbol-premier-staff";
 
-function getAdminApp() {
-    const rawServiceAccount = process.env.FIREBASE_SERVICE_ACCOUNT;
-    if (!rawServiceAccount) throw new Error("Missing Firebase service account.");
+const INITIALIZATION_ERRORS = {
+    SERVICE_ACCOUNT_MISSING: "FIREBASE_SERVICE_ACCOUNT no está disponible en el entorno de esta función.",
+    SERVICE_ACCOUNT_INVALID_JSON: "FIREBASE_SERVICE_ACCOUNT no contiene un JSON válido de cuenta de servicio.",
+    SERVICE_ACCOUNT_INVALID_FORMAT: "FIREBASE_SERVICE_ACCOUNT debe contener el JSON completo de la cuenta de servicio.",
+    SERVICE_ACCOUNT_REQUIRED_FIELDS: "El JSON de la cuenta de servicio debe incluir project_id, client_email y private_key.",
+    SERVICE_ACCOUNT_PROJECT_MISMATCH: "La cuenta de servicio pertenece a un proyecto de Firebase diferente.",
+    SERVICE_ACCOUNT_PRIVATE_KEY_INVALID: "private_key no tiene el formato PEM esperado.",
+    SERVICE_ACCOUNT_CREDENTIAL_INVALID: "Firebase Admin rechazó las credenciales de servicio.",
+    FIREBASE_ADMIN_APP_CONFLICT: "Existe una instancia de Firebase Admin configurada para otro proyecto.",
+    FIREBASE_ADMIN_INIT_FAILED: "Firebase Admin no pudo inicializarse. Revisa los logs de la función."
+};
 
-    const serviceAccount = JSON.parse(rawServiceAccount);
-    if (serviceAccount.project_id !== PROJECT_ID) {
-        throw new Error("Firebase service account belongs to a different project.");
+class FirebaseAdminInitializationError extends Error {
+    constructor(code, causeCode) {
+        super(code);
+        this.code = code;
+        this.causeCode = causeCode;
     }
-
-    return admin.apps.find(app => app.name === APP_NAME)
-        || admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            projectId: PROJECT_ID
-        }, APP_NAME);
 }
 
-function sendError(res, status, message) {
-    res.status(status).json({ error: message });
+function safeErrorCode(error) {
+    return typeof error?.code === "string" && /^[a-zA-Z0-9/_-]{1,80}$/.test(error.code)
+        ? error.code
+        : undefined;
+}
+
+function readServiceAccount() {
+    const rawServiceAccount = process.env.FIREBASE_SERVICE_ACCOUNT;
+    if (typeof rawServiceAccount !== "string" || !rawServiceAccount.trim()) {
+        throw new FirebaseAdminInitializationError("SERVICE_ACCOUNT_MISSING");
+    }
+
+    let serviceAccount;
+    try {
+        serviceAccount = JSON.parse(rawServiceAccount.trim());
+        if (typeof serviceAccount === "string") {
+            serviceAccount = JSON.parse(serviceAccount);
+        }
+    } catch (error) {
+        throw new FirebaseAdminInitializationError("SERVICE_ACCOUNT_INVALID_JSON");
+    }
+
+    if (!serviceAccount || typeof serviceAccount !== "object" || Array.isArray(serviceAccount)) {
+        throw new FirebaseAdminInitializationError("SERVICE_ACCOUNT_INVALID_FORMAT");
+    }
+
+    const { project_id: projectId, client_email: clientEmail, private_key: rawPrivateKey } = serviceAccount;
+    if (
+        typeof projectId !== "string" || !projectId.trim()
+        || typeof clientEmail !== "string" || !clientEmail.trim()
+        || typeof rawPrivateKey !== "string" || !rawPrivateKey.trim()
+    ) {
+        throw new FirebaseAdminInitializationError("SERVICE_ACCOUNT_REQUIRED_FIELDS");
+    }
+    if (projectId.trim() !== PROJECT_ID) {
+        throw new FirebaseAdminInitializationError("SERVICE_ACCOUNT_PROJECT_MISMATCH");
+    }
+
+    const privateKey = rawPrivateKey
+        .replaceAll("\\r\\n", "\n")
+        .replaceAll("\\n", "\n")
+        .trim();
+    if (!privateKey.startsWith("-----BEGIN PRIVATE KEY-----")
+        || !privateKey.endsWith("-----END PRIVATE KEY-----")) {
+        throw new FirebaseAdminInitializationError("SERVICE_ACCOUNT_PRIVATE_KEY_INVALID");
+    }
+    try {
+        createPrivateKey(privateKey);
+    } catch (error) {
+        throw new FirebaseAdminInitializationError(
+            "SERVICE_ACCOUNT_PRIVATE_KEY_INVALID",
+            safeErrorCode(error)
+        );
+    }
+
+    return {
+        ...serviceAccount,
+        project_id: projectId.trim(),
+        client_email: clientEmail.trim(),
+        private_key: privateKey
+    };
+}
+
+function existingAdminApp() {
+    const app = admin.apps.find(candidate => candidate.name === APP_NAME);
+    if (!app) return null;
+    if (app.options.projectId !== PROJECT_ID) {
+        throw new FirebaseAdminInitializationError("FIREBASE_ADMIN_APP_CONFLICT");
+    }
+    return app;
+}
+
+function getAdminApp() {
+    const existingApp = existingAdminApp();
+    if (existingApp) return existingApp;
+
+    const serviceAccount = readServiceAccount();
+    let credential;
+    try {
+        credential = admin.credential.cert(serviceAccount);
+    } catch (error) {
+        throw new FirebaseAdminInitializationError(
+            "SERVICE_ACCOUNT_CREDENTIAL_INVALID",
+            safeErrorCode(error)
+        );
+    }
+
+    try {
+        return admin.initializeApp({ credential, projectId: PROJECT_ID }, APP_NAME);
+    } catch (error) {
+        const app = existingAdminApp();
+        if (app) return app;
+        throw new FirebaseAdminInitializationError(
+            "FIREBASE_ADMIN_INIT_FAILED",
+            safeErrorCode(error)
+        );
+    }
+}
+
+function sendError(res, status, message, code) {
+    const response = { error: message };
+    if (code) response.code = code;
+    res.status(status).json(response);
 }
 
 module.exports = async function createStaff(req, res) {
@@ -40,8 +146,22 @@ module.exports = async function createStaff(req, res) {
     try {
         app = getAdminApp();
     } catch (error) {
-        console.error("No se pudo inicializar Firebase Admin:", error.message);
-        return sendError(res, 500, "La creación de cuentas no está configurada en Vercel.");
+        const code = error instanceof FirebaseAdminInitializationError
+            ? error.code
+            : "FIREBASE_ADMIN_INIT_FAILED";
+        const causeCode = error instanceof FirebaseAdminInitializationError
+            ? error.causeCode
+            : safeErrorCode(error);
+        console.error("Firebase Admin initialization failed:", {
+            code,
+            causeCode: causeCode || undefined
+        });
+        return sendError(
+            res,
+            500,
+            INITIALIZATION_ERRORS[code] || INITIALIZATION_ERRORS.FIREBASE_ADMIN_INIT_FAILED,
+            code
+        );
     }
 
     let decoded;
