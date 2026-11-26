@@ -173,7 +173,7 @@ module.exports = async function createStaff(req, res) {
     if (decoded.uid !== ADMIN_UID || decoded.email !== ADMIN_EMAIL) {
         return sendError(res, 403, "Solo el administrador puede crear cuentas del equipo.");
     }
-
+//JJ
     let body = req.body;
     if (typeof body === "string") {
         try {
