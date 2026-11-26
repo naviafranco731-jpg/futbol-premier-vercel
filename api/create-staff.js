@@ -147,22 +147,17 @@ module.exports = async function createStaff(req, res) {
     try {
         app = getAdminApp();
     } catch (error) {
-        const code = error instanceof FirebaseAdminInitializationError
-            ? error.code
-            : "FIREBASE_ADMIN_INIT_FAILED";
-        const causeCode = error instanceof FirebaseAdminInitializationError
-            ? error.causeCode
-            : safeErrorCode(error);
+        const code = "FIREBASE_ADMIN_INIT_FAILED";
+        const causeCode = (error instanceof FirebaseAdminInitializationError && error.causeCode)
+            || safeErrorCode(error);
         console.error("Firebase Admin initialization failed:", {
             code,
             causeCode: causeCode || undefined
         });
-        const message = INITIALIZATION_ERRORS[code] || INITIALIZATION_ERRORS.FIREBASE_ADMIN_INIT_FAILED;
-        const diagnostic = causeCode ? ` Código de causa: ${causeCode}.` : "";
         return sendError(
             res,
             500,
-            `${message}${diagnostic}`,
+            "Firebase Admin no pudo inicializarse.",
             code,
             causeCode
         );
