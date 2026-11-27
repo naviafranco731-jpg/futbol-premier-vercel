@@ -1,7 +1,3 @@
-const { cert, initializeApp, getApps } = require("firebase-admin/app");
-const { getAuth } = require("firebase-admin/auth");
-const { createPrivateKey } = require("node:crypto");
-
 const PROJECT_ID = "futbol-premier-6cc4e";
 const ADMIN_UID = "gvP0Hsrh1pTtOAwr5ewCy3NEwdn1";
 const ADMIN_EMAIL = "naviafranco731@gmail.com";
@@ -51,7 +47,7 @@ function withDiagnosticStage(error, stage, fallbackCode = "FIREBASE_ADMIN_INIT_F
     );
 }
 
-function readServiceAccount() {
+function readServiceAccount(createPrivateKey) {
     const rawServiceAccount = process.env.FIREBASE_SERVICE_ACCOUNT;
     if (typeof rawServiceAccount !== "string" || !rawServiceAccount.trim()) {
         throw new FirebaseAdminInitializationError("SERVICE_ACCOUNT_MISSING");
@@ -113,7 +109,7 @@ function readServiceAccount() {
     };
 }
 
-function existingAdminApp() {
+function existingAdminApp(getApps) {
     const app = getApps().find(candidate => candidate.name === APP_NAME);
     if (!app) return null;
     if (app.options.projectId !== PROJECT_ID) {
@@ -122,10 +118,10 @@ function existingAdminApp() {
     return app;
 }
 
-function getAdminApp() {
+function getAdminApp({ cert, initializeApp, getApps, createPrivateKey }) {
     let existingApp;
     try {
-        existingApp = existingAdminApp();
+        existingApp = existingAdminApp(getApps);
     } catch (error) {
         throw withDiagnosticStage(error, "CHECK_EXISTING_APP");
     }
@@ -133,7 +129,7 @@ function getAdminApp() {
 
     let serviceAccount;
     try {
-        serviceAccount = readServiceAccount();
+        serviceAccount = readServiceAccount(createPrivateKey);
     } catch (error) {
         throw withDiagnosticStage(error, "READ_SERVICE_ACCOUNT");
     }
@@ -154,7 +150,7 @@ function getAdminApp() {
     } catch (error) {
         let app;
         try {
-            app = existingAdminApp();
+            app = existingAdminApp(getApps);
         } catch (checkError) {
             throw withDiagnosticStage(checkError, "CHECK_EXISTING_APP");
         }
@@ -178,6 +174,19 @@ function sendError(res, status, message, code, causeCode, causeName, stage) {
 
 module.exports = async function createStaff(req, res) {
     res.setHeader("Cache-Control", "no-store");
+    let cert, initializeApp, getApps, getAuth, createPrivateKey;
+    try {
+        ({ cert, initializeApp, getApps } = require("firebase-admin/app"));
+        ({ getAuth } = require("firebase-admin/auth"));
+        ({ createPrivateKey } = require("node:crypto"));
+    } catch (error) {
+        return res.status(500).json({
+            error: "Fallo al cargar dependencias.",
+            detail: String(error && error.message).slice(0, 300),
+            nodeVersion: process.version
+        });
+    }
+
     if (req.method !== "POST") {
         res.setHeader("Allow", "POST");
         return sendError(res, 405, "Método no permitido.");
@@ -188,7 +197,7 @@ module.exports = async function createStaff(req, res) {
 
     let app;
     try {
-        app = getAdminApp();
+        app = getAdminApp({ cert, initializeApp, getApps, createPrivateKey });
     } catch (error) {
         const code = error instanceof FirebaseAdminInitializationError
             ? error.code
