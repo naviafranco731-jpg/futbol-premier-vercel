@@ -733,6 +733,7 @@ function activarTabAdmin(btn) {
     if(btn.dataset.tab==="cupones") renderListaCupones();
     if(btn.dataset.tab==="resenas-admin") renderResenasPendientes();
     if(btn.dataset.tab==="reportes") inicializarFechasReportes();
+    if(btn.dataset.tab==="equipo") cargarEquipo();
 }
 $$(".atab").forEach(btn=>btn.addEventListener("click",()=>activarTabAdmin(btn)));
 $("admin-actualizar").addEventListener("click",()=>{
@@ -745,6 +746,7 @@ $("admin-actualizar").addEventListener("click",()=>{
     if(pestanaActiva==="cupones") renderListaCupones();
     if(pestanaActiva==="resenas-admin") renderResenasPendientes();
     if(pestanaActiva==="reportes") generarReporteAdmin();
+    if(pestanaActiva==="equipo") cargarEquipo();
     if(pestanaActiva==="equipo" && !adminLogueado) return;
     mostrarToast("Panel actualizado");
 });
@@ -821,6 +823,7 @@ $("equipo-form").addEventListener("submit", async event => {
         if (!response.ok) throw new Error(result.error || `No se pudo crear la cuenta (HTTP ${response.status}).`);
         estado.textContent = `Cuenta ${etiquetaRol(result.role)} creada para ${result.email}. UID: ${result.uid}`;
         $("equipo-form").reset();
+        cargarEquipo();
     } catch (error) {
         estado.textContent = error.message || "No se pudo crear la cuenta. Inténtalo nuevamente.";
         console.error("Error al crear cuenta del equipo:", error);
@@ -3062,4 +3065,136 @@ function aplicarModoPersonal(activo) {
     document.querySelector(".cuenta-tabs").style.display = activo ? "none" : "flex";
     if (activo) document.querySelector('.cuenta-tab[data-cuenta-vista="ingresar"]').click();
 }
+
 $("cuenta-modo-personal").addEventListener("click", () => aplicarModoPersonal(!modoPersonal));
+/* =============================================   EQUIPO (cajeros y empleados)
+   Pega este bloque al FINAL de script.js
+============================================= */
+async function apiEquipo(metodo, cuerpo) {
+    const usuarioAutenticado = auth.currentUser;
+    if (!adminLogueado || !usuarioAutenticado || usuarioAutenticado.uid !== ADMIN_UID) {
+        throw new Error("Solo el administrador puede gestionar el equipo.");
+    }
+    const token = await usuarioAutenticado.getIdToken(true);
+    let response;
+    try {
+        response = await fetch("/api/staff", {
+            method: metodo,
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: cuerpo ? JSON.stringify(cuerpo) : undefined
+        });
+    } catch (error) {
+        throw new Error("No se pudo conectar con el servidor. Revisa tu conexión.");
+    }
+    const texto = await response.text();
+    let datos = {};
+    try {
+        datos = texto ? JSON.parse(texto) : {};
+    } catch (error) {
+        throw new Error(`El servidor respondió HTTP ${response.status} sin un mensaje JSON.`);
+    }
+    if (!response.ok) throw new Error(datos.error || `Error HTTP ${response.status}.`);
+    return datos;
+}
+
+function fechaEquipo(valor, vacio = "—") {
+    const fecha = new Date(valor || "");
+    return Number.isFinite(fecha.getTime()) ? fecha.toLocaleDateString("es-BO") : vacio;
+}
+
+function renderEquipo(usuarios) {
+    const lista = $("equipo-lista");
+    if (!usuarios.length) {
+        lista.innerHTML = '<p class="admin-vacio">Aún no hay cajeros ni empleados registrados.</p>';
+        return;
+    }
+    lista.innerHTML = usuarios.map(u => `<article class="equipo-card${u.disabled ? " equipo-card-off" : ""}"
+        data-uid="${escaparHTML(u.uid)}" data-email="${escaparHTML(u.email)}" data-disabled="${u.disabled}">
+        <div class="equipo-card-info">
+            <strong>${escaparHTML(u.email || "Sin correo")}</strong>
+            <span>${u.disabled ? "Desactivada" : "Activa"} · Creada ${escaparHTML(fechaEquipo(u.creationTime))} · Último acceso ${escaparHTML(fechaEquipo(u.lastSignInTime, "nunca"))}</span>
+        </div>
+        <div class="equipo-card-acciones">
+            <select class="equipo-rol-select" aria-label="Rol de ${escaparHTML(u.email)}">
+                <option value="cajero"${u.role === "cajero" ? " selected" : ""}>Cajero</option>
+                <option value="empleado"${u.role === "empleado" ? " selected" : ""}>Empleado</option>
+            </select>
+            <button type="button" class="equipo-btn-toggle">${u.disabled ? "Activar" : "Desactivar"}</button>
+            <button type="button" class="equipo-btn-eliminar">Eliminar</button>
+        </div>
+    </article>`).join("");
+}
+
+async function cargarEquipo() {
+    if (!adminLogueado) return;
+    const estado = $("equipo-lista-estado");
+    estado.textContent = "Cargando equipo…";
+    try {
+        const { users } = await apiEquipo("GET");
+        renderEquipo(users);
+        estado.textContent = users.length
+            ? `${users.length} cuenta${users.length === 1 ? "" : "s"} del equipo`
+            : "";
+    } catch (error) {
+        $("equipo-lista").innerHTML = "";
+        estado.textContent = error.message;
+        console.error("Error al cargar el equipo:", error);
+    }
+}
+
+async function accionEquipo(control, cuerpo, mensajeOk) {
+    control.disabled = true;
+    try {
+        await apiEquipo("POST", cuerpo);
+        mostrarToast(mensajeOk);
+    } catch (error) {
+        mostrarToast(error.message);
+        console.error("Error en la gestión del equipo:", error);
+    } finally {
+        control.disabled = false;
+        await cargarEquipo();
+    }
+}
+
+$("equipo-recargar").addEventListener("click", cargarEquipo);
+
+$("equipo-lista").addEventListener("change", event => {
+    const select = event.target.closest(".equipo-rol-select");
+    if (!select) return;
+    const tarjeta = select.closest(".equipo-card");
+    accionEquipo(
+        select,
+        { action: "update", uid: tarjeta.dataset.uid, role: select.value },
+        "Rol actualizado. La persona debe volver a iniciar sesión."
+    );
+});
+
+$("equipo-lista").addEventListener("click", event => {
+    const boton = event.target.closest("button");
+    const tarjeta = boton?.closest(".equipo-card");
+    if (!boton || !tarjeta) return;
+    const { uid, email } = tarjeta.dataset;
+    const desactivada = tarjeta.dataset.disabled === "true";
+
+    if (boton.classList.contains("equipo-btn-toggle")) {
+        if (!desactivada && !confirm(`¿Desactivar el acceso de ${email}? Podrás reactivarlo cuando quieras.`)) return;
+        accionEquipo(
+            boton,
+            { action: "update", uid, disabled: !desactivada },
+            desactivada ? "Cuenta activada." : "Cuenta desactivada."
+        );
+        return;
+    }
+
+    if (boton.classList.contains("equipo-btn-eliminar")) {
+        if (!desactivada) {
+            mostrarToast("Primero desactiva la cuenta. Eliminarla es permanente.");
+            return;
+        }
+        if (!confirm(`¿Eliminar definitivamente la cuenta de ${email}? Esta acción no se puede deshacer.`)) return;
+        accionEquipo(boton, { action: "delete", uid }, "Cuenta eliminada.");
+    }
+});

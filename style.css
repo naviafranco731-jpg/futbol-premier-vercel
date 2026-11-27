@@ -2040,3 +2040,16 @@ body.vista-seccion[data-vista="admin-panel"] > #admin-panel.vista-activa {
 .carrito-timer[style*="#6c6c6c"] { background: var(--danger) !important; }
 .envio-barra-prog[style*="rgb(192, 192, 192)"],
 .envio-barra-prog[style*="#c0c0c0"] { background: var(--accent-button) !important; }
+
+.equipo-lista-cabecera{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:900px;margin:28px 0 10px;}
+.equipo-lista-cabecera h4{margin:0;font-size:1.05rem;}
+#equipo-lista-estado{max-width:900px;margin:0 0 10px;color:var(--text3);font-size:.88rem;}
+.equipo-card{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;max-width:900px;margin-bottom:10px;padding:14px 16px;border:1px solid var(--border);border-radius:12px;background:var(--bg);}
+.equipo-card-off{opacity:.65;}
+.equipo-card-info strong{display:block;overflow-wrap:anywhere;}
+.equipo-card-info span{color:var(--text3);font-size:.85rem;}
+.equipo-card-acciones{display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+#admin-panel .equipo-lista-cabecera button,
+#admin-panel .equipo-card button{width:auto;min-height:40px;margin:0;padding:8px 14px;}
+#admin-panel .equipo-card select{width:auto;min-width:130px;min-height:40px;margin:0;padding:8px 10px;}
+#admin-panel .equipo-card .equipo-btn-eliminar{background:transparent;border:1px solid var(--danger);color:var(--danger);}
