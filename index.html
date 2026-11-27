@@ -643,182 +643,82 @@
       </header>
       <div class="admin-workspace">
         <aside class="admin-sidebar">
-          <p class="admin-menu-titulo">MENÚ ADMINISTRADOR</p>
-          <div
-            class="admin-tabs"
-            role="tablist"
-            aria-label="Secciones de administración"
-            aria-orientation="vertical"
-          >
-            <button
-              type="button"
-              class="atab activo"
-              id="admin-tab-dashboard"
-              role="tab"
-              aria-selected="true"
-              aria-controls="tab-dashboard"
-              data-tab="dashboard"
-              data-roles="admin cajero empleado"
-            >
-              <span class="admin-tab-icon">⌂</span>
-
-              <span class="admin-tab-text">
-                <strong>Dashboard</strong>
-              </span>
-            </button>
-            <button
-              type="button"
-              class="atab"
-              id="admin-tab-agregar"
-              role="tab"
-              aria-selected="false"
-              aria-controls="tab-agregar"
-              data-tab="agregar"
-              data-roles="admin empleado"
-            >
-              <span class="admin-tab-icon">＋</span
-              ><span class="admin-tab-text"
-                ><strong>Agregar producto</strong
-                ></span
-              >
-            </button>
-            <button
-              type="button"
-              class="atab"
-              id="admin-tab-editar"
-              role="tab"
-              aria-selected="false"
-              aria-controls="tab-editar"
-              data-tab="editar"
-              data-roles="admin empleado"
-            >
-              <span class="admin-tab-icon">▦</span
-              ><span class="admin-tab-text"
-                ><strong>Inventario</strong
-                ></span
-              >
-            </button>
-            <button
-              type="button"
-              class="atab"
-              id="admin-tab-clientes"
-              role="tab"
-              aria-selected="false"
-              aria-controls="tab-clientes"
-              data-tab="clientes"
-              data-roles="admin cajero"
-            >
-              <span class="admin-tab-icon">♙</span
-              ><span class="admin-tab-text"
-                ><strong>Clientes y pedidos</strong
-                ></span
-              >
-            </button>
-            <button
-              type="button"
-              class="atab"
-              id="admin-tab-caja"
-              role="tab"
-              aria-selected="false"
-              aria-controls="tab-caja"
-              data-tab="caja"
-              data-roles="admin cajero"
-            >
-              <span class="admin-tab-icon">Bs</span
-              ><span class="admin-tab-text"
-                ><strong>Caja e ingresos</strong
-                ></span
-              >
-            </button>
-            <button
-              type="button"
-              class="atab"
-              id="admin-tab-reportes"
-              role="tab"
-              aria-selected="false"
-              aria-controls="tab-reportes"
-              data-tab="reportes"
-              data-roles="admin"
-            >
-              <span class="admin-tab-icon">▥</span
-              ><span class="admin-tab-text"
-                ><strong>Reportes</strong></span
-              >
-            </button>
-            <button
-              type="button"
-              class="atab"
-              id="admin-tab-encargos-admin"
-              role="tab"
-              aria-selected="false"
-              aria-controls="tab-encargos-admin"
-              data-tab="encargos-admin"
-              data-roles="admin"
-            >
-              <span class="admin-tab-icon">▤</span
-              ><span class="admin-tab-text"
-                ><strong>Encargos</strong
-                ></span
-              >
-            </button>
-            <button
-              type="button"
-              class="atab"
-              id="admin-tab-cupones"
-              role="tab"
-              aria-selected="false"
-              aria-controls="tab-cupones"
-              data-tab="cupones"
-              data-roles="admin"
-            >
-              <span class="admin-tab-icon">◇</span
-              ><span class="admin-tab-text"
-                ><strong>Cupones</strong></span
-              >
-            </button>
-            <button
-              type="button"
-              class="atab"
-              id="admin-tab-resenas-admin"
-              role="tab"
-              aria-selected="false"
-              aria-controls="tab-resenas-admin"
-              data-tab="resenas-admin"
-              data-roles="admin"
-            >
-              <span class="admin-tab-icon">☆</span
-              ><span class="admin-tab-text"
-                ><strong>Reseñas</strong></span
-              >
-            </button>
-            <button
-              type="button"
-              class="atab"
-              id="admin-tab-equipo"
-              role="tab"
-              aria-selected="false"
-              aria-controls="tab-equipo"
-              data-tab="equipo"
-              data-roles="admin"
-            >
-              <span class="admin-tab-icon">♧</span
-              ><span class="admin-tab-text"
-                ><strong>Equipo</strong
-                ></span
-              >
-            </button>
+          <p class="admin-menu-titulo">MÓDULOS</p>
+          <div class="admin-module-groups">
+            <div class="admin-module-group">
+              <button type="button" class="admin-module-button" data-admin-module="usuarios" data-default-tab="equipo" aria-controls="admin-subtabs-usuarios">
+                <span class="admin-tab-icon">♧</span><span class="admin-tab-text"><strong>Usuarios</strong></span>
+              </button>
+              <button type="button" class="admin-module-button" data-admin-module="productos" data-default-tab="editar" aria-controls="admin-subtabs-productos">
+                <span class="admin-tab-icon">▦</span><span class="admin-tab-text"><strong>Productos</strong></span>
+              </button>
+              <button type="button" class="admin-module-button" data-admin-module="pedidos" data-default-tab="clientes" aria-controls="admin-subtabs-pedidos">
+                <span class="admin-tab-icon">▤</span><span class="admin-tab-text"><strong>Pedidos</strong></span>
+              </button>
+              <button type="button" class="admin-module-button" data-admin-module="compras" data-default-tab="registrar-compra" aria-controls="admin-subtabs-compras">
+                <span class="admin-tab-icon">↙</span><span class="admin-tab-text"><strong>Compras</strong></span>
+              </button>
+              <button type="button" class="admin-module-button" data-admin-module="pagos" data-default-tab="caja" aria-controls="tab-caja">
+                <span class="admin-tab-icon">Bs</span><span class="admin-tab-text"><strong>Pagos</strong></span>
+              </button>
+              <button type="button" class="admin-module-button" data-admin-module="reportes" data-default-tab="reportes" aria-controls="tab-reportes">
+                <span class="admin-tab-icon">▥</span><span class="admin-tab-text"><strong>Reportes</strong></span>
+              </button>
+            </div>
+            <p class="admin-menu-seccion" data-admin-complements-title>COMPLEMENTOS</p>
+            <div class="admin-module-group" data-admin-complements>
+              <button type="button" class="admin-module-button" data-admin-module="cupones" data-default-tab="cupones" aria-controls="tab-cupones">
+                <span class="admin-tab-icon">◇</span><span class="admin-tab-text"><strong>Cupones</strong></span>
+              </button>
+              <button type="button" class="admin-module-button" data-admin-module="resenas-admin" data-default-tab="resenas-admin" aria-controls="tab-resenas-admin">
+                <span class="admin-tab-icon">☆</span><span class="admin-tab-text"><strong>Reseñas</strong></span>
+              </button>
+            </div>
           </div>
           <button
             type="button"
             onclick="cerrarAdmin()"
             class="btn-cerrar-admin"
           >
-            🚪 Cerrar sesión
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Cerrar sesión</span>
           </button>
         </aside>
         <div class="admin-main">
+          <div class="admin-module-tabs" id="admin-subtabs-dashboard" data-admin-module-tabs="dashboard" role="tablist" aria-label="Pestañas del dashboard" hidden>
+            <button type="button" class="atab" id="admin-tab-dashboard" role="tab" aria-selected="false" aria-controls="tab-dashboard" data-tab="dashboard" data-roles="admin cajero empleado"><span class="admin-tab-icon">⌂</span><span class="admin-tab-text"><strong>Dashboard</strong></span></button>
+          </div>
+          <div class="admin-module-tabs" id="admin-subtabs-usuarios" data-admin-module-tabs="usuarios" role="tablist" aria-label="Pestañas de Usuarios" hidden>
+            <button type="button" class="atab" id="admin-tab-equipo" role="tab" aria-selected="false" aria-controls="tab-equipo" data-tab="equipo" data-roles="admin"><span class="admin-tab-icon">♧</span><span class="admin-tab-text"><strong>Personal</strong></span></button>
+            <button type="button" class="atab" id="admin-tab-clientes" role="tab" aria-selected="false" aria-controls="tab-clientes" data-tab="clientes" data-roles="admin"><span class="admin-tab-icon">♙</span><span class="admin-tab-text"><strong>Clientes</strong></span></button>
+          </div>
+          <div class="admin-module-tabs" id="admin-subtabs-productos" data-admin-module-tabs="productos" role="tablist" aria-label="Pestañas de Productos" hidden>
+            <button type="button" class="atab" id="admin-tab-editar" role="tab" aria-selected="false" aria-controls="tab-editar" data-tab="editar" data-roles="admin empleado"><span class="admin-tab-icon">▦</span><span class="admin-tab-text"><strong>Inventario</strong></span></button>
+            <button type="button" class="atab" id="admin-tab-agregar" role="tab" aria-selected="false" aria-controls="tab-agregar" data-tab="agregar" data-roles="admin empleado"><span class="admin-tab-icon">＋</span><span class="admin-tab-text"><strong>Agregar producto</strong></span></button>
+          </div>
+          <div class="admin-module-tabs" id="admin-subtabs-pedidos" data-admin-module-tabs="pedidos" role="tablist" aria-label="Pestañas de Pedidos" hidden>
+            <button type="button" class="atab" id="admin-tab-pedidos-clientes" role="tab" aria-selected="false" aria-controls="tab-clientes" data-tab="clientes" data-roles="admin cajero"><span class="admin-tab-icon">▤</span><span class="admin-tab-text"><strong>Pedidos</strong></span></button>
+            <button type="button" class="atab" id="admin-tab-encargos-admin" role="tab" aria-selected="false" aria-controls="tab-encargos-admin" data-tab="encargos-admin" data-roles="admin"><span class="admin-tab-icon">▤</span><span class="admin-tab-text"><strong>Encargos</strong></span></button>
+          </div>
+          <div class="admin-module-tabs" id="admin-subtabs-compras" data-admin-module-tabs="compras" role="tablist" aria-label="Pestañas de Compras" hidden>
+            <button type="button" class="atab" id="admin-tab-proveedores" role="tab" aria-selected="false" aria-controls="tab-proveedores" data-tab="proveedores" data-roles="admin empleado"><span class="admin-tab-icon">♙</span><span class="admin-tab-text"><strong>Proveedores</strong></span></button>
+            <button type="button" class="atab" id="admin-tab-registrar-compra" role="tab" aria-selected="false" aria-controls="tab-registrar-compra" data-tab="registrar-compra" data-roles="admin empleado"><span class="admin-tab-icon">＋</span><span class="admin-tab-text"><strong>Registrar compra</strong></span></button>
+            <button type="button" class="atab" id="admin-tab-historial-compras" role="tab" aria-selected="false" aria-controls="tab-historial-compras" data-tab="historial-compras" data-roles="admin empleado"><span class="admin-tab-icon">▤</span><span class="admin-tab-text"><strong>Historial</strong></span></button>
+          </div>
+          <div class="admin-module-tabs" data-admin-module-tabs="pagos" role="tablist" aria-label="Pestañas de Pagos" hidden>
+            <button type="button" class="atab" id="admin-tab-caja" role="tab" aria-selected="false" aria-controls="tab-caja" data-tab="caja" data-roles="admin cajero"><span class="admin-tab-icon">Bs</span><span class="admin-tab-text"><strong>Pagos</strong></span></button>
+          </div>
+          <div class="admin-module-tabs" data-admin-module-tabs="reportes" role="tablist" aria-label="Pestañas de Reportes" hidden>
+            <button type="button" class="atab" id="admin-tab-reportes" role="tab" aria-selected="false" aria-controls="tab-reportes" data-tab="reportes" data-roles="admin"><span class="admin-tab-icon">▥</span><span class="admin-tab-text"><strong>Reportes</strong></span></button>
+          </div>
+          <div class="admin-module-tabs" data-admin-module-tabs="cupones" role="tablist" aria-label="Pestañas de Cupones" hidden>
+            <button type="button" class="atab" id="admin-tab-cupones" role="tab" aria-selected="false" aria-controls="tab-cupones" data-tab="cupones" data-roles="admin"><span class="admin-tab-icon">◇</span><span class="admin-tab-text"><strong>Cupones</strong></span></button>
+          </div>
+          <div class="admin-module-tabs" data-admin-module-tabs="resenas-admin" role="tablist" aria-label="Pestañas de Reseñas" hidden>
+            <button type="button" class="atab" id="admin-tab-resenas-admin" role="tab" aria-selected="false" aria-controls="tab-resenas-admin" data-tab="resenas-admin" data-roles="admin"><span class="admin-tab-icon">☆</span><span class="admin-tab-text"><strong>Reseñas</strong></span></button>
+          </div>
           <div
-            class="admin-tab-content activo"
+            class="admin-tab-content"
             id="tab-dashboard"
             role="tabpanel"
             aria-labelledby="admin-tab-dashboard"
@@ -1319,6 +1219,101 @@
               <p>Modera las opiniones antes de mostrarlas en la tienda.</p>
             </div>
             <div id="resenas-pendientes"></div>
+          </div>
+          <div
+            class="admin-tab-content"
+            id="tab-proveedores"
+            role="tabpanel"
+            aria-labelledby="admin-tab-proveedores"
+            tabindex="0"
+          >
+            <div class="admin-panel-intro">
+              <h3>Proveedores</h3>
+              <p>Administra los datos de tus proveedores.</p>
+            </div>
+            <form id="proveedor-form" class="compras-form-grid">
+              <input type="hidden" id="proveedor-id" />
+              <label for="proveedor-nombre">Nombre (obligatorio)
+                <input type="text" id="proveedor-nombre" maxlength="120" required />
+              </label>
+              <label for="proveedor-telefono">Teléfono
+                <input type="tel" id="proveedor-telefono" maxlength="40" />
+              </label>
+              <label for="proveedor-ciudad">Ciudad
+                <input type="text" id="proveedor-ciudad" maxlength="80" />
+              </label>
+              <label for="proveedor-notas">Notas
+                <textarea id="proveedor-notas" maxlength="1000"></textarea>
+              </label>
+              <div class="compras-form-acciones">
+                <button type="submit" id="proveedor-guardar">Guardar proveedor</button>
+                <button type="button" id="proveedor-cancelar-edicion" hidden>Cancelar edición</button>
+              </div>
+            </form>
+            <div id="proveedores-lista" class="proveedores-lista" aria-live="polite"></div>
+          </div>
+          <div
+            class="admin-tab-content"
+            id="tab-registrar-compra"
+            role="tabpanel"
+            aria-labelledby="admin-tab-registrar-compra"
+            tabindex="0"
+          >
+            <div class="admin-panel-intro">
+              <h3>Registrar compra</h3>
+              <p>Registra productos comprados a un proveedor y actualiza el inventario.</p>
+            </div>
+            <form id="compra-form">
+              <div class="compras-form-grid">
+                <label for="compra-proveedor">Proveedor
+                  <select id="compra-proveedor" required>
+                    <option value="">Selecciona un proveedor</option>
+                  </select>
+                </label>
+                <label for="compra-fecha">Fecha
+                  <input type="date" id="compra-fecha" required />
+                </label>
+                <label for="compra-nota">Nota (opcional)
+                  <textarea id="compra-nota" maxlength="1000"></textarea>
+                </label>
+              </div>
+              <div class="compra-lineas-cabecera">
+                <h4>Líneas de compra</h4>
+                <button type="button" id="compra-agregar-linea">+ Agregar línea</button>
+              </div>
+              <div id="compra-lineas" class="compra-lineas"></div>
+              <div class="compra-total">
+                <strong>Total</strong>
+                <output id="compra-total">0,00 Bs</output>
+              </div>
+              <button type="submit" id="compra-registrar">Registrar compra</button>
+            </form>
+          </div>
+          <div
+            class="admin-tab-content"
+            id="tab-historial-compras"
+            role="tabpanel"
+            aria-labelledby="admin-tab-historial-compras"
+            tabindex="0"
+          >
+            <div class="admin-panel-intro">
+              <h3>Historial de compras</h3>
+              <p>Consulta las compras registradas; el historial es de solo lectura.</p>
+            </div>
+            <div class="compras-filtros">
+              <label for="historial-compra-desde">Desde
+                <input type="date" id="historial-compra-desde" />
+              </label>
+              <label for="historial-compra-hasta">Hasta
+                <input type="date" id="historial-compra-hasta" />
+              </label>
+              <label for="historial-compra-proveedor">Proveedor
+                <select id="historial-compra-proveedor">
+                  <option value="">Todos los proveedores</option>
+                </select>
+              </label>
+            </div>
+            <div id="historial-compras-lista" class="historial-compras-lista" aria-live="polite"></div>
           </div>
         </div>
       </div>

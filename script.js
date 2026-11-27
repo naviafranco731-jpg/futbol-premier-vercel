@@ -6,6 +6,8 @@ const $$ = s  => document.querySelectorAll(s);
 
 let adminLogueado = false;
 let rolActual = "cliente";
+let proveedoresCompra = [];
+let historialCompras = [];
 let carrito       = [];
 let solicitudResumenVentas = 0;
 let solicitudCaja = 0;
@@ -53,21 +55,40 @@ function abrirPanelAdministracion() {
 }
 
 function configurarAccesoPanel() {
-    const botones = [...document.querySelectorAll(".admin-tabs .atab")];
+    const botones = [...document.querySelectorAll(".admin-module-tabs .atab")];
+    const panelesPermitidos = new Map();
     botones.forEach(btn => {
         const permitido = (btn.dataset.roles || "admin").split(" ").includes(rolActual);
         btn.hidden = !permitido;
         btn.disabled = !permitido;
         const panel = $("tab-" + btn.dataset.tab);
-        if (panel) panel.hidden = !permitido;
+        if (panel) panelesPermitidos.set(panel, panelesPermitidos.get(panel) || permitido);
     });
+    document.querySelectorAll(".admin-tab-content").forEach(panel => {
+        panel.hidden = !panelesPermitidos.get(panel);
+    });
+    document.querySelectorAll(".admin-module-tabs").forEach(barra => {
+        barra.hidden = true;
+    });
+    const modulos = [...document.querySelectorAll(".admin-module-button")];
+    modulos.forEach(modulo => {
+        const barra = [...document.querySelectorAll(".admin-module-tabs")]
+            .find(elemento => elemento.dataset.adminModuleTabs === modulo.dataset.adminModule);
+        const disponible = Boolean(barra?.querySelector(".atab:not([hidden])"));
+        modulo.hidden = !disponible;
+        modulo.disabled = !disponible;
+        modulo.setAttribute("aria-pressed", "false");
+    });
+    const grupoComplementos = document.querySelector("[data-admin-complements]");
+    const tituloComplementos = document.querySelector("[data-admin-complements-title]");
+    const mostrarComplementos = Boolean(grupoComplementos?.querySelector(".admin-module-button:not([hidden])"));
+    if (grupoComplementos) grupoComplementos.hidden = !mostrarComplementos;
+    if (tituloComplementos) tituloComplementos.hidden = !mostrarComplementos;
     document.querySelectorAll("[data-admin-only]").forEach(elemento => {
         elemento.hidden = !adminLogueado;
     });
-    const vistaInicial = rolActual === "cajero" ? "clientes" : "agregar";
-    const actual = botones.find(btn => btn.classList.contains("activo") && !btn.hidden);
-    const seleccion = actual || botones.find(btn => btn.dataset.tab === vistaInicial && !btn.hidden);
-    if (seleccion) activarTabAdmin(seleccion);
+    const primerModulo = modulos.find(modulo => !modulo.hidden);
+    if (primerModulo) activarModuloAdmin(primerModulo);
     $("admin-stats").hidden = !esPersonal();
     $("admin-alertas-stock").hidden = !esPersonal();
     $("admin-identidad-nombre").textContent =
@@ -718,6 +739,14 @@ $$(".filtro-check").forEach(c=>c.addEventListener("change",()=>{
 }));
 
 /* =============================================   ADMIN TABS   */
+function activarModuloAdmin(modulo) {
+    const barra = [...document.querySelectorAll(".admin-module-tabs")]
+        .find(elemento => elemento.dataset.adminModuleTabs === modulo.dataset.adminModule);
+    const botones = [...(barra?.querySelectorAll(".atab:not([hidden])") || [])];
+    const seleccion = botones.find(btn => btn.dataset.tab === modulo.dataset.defaultTab) || botones[0];
+    if (seleccion) activarTabAdmin(seleccion);
+}
+
 function activarTabAdmin(btn) {
     if ((btn.dataset.roles || "admin").split(" ").indexOf(rolActual) === -1) return;
     $$(".atab").forEach(b=>b.classList.remove("activo"));
@@ -725,7 +754,20 @@ function activarTabAdmin(btn) {
     $$(".admin-tab-content").forEach(t=>t.classList.remove("activo"));
     btn.classList.add("activo");
     btn.setAttribute("aria-selected","true");
-    $("tab-"+btn.dataset.tab).classList.add("activo");
+    const panel = $("tab-"+btn.dataset.tab);
+    if (!panel) return;
+    panel.classList.add("activo");
+    if (btn.id) panel.setAttribute("aria-labelledby", btn.id);
+    const moduloActivo = btn.closest(".admin-module-tabs")?.dataset.adminModuleTabs;
+    document.querySelectorAll(".admin-module-tabs").forEach(barra => {
+        barra.hidden = barra.dataset.adminModuleTabs !== moduloActivo
+            || barra.querySelectorAll(".atab").length < 2;
+    });
+    document.querySelectorAll(".admin-module-button").forEach(modulo => {
+        const activo = modulo.dataset.adminModule === moduloActivo;
+        modulo.classList.toggle("activo", activo);
+        modulo.setAttribute("aria-pressed", String(activo));
+    });
     if(btn.dataset.tab==="editar") renderListaAdmin();
     if(btn.dataset.tab==="clientes") renderAdminClientes();
     if(btn.dataset.tab==="caja") renderCaja();
@@ -734,11 +776,24 @@ function activarTabAdmin(btn) {
     if(btn.dataset.tab==="resenas-admin") renderResenasPendientes();
     if(btn.dataset.tab==="reportes") inicializarFechasReportes();
     if(btn.dataset.tab==="equipo") cargarEquipo();
+    if(btn.dataset.tab==="proveedores") cargarProveedoresCompra();
+    if(btn.dataset.tab==="registrar-compra") prepararFormularioCompra();
+    if(btn.dataset.tab==="historial-compras") cargarHistorialCompras();
 }
-$$(".atab").forEach(btn=>btn.addEventListener("click",()=>activarTabAdmin(btn)));
-$("admin-actualizar").addEventListener("click",()=>{
+$$(".admin-module-tabs .atab").forEach(btn=>btn.addEventListener("click",()=>activarTabAdmin(btn)));
+$$(".admin-module-button").forEach(btn=>btn.addEventListener("click",()=>activarModuloAdmin(btn)));
+$("admin-actualizar").addEventListener("click", async()=>{
     if(esPersonal()) renderAdminStats();
     const pestanaActiva=document.querySelector(".atab.activo")?.dataset.tab;
+    if(pestanaActiva==="proveedores" || pestanaActiva==="registrar-compra" || pestanaActiva==="historial-compras") {
+        const actualizado = pestanaActiva === "proveedores"
+            ? await cargarProveedoresCompra()
+            : pestanaActiva === "registrar-compra"
+                ? await prepararFormularioCompra()
+                : await cargarHistorialCompras();
+        if(actualizado) mostrarToast("Panel actualizado");
+        return;
+    }
     if(pestanaActiva==="editar") renderListaAdmin();
     if(pestanaActiva==="clientes") renderAdminClientes();
     if(pestanaActiva==="caja") renderCaja();
@@ -750,6 +805,561 @@ $("admin-actualizar").addEventListener("click",()=>{
     if(pestanaActiva==="equipo" && !adminLogueado) return;
     mostrarToast("Panel actualizado");
 });
+
+/* =============================================   COMPRAS: PROVEEDORES   */
+function puedeGestionarCompras() {
+    return rolActual === "admin" || rolActual === "empleado";
+}
+
+function describirErrorCompras(error) {
+    return error?.code ? describirErrorFirebase(error) : error?.message || describirErrorFirebase(error);
+}
+
+function renderListaProveedoresCompra() {
+    const contenedor = $("proveedores-lista");
+    if (!proveedoresCompra.length) {
+        contenedor.innerHTML = '<p class="admin-vacio">Todavía no hay proveedores registrados.</p>';
+        return;
+    }
+    contenedor.innerHTML = proveedoresCompra.map(proveedor => `
+        <article class="proveedor-compra-card">
+          <div class="proveedor-compra-datos">
+            <strong>${escaparHTML(proveedor.nombre)}</strong>
+            <span>${escaparHTML(proveedor.telefono || "Sin teléfono")} · ${escaparHTML(proveedor.ciudad || "Sin ciudad")}</span>
+            ${proveedor.notas ? `<p>${escaparHTML(proveedor.notas)}</p>` : ""}
+          </div>
+          <div class="proveedor-compra-acciones">
+            <button type="button" data-proveedor-accion="editar" data-proveedor-id="${escaparHTML(proveedor.id)}">Editar</button>
+            <button type="button" data-proveedor-accion="eliminar" data-proveedor-id="${escaparHTML(proveedor.id)}">Eliminar</button>
+          </div>
+        </article>`).join("");
+}
+
+function actualizarSelectProveedoresCompra(select, etiquetaVacia) {
+    if (!select) return;
+    const seleccionado = select.value;
+    select.innerHTML = `<option value="">${etiquetaVacia}</option>${proveedoresCompra.map(proveedor =>
+        `<option value="${escaparHTML(proveedor.id)}">${escaparHTML(proveedor.nombre)}</option>`
+    ).join("")}`;
+    if (proveedoresCompra.some(proveedor => proveedor.id === seleccionado)) {
+        select.value = seleccionado;
+    }
+}
+
+async function cargarProveedoresCompra() {
+    if (!puedeGestionarCompras()) return false;
+    try {
+        const snapshot = await db.ref("proveedores").once("value");
+        const datos = snapshot.val() || {};
+        proveedoresCompra = Object.entries(datos)
+            .filter(([, proveedor]) => proveedor && typeof proveedor === "object")
+            .map(([id, proveedor]) => ({ id, ...proveedor }))
+            .sort((a, b) => String(a.nombre || "").localeCompare(String(b.nombre || ""), "es"));
+        renderListaProveedoresCompra();
+        actualizarSelectProveedoresCompra($("compra-proveedor"), "Selecciona un proveedor");
+        actualizarSelectProveedoresCompra($("historial-compra-proveedor"), "Todos los proveedores");
+        renderHistorialCompras();
+        return true;
+    } catch (error) {
+        mostrarToast(`No se pudieron cargar los proveedores: ${describirErrorCompras(error)}`);
+        console.error("Error al cargar proveedores:", error);
+        return false;
+    }
+}
+
+function limpiarFormularioProveedorCompra() {
+    $("proveedor-form").reset();
+    $("proveedor-id").value = "";
+    $("proveedor-guardar").textContent = "Guardar proveedor";
+    $("proveedor-cancelar-edicion").hidden = true;
+}
+
+$("proveedor-form").addEventListener("submit", async event => {
+    event.preventDefault();
+    if (!puedeGestionarCompras() || !usuarioActual) {
+        mostrarToast("Tu rol no puede gestionar proveedores.");
+        return;
+    }
+    const nombre = $("proveedor-nombre").value.trim();
+    if (!nombre) {
+        mostrarToast("El nombre del proveedor es obligatorio.");
+        $("proveedor-nombre").focus();
+        return;
+    }
+    const id = $("proveedor-id").value;
+    const proveedorExistente = proveedoresCompra.find(proveedor => proveedor.id === id);
+    const datos = {
+        nombre,
+        telefono: $("proveedor-telefono").value.trim(),
+        ciudad: $("proveedor-ciudad").value.trim(),
+        notas: $("proveedor-notas").value.trim(),
+        creadoEn: proveedorExistente?.creadoEn || new Date().toISOString()
+    };
+    const boton = $("proveedor-guardar");
+    boton.disabled = true;
+    try {
+        const ref = id ? db.ref(`proveedores/${id}`) : db.ref("proveedores").push();
+        await ref.set(datos);
+        limpiarFormularioProveedorCompra();
+        await cargarProveedoresCompra();
+        mostrarToast(id ? "Proveedor actualizado." : "Proveedor guardado.");
+    } catch (error) {
+        mostrarToast(`No se pudo guardar el proveedor: ${describirErrorCompras(error)}`);
+        console.error("Error al guardar proveedor:", error);
+    } finally {
+        boton.disabled = false;
+    }
+});
+
+$("proveedores-lista").addEventListener("click", async event => {
+    const boton = event.target instanceof Element
+        ? event.target.closest("[data-proveedor-accion]")
+        : null;
+    if (!boton || !puedeGestionarCompras()) return;
+    const id = boton.dataset.proveedorId;
+    const proveedor = proveedoresCompra.find(item => item.id === id);
+    if (!proveedor) return;
+    if (boton.dataset.proveedorAccion === "editar") {
+        $("proveedor-id").value = proveedor.id;
+        $("proveedor-nombre").value = proveedor.nombre || "";
+        $("proveedor-telefono").value = proveedor.telefono || "";
+        $("proveedor-ciudad").value = proveedor.ciudad || "";
+        $("proveedor-notas").value = proveedor.notas || "";
+        $("proveedor-guardar").textContent = "Actualizar proveedor";
+        $("proveedor-cancelar-edicion").hidden = false;
+        $("proveedor-nombre").focus();
+        return;
+    }
+    if (boton.dataset.proveedorAccion !== "eliminar"
+        || !confirm(`¿Eliminar al proveedor "${proveedor.nombre}"?`)) return;
+    boton.disabled = true;
+    try {
+        await db.ref(`proveedores/${id}`).remove();
+        if ($("proveedor-id").value === id) limpiarFormularioProveedorCompra();
+        await cargarProveedoresCompra();
+        mostrarToast("Proveedor eliminado.");
+    } catch (error) {
+        mostrarToast(`No se pudo eliminar el proveedor: ${describirErrorCompras(error)}`);
+        console.error("Error al eliminar proveedor:", error);
+    } finally {
+        boton.disabled = false;
+    }
+});
+$("proveedor-cancelar-edicion").addEventListener("click", limpiarFormularioProveedorCompra);
+
+/* =============================================   COMPRAS: REGISTRAR COMPRA   */
+function prepararFormularioCompra() {
+    if (!$("compra-fecha").value) $("compra-fecha").value = fechaCajaLocal();
+    if (!$("compra-lineas").children.length) agregarLineaCompra();
+    $("compra-lineas").querySelectorAll(".compra-linea-producto").forEach(actualizarSelectProductosCompra);
+    actualizarTotalCompra();
+    return cargarProveedoresCompra();
+}
+
+function actualizarSelectProductosCompra(select) {
+    const seleccionado = select.value;
+    select.innerHTML = `<option value="">Selecciona un producto</option>${productos.filter(producto => producto).map(producto =>
+        `<option value="${escaparHTML(String(producto.id))}">${escaparHTML(producto.nombre)}</option>`
+    ).join("")}`;
+    if (productos.some(producto => producto && String(producto.id) === seleccionado)) {
+        select.value = seleccionado;
+    }
+}
+
+function agregarLineaCompra() {
+    const fila = document.createElement("div");
+    fila.className = "compra-linea";
+    fila.innerHTML = `
+        <label>Producto
+          <select class="compra-linea-producto" required>
+          </select>
+        </label>
+        <label>Talla (informativa)
+          <input type="text" class="compra-linea-talla" maxlength="80" />
+        </label>
+        <label>Cantidad
+          <input type="number" class="compra-linea-cantidad" min="1" step="1" value="1" required />
+        </label>
+        <label>Costo unitario (Bs)
+          <input type="number" class="compra-linea-costo" min="0" step="0.01" value="0" required />
+        </label>
+        <button type="button" class="compra-linea-quitar" aria-label="Quitar línea">Quitar</button>`;
+    actualizarSelectProductosCompra(fila.querySelector(".compra-linea-producto"));
+    $("compra-lineas").appendChild(fila);
+    actualizarTotalCompra();
+}
+
+function actualizarTotalCompra() {
+    const total = [...$("compra-lineas").querySelectorAll(".compra-linea")].reduce((suma, fila) => {
+        const cantidadTexto = fila.querySelector(".compra-linea-cantidad").value;
+        const costoTexto = fila.querySelector(".compra-linea-costo").value;
+        if (!cantidadTexto || !costoTexto) return suma;
+        const cantidad = Number(cantidadTexto);
+        const costo = Number(costoTexto);
+        return Number.isInteger(cantidad) && cantidad > 0 && Number.isFinite(costo) && costo >= 0
+            ? suma + cantidad * costo
+            : suma;
+    }, 0);
+    const totalRedondeado = redondearBs(total);
+    $("compra-total").textContent = Number.isFinite(totalRedondeado) ? formatoBs(totalRedondeado) : "—";
+}
+
+$("compra-agregar-linea").addEventListener("click", agregarLineaCompra);
+$("compra-lineas").addEventListener("change", event => {
+    if (event.target.matches(".compra-linea-producto")) {
+        const fila = event.target.closest(".compra-linea");
+        const producto = productos.find(item => item && String(item.id) === event.target.value);
+        fila.querySelector(".compra-linea-talla").value = producto?.tallas || "";
+    }
+    actualizarTotalCompra();
+});
+$("compra-lineas").addEventListener("input", actualizarTotalCompra);
+$("compra-lineas").addEventListener("click", event => {
+    const boton = event.target instanceof Element
+        ? event.target.closest(".compra-linea-quitar")
+        : null;
+    if (!boton) return;
+    boton.closest(".compra-linea").remove();
+    if (!$("compra-lineas").children.length) agregarLineaCompra();
+    actualizarTotalCompra();
+});
+
+async function revertirIncrementosCompra(incrementos) {
+    const errores = [];
+    for (const incremento of [...incrementos].reverse()) {
+        let motivo = "";
+        try {
+            const resultado = await db.ref(`productos/${incremento.indice}`).transaction(actual => {
+                if (!actual || String(actual.id) !== incremento.productoId) {
+                    motivo = "El producto ya no está en el índice original.";
+                    return;
+                }
+                const stockActual = actual.stock === null || actual.stock === undefined || actual.stock === ""
+                    ? 0
+                    : Number(actual.stock);
+                if (!Number.isInteger(stockActual) || stockActual < incremento.cantidad) {
+                    motivo = "El stock actual no permite revertir el incremento de forma segura.";
+                    return;
+                }
+                const stockRestante = stockActual - incremento.cantidad;
+                const sinCambiosConcurrentes = stockActual === incremento.stockDespues
+                    && Boolean(actual.agotado) === incremento.agotadoDespues;
+                const stockRestaurado = sinCambiosConcurrentes && incremento.stockAntesNulo
+                    ? null
+                    : stockRestante;
+                return {
+                    ...actual,
+                    stock: stockRestaurado,
+                    agotado: stockRestaurado === null ? false : stockRestaurado === 0
+                };
+            }, null, false);
+            if (!resultado.committed) {
+                throw new Error(motivo || "Firebase no confirmó la reversión del stock.");
+            }
+        } catch (error) {
+            errores.push({ productoId: incremento.productoId, error });
+        }
+    }
+    return errores;
+}
+
+async function refrescarInventarioCompraDesdeFirebase() {
+    const snapshot = await db.ref("productos").once("value");
+    const datos = snapshot.val();
+    if (!Array.isArray(datos)) throw new Error("Firebase no devolvió el inventario como arreglo.");
+    productos = datos.filter(producto => producto);
+    localStorage.setItem("productos", JSON.stringify(productos));
+    renderProductos(productos);
+    renderOfertas();
+    renderListaAdmin();
+    renderAdminStats();
+}
+
+$("compra-form").addEventListener("submit", async event => {
+    event.preventDefault();
+    if (!puedeGestionarCompras() || !usuarioActual?.uid) {
+        mostrarToast("Tu rol no puede registrar compras.");
+        return;
+    }
+    const proveedor = proveedoresCompra.find(item => item.id === $("compra-proveedor").value);
+    if (!proveedor) {
+        mostrarToast("Selecciona un proveedor válido.");
+        $("compra-proveedor").focus();
+        return;
+    }
+    const fecha = $("compra-fecha").value;
+    if (!fecha || !/^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
+        mostrarToast("Ingresa una fecha válida para la compra.");
+        $("compra-fecha").focus();
+        return;
+    }
+    const filas = [...$("compra-lineas").querySelectorAll(".compra-linea")];
+    if (!filas.length) {
+        mostrarToast("Agrega al menos una línea de compra.");
+        return;
+    }
+    const items = [];
+    for (const [indice, fila] of filas.entries()) {
+        const productoId = fila.querySelector(".compra-linea-producto").value;
+        const producto = productos.find(item => item && String(item.id) === productoId);
+        const cantidadTexto = fila.querySelector(".compra-linea-cantidad").value.trim();
+        const costoTexto = fila.querySelector(".compra-linea-costo").value.trim();
+        const cantidad = Number(cantidadTexto);
+        const costoUnitario = Number(costoTexto);
+        if (!producto) {
+            mostrarToast(`Selecciona un producto válido en la línea ${indice + 1}.`);
+            return;
+        }
+        if (!cantidadTexto || !Number.isInteger(cantidad) || cantidad <= 0 || cantidad > 10000) {
+            mostrarToast(`La cantidad de la línea ${indice + 1} debe ser un entero mayor a 0.`);
+            return;
+        }
+        if (!costoTexto || !Number.isFinite(costoUnitario) || costoUnitario < 0) {
+            mostrarToast(`El costo de la línea ${indice + 1} debe ser igual o mayor a 0.`);
+            return;
+        }
+        const costoRedondeado = redondearBs(costoUnitario);
+        if (!Number.isFinite(costoRedondeado)) {
+            mostrarToast(`El costo de la línea ${indice + 1} está fuera del rango admitido.`);
+            return;
+        }
+        items.push({
+            productoId: producto.id,
+            nombre: producto.nombre,
+            talla: fila.querySelector(".compra-linea-talla").value.trim(),
+            cantidad,
+            costoUnitario: costoRedondeado
+        });
+    }
+    const total = redondearBs(items.reduce((suma, item) => suma + item.cantidad * item.costoUnitario, 0));
+    if (!Number.isFinite(total)) {
+        mostrarToast("El total de la compra está fuera del rango admitido.");
+        return;
+    }
+    const boton = $("compra-registrar");
+    if (boton.disabled) return;
+    boton.disabled = true;
+    let productosSnapshot;
+    try {
+        productosSnapshot = await db.ref("productos").once("value");
+    } catch (error) {
+        mostrarToast(`No se pudo cargar el inventario: ${describirErrorCompras(error)}`);
+        console.error("Error al consultar productos antes de registrar la compra:", error);
+        boton.disabled = false;
+        return;
+    }
+    const productosFirebase = productosSnapshot.val();
+    if (!Array.isArray(productosFirebase)) {
+        mostrarToast("No se pudo cargar el inventario para registrar la compra.");
+        boton.disabled = false;
+        return;
+    }
+    const grupos = new Map();
+    for (const item of items) {
+        const clave = String(item.productoId);
+        const indice = productosFirebase.findIndex(producto => producto && String(producto.id) === clave);
+        if (indice < 0) {
+            mostrarToast(`El producto "${item.nombre}" ya no existe en Firebase. Actualiza el inventario.`);
+            boton.disabled = false;
+            return;
+        }
+        item.nombre = productosFirebase[indice].nombre;
+        const grupo = grupos.get(clave) || { indice, productoId: clave, cantidad: 0 };
+        grupo.cantidad += item.cantidad;
+        grupos.set(clave, grupo);
+    }
+    const fechaISO = new Date().toISOString();
+    const compra = {
+        proveedorId: proveedor.id,
+        proveedorNombre: proveedor.nombre,
+        fecha,
+        fechaISO,
+        items,
+        total,
+        nota: $("compra-nota").value.trim(),
+        registradoPor: usuarioActual.uid
+    };
+    const incrementos = [];
+    let compraRegistrada = false;
+    let compraConfirmacionIncierta = false;
+    try {
+        for (const grupo of grupos.values()) {
+            let motivo = "";
+            let estadoAplicado = null;
+            const resultado = await db.ref(`productos/${grupo.indice}`).transaction(actual => {
+                if (!actual || String(actual.id) !== grupo.productoId) {
+                    motivo = "El producto cambió de posición en el inventario. No se aplicó su stock.";
+                    return;
+                }
+                const stockAntes = actual.stock === null || actual.stock === undefined || actual.stock === ""
+                    ? 0
+                    : Number(actual.stock);
+                if (!Number.isInteger(stockAntes) || stockAntes < 0) {
+                    motivo = `El stock actual de "${actual.nombre}" no es un entero válido.`;
+                    return;
+                }
+                const stockDespues = stockAntes + grupo.cantidad;
+                if (stockDespues > 10000) {
+                    motivo = `El stock de "${actual.nombre}" excedería el máximo permitido de 10.000.`;
+                    return;
+                }
+                estadoAplicado = {
+                    stockAntesNulo: actual.stock === null || actual.stock === undefined || actual.stock === "",
+                    stockDespues,
+                    agotadoDespues: stockDespues === 0
+                };
+                return { ...actual, stock: stockDespues, agotado: stockDespues === 0 };
+            }, null, false);
+            if (!resultado.committed || !estadoAplicado) {
+                throw new Error(motivo || "Firebase no confirmó una actualización de stock.");
+            }
+            incrementos.push({
+                ...grupo,
+                ...estadoAplicado,
+                productoActualizado: resultado.snapshot.val()
+            });
+        }
+        const compraRef = db.ref("compras").push();
+        try {
+            await compraRef.set(compra);
+            compraRegistrada = true;
+        } catch (errorEscritura) {
+            let confirmacion;
+            try {
+                confirmacion = await compraRef.once("value");
+            } catch (errorConfirmacion) {
+                compraConfirmacionIncierta = true;
+                throw errorConfirmacion;
+            }
+            if (!confirmacion.exists()) throw errorEscritura;
+            compraRegistrada = true;
+        }
+    } catch (error) {
+        const erroresReversion = compraRegistrada || compraConfirmacionIncierta
+            ? []
+            : await revertirIncrementosCompra(incrementos);
+        let errorSincronizacion = null;
+        try {
+            await refrescarInventarioCompraDesdeFirebase();
+        } catch (errorLectura) {
+            errorSincronizacion = errorLectura;
+        }
+        if (compraConfirmacionIncierta) {
+            const sincronizacion = errorSincronizacion
+                ? ` Además, no se pudo confirmar el inventario: ${describirErrorCompras(errorSincronizacion)}.`
+                : "";
+            mostrarToast(`No se pudo confirmar si la compra se guardó: ${describirErrorCompras(error)}. El stock se conservó; revisa el historial antes de reintentar.${sincronizacion}`);
+            console.error("Estado incierto al guardar una compra:", error, errorSincronizacion);
+        } else if (erroresReversion.length) {
+            const detalle = erroresReversion.map(item =>
+                `${item.productoId}: ${describirErrorCompras(item.error)}`
+            ).join("; ");
+            mostrarToast(`No se completó la compra: ${describirErrorCompras(error)}. No se pudo revertir todo el stock: ${detalle}`);
+            console.error("Falló la reversión de stock de una compra:", error, erroresReversion);
+        } else if (errorSincronizacion) {
+            mostrarToast(`No se completó la compra: ${describirErrorCompras(error)}. No se pudo confirmar el inventario: ${describirErrorCompras(errorSincronizacion)}`);
+            console.error("Error al registrar compra y sincronizar inventario:", error, errorSincronizacion);
+        } else if (compraRegistrada) {
+            mostrarToast(`La compra quedó registrada, pero hubo un error al actualizar la vista: ${describirErrorCompras(error)}`);
+            console.error("La compra quedó registrada, pero falló una operación posterior:", error);
+        } else {
+            mostrarToast(`No se pudo registrar la compra: ${describirErrorCompras(error)}`);
+            console.error("Error al registrar compra:", error);
+        }
+        boton.disabled = false;
+        return;
+    }
+
+    try {
+        for (const incremento of incrementos) {
+            const indiceLocal = productos.findIndex(producto => producto && String(producto.id) === incremento.productoId);
+            if (indiceLocal < 0) productos.push(incremento.productoActualizado);
+            else productos[indiceLocal] = { ...productos[indiceLocal], ...incremento.productoActualizado };
+        }
+        localStorage.setItem("productos", JSON.stringify(productos));
+        renderProductos(productos);
+        renderOfertas();
+        renderListaAdmin();
+        renderAdminStats();
+        $("compra-form").reset();
+        $("compra-fecha").value = fechaCajaLocal();
+        $("compra-lineas").innerHTML = "";
+        agregarLineaCompra();
+        await cargarProveedoresCompra();
+        mostrarToast("Compra registrada y stock actualizado.");
+    } catch (error) {
+        mostrarToast(`La compra quedó registrada, pero no se pudo actualizar la vista: ${describirErrorCompras(error)}`);
+        console.error("Error al actualizar la vista después de registrar compra:", error);
+    } finally {
+        boton.disabled = false;
+    }
+});
+
+/* =============================================   COMPRAS: HISTORIAL   */
+function renderHistorialCompras() {
+    const contenedor = $("historial-compras-lista");
+    const desde = $("historial-compra-desde").value;
+    const hasta = $("historial-compra-hasta").value;
+    const proveedorId = $("historial-compra-proveedor").value;
+    const comprasVisibles = historialCompras
+        .filter(compra => {
+            const fecha = String(compra.fecha || "");
+            return (!desde || fecha >= desde)
+                && (!hasta || fecha <= hasta)
+                && (!proveedorId || String(compra.proveedorId) === proveedorId);
+        })
+        .sort((a, b) => String(b.fechaISO || b.fecha || "").localeCompare(String(a.fechaISO || a.fecha || "")));
+    if (!comprasVisibles.length) {
+        contenedor.innerHTML = '<p class="admin-vacio">No hay compras que coincidan con los filtros.</p>';
+        return;
+    }
+    contenedor.innerHTML = comprasVisibles.map(compra => {
+        const proveedor = proveedoresCompra.find(item => item.id === String(compra.proveedorId));
+        const nombreProveedor = compra.proveedorNombre || proveedor?.nombre || "Proveedor eliminado";
+        const items = (Array.isArray(compra.items) ? compra.items : Object.values(compra.items || {}))
+            .filter(item => item && typeof item === "object");
+        const total = Number(compra.total);
+        return `
+          <article class="historial-compra-card">
+            <header>
+              <div>
+                <strong>${escaparHTML(nombreProveedor)}</strong>
+                <time datetime="${escaparHTML(compra.fecha || "")}">${escaparHTML(compra.fecha || "Sin fecha")}</time>
+              </div>
+              <strong>${formatoBs(Number.isFinite(total) ? total : 0)}</strong>
+            </header>
+            <ul>
+              ${items.map(item => `<li>${escaparHTML(item.cantidad)} × ${escaparHTML(item.nombre)}${item.talla ? ` · ${escaparHTML(item.talla)}` : ""}</li>`).join("")}
+            </ul>
+            ${compra.nota ? `<p>${escaparHTML(compra.nota)}</p>` : ""}
+          </article>`;
+    }).join("");
+}
+
+async function cargarHistorialCompras() {
+    if (!puedeGestionarCompras()) return false;
+    $("historial-compras-lista").innerHTML = '<p class="admin-vacio">Cargando historial…</p>';
+    const proveedoresCargados = await cargarProveedoresCompra();
+    if (!proveedoresCargados) return false;
+    try {
+        const snapshot = await db.ref("compras").once("value");
+        const datos = snapshot.val() || {};
+        historialCompras = Object.entries(datos)
+            .filter(([, compra]) => compra && typeof compra === "object")
+            .map(([id, compra]) => ({ id, ...compra }));
+        renderHistorialCompras();
+        return true;
+    } catch (error) {
+        mostrarToast(`No se pudo cargar el historial de compras: ${describirErrorCompras(error)}`);
+        console.error("Error al cargar historial de compras:", error);
+        return false;
+    }
+}
+
+["historial-compra-desde", "historial-compra-hasta", "historial-compra-proveedor"].forEach(id => {
+    $(id).addEventListener("change", renderHistorialCompras);
+});
+
 $("reportes-form").addEventListener("submit",event=>{
     event.preventDefault();
     generarReporteAdmin();
@@ -838,7 +1448,7 @@ $("admin-ver-tienda").addEventListener("click",()=>{
     document.querySelector('nav .nav-links a[href="#inicio"]')?.click();
 });
 $("admin-ver-inventario").addEventListener("click",()=>{
-    const boton=document.querySelector('.admin-tabs .atab[data-tab="editar"]');
+    const boton=document.querySelector('.admin-module-tabs[data-admin-module-tabs="productos"] .atab[data-tab="editar"]');
     if(boton&&!boton.hidden) activarTabAdmin(boton);
 });
 $("inventario-buscar").addEventListener("input", renderListaAdmin);
@@ -1793,6 +2403,17 @@ listaAdmin.addEventListener("click",evento=>{
 });
 
 /* =============================================   LISTA ADMIN   */
+/* Iconos SVG del inventario (usan currentColor, siguen el color del tema) */
+const ICONOS_INVENTARIO = (() => {
+    const svg = trazos => `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${trazos}</svg>`;
+    return {
+        editar: svg('<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>'),
+        agotar: svg('<circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>'),
+        disponible: svg('<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>'),
+        eliminar: svg('<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>')
+    };
+})();
+
 function renderListaAdmin(){
     const la=$("lista-admin");
     const busqueda=$("inventario-buscar").value.trim().toLocaleLowerCase("es");
@@ -1825,13 +2446,13 @@ function renderListaAdmin(){
         const stockTexto=agotado?"Agotado":stockConocido?`${escaparHTML(p.stock)} en stock`:"Stock sin registrar";
         const accionesInventario=adminLogueado
             ? `<div class="admin-prod-btns">
-                <button type="button" class="admin-prod-editar" data-product-id="${escaparHTML(String(p.id))}" aria-label="Editar ${escaparHTML(p.nombre)}">✏️</button>
-                <button type="button" aria-label="${agotado?"Marcar disponible":"Marcar agotado"}" onclick="toggleAgotado(${+p.id})">${agotado?"↩️":"❌"}</button>
-                <button type="button" aria-label="Eliminar ${escaparHTML(p.nombre)}" onclick="eliminarProd(${+p.id})">🗑</button>
+                <button type="button" class="admin-prod-editar" data-product-id="${escaparHTML(String(p.id))}" aria-label="Editar ${escaparHTML(p.nombre)}">${ICONOS_INVENTARIO.editar}</button>
+                <button type="button" aria-label="${agotado?"Marcar disponible":"Marcar agotado"}" onclick="toggleAgotado(${+p.id})">${agotado?ICONOS_INVENTARIO.disponible:ICONOS_INVENTARIO.agotar}</button>
+                <button type="button" aria-label="Eliminar ${escaparHTML(p.nombre)}" onclick="eliminarProd(${+p.id})">${ICONOS_INVENTARIO.eliminar}</button>
             </div>`
             : rolActual==="empleado"
                 ? `<div class="admin-prod-btns">
-                    <button type="button" class="admin-prod-editar" data-product-id="${escaparHTML(String(p.id))}" aria-label="Editar ${escaparHTML(p.nombre)}">✏️</button>
+                    <button type="button" class="admin-prod-editar" data-product-id="${escaparHTML(String(p.id))}" aria-label="Editar ${escaparHTML(p.nombre)}">${ICONOS_INVENTARIO.editar}</button>
                 </div>`
                 : "";
         return `<div class="admin-prod-item">
@@ -2004,7 +2625,7 @@ async function registrarPagoPedido(uid,pedidoId,metodo,boton) {
         mostrarToast("Pago recibido y registrado.");
         renderAdminClientes();
         renderAdminStats();
-        if (document.querySelector('.admin-tabs .atab.activo')?.dataset.tab==="caja") renderCaja();
+        if (document.querySelector('.admin-module-tabs .atab.activo')?.dataset.tab==="caja") renderCaja();
     } catch (error) {
         mostrarToast(`No se pudo registrar el pago: ${describirErrorFirebase(error)}`);
         console.error("Error al registrar un pago:",error);

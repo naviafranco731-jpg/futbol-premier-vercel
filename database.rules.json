@@ -6,7 +6,7 @@
       ".read": true,
       ".write": "auth != null && auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' && auth.token.email == 'naviafranco731@gmail.com'",
       "$index": {
-        ".write": "auth != null && auth.token.role == 'empleado' && $index.matches(/^[0-9]+$/) && !data.exists() && newData.hasChildren(['id', 'imagenes', 'nombre', 'tallas', 'categoria', 'precio'])",
+        ".write": "auth != null && auth.token.role == 'empleado' && $index.matches(/^[0-9]+$/) && ((!data.exists() && newData.hasChildren(['id', 'imagenes', 'nombre', 'tallas', 'categoria', 'precio'])) || (data.exists() && newData.exists() && newData.child('id').val() == data.child('id').val() && newData.child('imagenes').val() == data.child('imagenes').val() && newData.child('nombre').val() == data.child('nombre').val() && newData.child('tallas').val() == data.child('tallas').val() && newData.child('dorsales').val() == data.child('dorsales').val() && newData.child('calidad').val() == data.child('calidad').val() && newData.child('colores').val() == data.child('colores').val() && newData.child('descripcion').val() == data.child('descripcion').val() && newData.child('categoria').val() == data.child('categoria').val() && newData.child('precio').val() == data.child('precio').val() && newData.child('vendidos').val() == data.child('vendidos').val() && newData.child('esOferta').val() == data.child('esOferta').val() && newData.child('precioOriginal').val() == data.child('precioOriginal').val() && newData.child('finOferta').val() == data.child('finOferta').val() && newData.child('visitas').val() == data.child('visitas').val()))",
         "id": {
           ".validate": "auth == null || auth.token.role != 'empleado' || newData.isNumber()"
         },
@@ -59,6 +59,86 @@
         },
         "$other": {
           ".validate": "auth == null || auth.token.role != 'empleado' || (data.exists() && newData.val() == data.val())"
+        }
+      }
+    },
+    "proveedores": {
+      ".read": "auth != null && (auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' || auth.token.role == 'empleado')",
+      "$proveedorId": {
+        ".write": "auth != null && (auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' || auth.token.role == 'empleado')",
+        ".validate": "newData.hasChildren(['nombre', 'telefono', 'ciudad', 'notas', 'creadoEn'])",
+        "nombre": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120"
+        },
+        "telefono": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "ciudad": {
+          ".validate": "newData.isString() && newData.val().length <= 80"
+        },
+        "notas": {
+          ".validate": "newData.isString() && newData.val().length <= 1000"
+        },
+        "creadoEn": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "compras": {
+      ".read": "auth != null && (auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' || auth.token.role == 'empleado')",
+      "$compraId": {
+        ".write": "auth != null && (auth.uid == 'gvP0Hsrh1pTtOAwr5ewCy3NEwdn1' || auth.token.role == 'empleado') && !data.exists() && newData.exists()",
+        ".validate": "newData.hasChildren(['proveedorId', 'proveedorNombre', 'fecha', 'fechaISO', 'items', 'total', 'nota', 'registradoPor'])",
+        "proveedorId": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "proveedorNombre": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120"
+        },
+        "fecha": {
+          ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)"
+        },
+        "fechaISO": {
+          ".validate": "newData.isString()"
+        },
+        "items": {
+          ".validate": "newData.hasChildren()",
+          "$itemId": {
+            ".validate": "newData.hasChildren(['productoId', 'nombre', 'talla', 'cantidad', 'costoUnitario'])",
+            "productoId": {
+              ".validate": "newData.isNumber() || newData.isString()"
+            },
+            "nombre": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 200"
+            },
+            "talla": {
+              ".validate": "newData.isString() && newData.val().length <= 200"
+            },
+            "cantidad": {
+              ".validate": "newData.isNumber() && newData.val() % 1 == 0 && newData.val() > 0 && newData.val() <= 10000"
+            },
+            "costoUnitario": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
+        "total": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "nota": {
+          ".validate": "newData.isString() && newData.val().length <= 1000"
+        },
+        "registradoPor": {
+          ".validate": "newData.isString() && newData.val() == auth.uid"
+        },
+        "$other": {
+          ".validate": false
         }
       }
     },

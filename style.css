@@ -2053,3 +2053,357 @@ body.vista-seccion[data-vista="admin-panel"] > #admin-panel.vista-activa {
 #admin-panel .equipo-card button{width:auto;min-height:40px;margin:0;padding:8px 14px;}
 #admin-panel .equipo-card select{width:auto;min-width:130px;min-height:40px;margin:0;padding:8px 10px;}
 #admin-panel .equipo-card .equipo-btn-eliminar{background:transparent;border:1px solid var(--danger);color:var(--danger);}
+
+/* ===== Panel de administración: tema claro con verde (solo colores) ===== */
+#admin-panel,
+#editar-modal{
+  --bg:#FFFFFF;
+  --bg-main:#F4F7F5;
+  --bg2:#F4F7F5;
+  --bg3:#E7EFEA;
+  --border:#D5E2DA;
+  --text:#0F2A1F;
+  --text2:#4B6358;
+  --text3:#5B6E64;
+  --accent:#15803D;
+  --accent-button:#15803D;
+  --accent-dark:#166534;
+  --danger:#B42318;
+  color-scheme:light;
+}
+body.vista-seccion[data-vista="admin-panel"]{background:#F4F7F5;}
+
+/* Estructura: tarjetas blancas sobre fondo gris claro */
+#admin-panel .admin-sidebar{background:var(--bg);}
+#admin-panel .admin-tab-content{background:var(--bg);box-shadow:0 1px 3px rgba(15,42,31,.06);}
+#admin-panel .stat-card,
+#admin-panel .admin-alertas-stock,
+#admin-panel .equipo-card{background:var(--bg2);}
+#admin-panel .admin-alerta-stock{background:var(--bg);}
+
+/* Menú: pestaña activa en verde */
+#admin-panel .atab.activo{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:none;}
+#admin-panel .atab.activo .admin-tab-icon{border-color:rgba(255,255,255,.55);color:#fff;}
+
+/* Ajustes de legibilidad */
+#admin-panel .btn-rechazar{color:#fff;}
+#admin-panel .preview-portada-btn{color:#fff;}
+#admin-panel .admin-logo{background:#0B0B0B;border-radius:14px;}
+
+/* Corrección: el texto heredado debe usar el color del tema del panel */
+#admin-panel,
+#editar-modal{color:var(--text);}
+#admin-panel .admin-prod-btns button{color:var(--text);}
+
+/* Botones de acciones del inventario con iconos SVG */
+#admin-panel .admin-prod-btns button{display:grid;place-items:center;padding:0;color:var(--text2);}
+#admin-panel .admin-prod-btns button svg{display:block;width:18px;height:18px;pointer-events:none;}
+#admin-panel .admin-prod-btns .admin-prod-editar{color:var(--accent);}
+#admin-panel .admin-prod-btns button[onclick^="eliminarProd"]{color:var(--danger);}
+#admin-panel .admin-prod-btns button:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+#admin-panel .admin-prod-btns button[onclick^="eliminarProd"]:hover{background:var(--danger);border-color:var(--danger);color:#fff;}
+
+/* ===== Panel de administración: degradados verdes (solo colores) ===== */
+
+/* Fondo general con degradado muy suave */
+#admin-panel.admin,
+body.vista-seccion[data-vista="admin-panel"]{
+  background:linear-gradient(180deg,#E3EFE8 0%,#F4F7F5 100%);
+  background-attachment:fixed;
+}
+
+/* Cabecera: verde profundo a verde medio, texto claro */
+#admin-panel .admin-cabecera{
+  background:linear-gradient(120deg,#0F3D2B 0%,#15803D 100%);
+  border-bottom-color:#0B2F21;
+}
+#admin-panel .admin-cabecera h2{color:#fff;}
+#admin-panel .admin-kicker,
+#admin-panel .admin-kicker span{color:#CDEBDA;}
+#admin-panel .admin-descripcion{color:#E6F4EC;}
+
+/* Menú lateral: degradado vertical oscuro */
+#admin-panel .admin-sidebar{
+  background:linear-gradient(180deg,#0F3D2B 0%,#0A2A1D 100%);
+  border-right-color:#0A2A1D;
+}
+#admin-panel .admin-menu-titulo{color:#8FC9AE;}
+#admin-panel .atab{color:#D3EBE0;}
+#admin-panel .atab:hover{background:rgba(255,255,255,.08);color:#fff;}
+#admin-panel .atab .admin-tab-icon{background:transparent;color:#E6F4EC;border-color:rgba(255,255,255,.28);}
+#admin-panel .atab.activo{
+  background:linear-gradient(90deg,#166534 0%,#15803D 100%);
+  color:#fff;
+  box-shadow:inset 3px 0 0 #7DE0A8;
+}
+#admin-panel .atab.activo .admin-tab-icon{color:#fff;border-color:rgba(255,255,255,.6);}
+#admin-panel .btn-cerrar-admin{background:transparent!important;color:#D3EBE0!important;border:1px solid rgba(255,255,255,.28)!important;}
+
+/* Tarjetas de resumen: blancas con franja de degradado arriba y cifra en verde */
+#admin-panel .stat-card{
+  background-color:#fff;
+  background-image:linear-gradient(90deg,#15803D,#7DE0A8),linear-gradient(#fff,#fff);
+  background-size:100% 3px,100% 100%;
+  background-repeat:no-repeat;
+  border-color:#CFE3D7;
+}
+#admin-panel .stat-card h4{color:#15803D;}
+
+/* Botones principales con degradado */
+#admin-panel .admin-tab-content>button,
+#admin-panel #equipo-crear,
+#admin-panel .equipo-lista-cabecera button,
+#admin-panel .admin-alertas-cabecera button,
+#admin-panel #reportes-generar{
+  background:linear-gradient(135deg,#15803D 0%,#166534 100%);
+  color:#fff;
+  border:0;
+}
+#admin-panel .admin-tab-content>button:hover,
+#admin-panel #equipo-crear:hover,
+#admin-panel .equipo-lista-cabecera button:hover,
+#admin-panel .admin-alertas-cabecera button:hover,
+#admin-panel #reportes-generar:hover{filter:brightness(1.1);}
+
+/* Dashboard oculto del panel (no se elimina porque script.js usa sus ids) */
+#admin-panel #admin-tab-dashboard,
+#admin-panel #tab-dashboard{display:none!important;}
+
+/* Botón cerrar sesión con icono SVG */
+#admin-panel .admin-sidebar .btn-cerrar-admin{display:flex;align-items:center;gap:10px;}
+#admin-panel .admin-sidebar .btn-cerrar-admin svg{display:block;flex:0 0 18px;}
+
+/* Navegación del panel por módulos */
+#admin-panel .admin-module-groups{display:flex;flex-direction:column;gap:10px;}
+#admin-panel .admin-module-group{display:flex;flex-direction:column;gap:5px;}
+#admin-panel .admin-module-group[hidden],
+#admin-panel .admin-menu-seccion[hidden]{display:none!important;}
+#admin-panel .admin-menu-seccion{
+  padding:4px 10px 2px;
+  color:#8FC9AE;
+  font-size:.75rem;
+  font-weight:700;
+  letter-spacing:.11em;
+}
+#admin-panel .admin-module-button{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  width:100%;
+  min-height:48px;
+  margin:0;
+  padding:10px 12px;
+  border:1px solid transparent;
+  border-radius:10px;
+  background:transparent!important;
+  color:#D3EBE0;
+  text-align:left;
+  font-size:.98rem;
+}
+#admin-panel .admin-module-button:hover{
+  background:rgba(255,255,255,.08)!important;
+  color:#fff;
+}
+#admin-panel .admin-module-button.activo{
+  background:linear-gradient(90deg,#166534 0%,#15803D 100%)!important;
+  color:#fff;
+  box-shadow:inset 3px 0 0 #7DE0A8;
+}
+#admin-panel .admin-module-button .admin-tab-icon{
+  display:grid;
+  width:30px;
+  height:30px;
+  flex:0 0 30px;
+  place-items:center;
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:9px;
+  background:transparent;
+  color:#E6F4EC;
+  font-size:1.05rem;
+}
+#admin-panel .admin-module-button.activo .admin-tab-icon{
+  border-color:rgba(255,255,255,.6);
+  color:#fff;
+}
+#admin-panel .admin-module-tabs[hidden]{display:none!important;}
+#admin-panel .admin-module-tabs:not([hidden]){
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0 0 16px;
+  padding:7px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--bg);
+}
+#admin-panel .admin-module-tabs .atab{
+  flex:0 0 auto;
+  width:auto;
+  min-height:42px;
+  padding:8px 14px;
+  border-color:transparent;
+  border-radius:9px;
+  font-size:.9rem;
+}
+#admin-panel .admin-module-tabs .atab .admin-tab-icon{width:26px;height:26px;}
+@media(max-width:760px){
+  #admin-panel .admin-module-tabs:not([hidden]){display:flex;flex-wrap:wrap;}
+  #admin-panel .admin-module-tabs .atab{width:auto;min-height:42px;}
+}
+
+/* Módulo de compras */
+#admin-panel .compras-form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+#admin-panel .compras-form-grid label,
+#admin-panel .compra-linea label,
+#admin-panel .compras-filtros label{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  color:var(--text2);
+}
+#admin-panel .compras-form-grid textarea{min-height:88px;resize:vertical;}
+#admin-panel .compras-form-acciones,
+#admin-panel .compra-lineas-cabecera,
+#admin-panel .compra-total{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+#admin-panel .compras-form-acciones{grid-column:1/-1;justify-content:flex-start;}
+#admin-panel .compras-form-acciones button,
+#admin-panel #compra-agregar-linea,
+#admin-panel .compra-linea-quitar,
+#admin-panel #compra-registrar{
+  width:auto;
+  min-height:40px;
+  margin:0;
+  padding:9px 14px;
+  border:1px solid var(--accent);
+  border-radius:9px;
+  background:var(--accent);
+  color:#fff;
+}
+#admin-panel .compras-form-acciones button:hover,
+#admin-panel #compra-agregar-linea:hover,
+#admin-panel #compra-registrar:hover{filter:brightness(1.08);}
+#admin-panel .compras-form-acciones #proveedor-cancelar-edicion,
+#admin-panel .compra-linea-quitar{
+  border-color:var(--border);
+  background:var(--bg);
+  color:var(--text2);
+}
+#admin-panel .proveedores-lista,
+#admin-panel .compra-lineas,
+#admin-panel .historial-compras-lista{
+  display:grid;
+  gap:12px;
+  margin-top:18px;
+}
+#admin-panel .proveedor-compra-card,
+#admin-panel .historial-compra-card,
+#admin-panel .compra-linea{
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:var(--bg);
+}
+#admin-panel .proveedor-compra-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:14px;
+}
+#admin-panel .proveedor-compra-datos{
+  display:grid;
+  gap:5px;
+  min-width:0;
+  color:var(--text2);
+}
+#admin-panel .proveedor-compra-datos strong{color:var(--text);}
+#admin-panel .proveedor-compra-datos p{margin:3px 0 0;color:var(--text3);}
+#admin-panel .proveedor-compra-acciones{display:flex;gap:8px;flex-shrink:0;}
+#admin-panel .proveedor-compra-acciones button{
+  width:auto;
+  min-height:36px;
+  margin:0;
+  padding:7px 11px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--bg);
+  color:var(--text2);
+}
+#admin-panel .proveedor-compra-acciones button[data-proveedor-accion="eliminar"]{
+  border-color:var(--danger);
+  color:var(--danger);
+}
+#admin-panel .compra-lineas-cabecera{margin-top:20px;}
+#admin-panel .compra-lineas-cabecera h4{margin:0;color:var(--text);}
+#admin-panel .compra-linea{
+  display:grid;
+  grid-template-columns:minmax(180px,1.5fr) minmax(120px,1fr) minmax(100px,.7fr) minmax(150px,1fr) auto;
+  align-items:end;
+  gap:12px;
+  padding:14px;
+}
+#admin-panel .compra-total{
+  margin:16px 0;
+  padding:14px 0;
+  border-top:1px solid var(--border);
+  color:var(--text);
+}
+#admin-panel .compra-total output{font-weight:700;color:var(--accent);}
+#admin-panel .compras-filtros{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:18px;
+}
+#admin-panel .historial-compra-card{padding:16px;}
+#admin-panel .historial-compra-card header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  color:var(--accent);
+}
+#admin-panel .historial-compra-card header div{display:grid;gap:4px;}
+#admin-panel .historial-compra-card header strong:first-child{color:var(--text);}
+#admin-panel .historial-compra-card time{color:var(--text3);font-size:.88rem;}
+#admin-panel .historial-compra-card ul{display:grid;gap:5px;margin:12px 0 0;padding-left:20px;color:var(--text2);}
+#admin-panel .historial-compra-card p{margin:10px 0 0;color:var(--text3);}
+@media(max-width:760px){
+  #admin-panel .compras-form-grid,
+  #admin-panel .compras-filtros{grid-template-columns:minmax(0,1fr);}
+  #admin-panel .compra-linea{grid-template-columns:repeat(2,minmax(0,1fr));}
+  #admin-panel .compra-linea label:first-child{grid-column:1/-1;}
+  #admin-panel .proveedor-compra-card{align-items:flex-start;flex-direction:column;}
+  #admin-panel .proveedor-compra-acciones{width:100%;}
+  #admin-panel .proveedor-compra-acciones button{flex:1;}
+}
+
+/* Contraste de las pestañas internas sobre el fondo claro */
+#admin-panel .admin-module-tabs .atab:not(.activo){
+  color:var(--text2);
+  border:1px solid var(--border);
+  background:transparent;
+}
+#admin-panel .admin-module-tabs .atab:not(.activo) .admin-tab-icon{
+  color:var(--text2);
+  border-color:var(--border);
+}
+#admin-panel .admin-module-tabs .atab:not(.activo):hover{
+  background:var(--bg3);
+  color:var(--text);
+}
+#admin-panel .admin-module-tabs .atab:not(.activo):hover .admin-tab-icon{
+  color:var(--text);
+}
+#admin-panel .admin-module-tabs .atab:focus-visible{
+  outline:3px solid var(--accent);
+  outline-offset:2px;
+}
