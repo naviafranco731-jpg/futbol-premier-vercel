@@ -2407,3 +2407,86 @@ body.vista-seccion[data-vista="admin-panel"]{
   outline:3px solid var(--accent);
   outline-offset:2px;
 }
+
+/* Avatar editable de la identidad administrativa */
+#admin-panel .admin-identidad-icono{
+  position:relative;
+  display:grid;
+  flex:0 0 40px;
+  width:40px;
+  height:40px;
+  place-items:center;
+  overflow:hidden;
+  padding:0;
+  border:1px solid var(--border);
+  border-radius:50%;
+  background:var(--accent);
+  color:#fff;
+  cursor:pointer;
+}
+#admin-panel .admin-identidad-icono img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+#admin-panel .admin-identidad-inicial{
+  color:#fff;
+  font-size:1rem;
+  font-weight:700;
+  line-height:1;
+}
+#admin-panel .admin-identidad-icono::after{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background:rgba(15,42,31,.58);
+  content:"📷";
+  font-size:16px;
+  opacity:0;
+  transition:opacity .18s ease;
+}
+#admin-panel .admin-identidad-icono:hover::after,
+#admin-panel .admin-identidad-icono:focus-visible::after{opacity:1;}
+#admin-panel .admin-identidad-icono:focus-visible{
+  outline:3px solid var(--accent);
+  outline-offset:3px;
+}
+#admin-panel .admin-identidad-icono:disabled{cursor:wait;}
+
+/* SVG de los iconos de navegación administrativa */
+#admin-panel .admin-tab-icon svg{
+  display:block;
+  flex:none;
+  pointer-events:none;
+}
+#admin-panel .admin-module-button .admin-tab-icon svg{
+  width:18px;
+  height:18px;
+}
+#admin-panel .admin-module-tabs .admin-tab-icon svg{
+  width:16px;
+  height:16px;
+}
+
+/* Ajustes de tamaño y recorte del avatar de identidad */
+#admin-panel .admin-identidad-icono{
+  flex:0 0 46px;
+  width:46px;
+  height:46px;
+  padding:0;
+  overflow:hidden;
+  border-radius:50%;
+}
+#admin-panel .admin-identidad-icono img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+#admin-panel .admin-identidad-icono.con-foto{
+  border:0;
+  background:transparent;
+}

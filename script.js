@@ -42,6 +42,100 @@ function etiquetaRol(rol) {
     return ({ admin: "Administrador", cajero: "Cajero", empleado: "Empleado" })[rol] || "Cliente";
 }
 
+function actualizarAvatarAdmin(photoURL = auth.currentUser?.photoURL) {
+    const avatar = $("admin-identidad-icono");
+    avatar.replaceChildren();
+    avatar.classList.toggle("con-foto", Boolean(photoURL));
+    if (photoURL) {
+        const imagen = document.createElement("img");
+        imagen.src = photoURL;
+        imagen.alt = "";
+        avatar.appendChild(imagen);
+        return;
+    }
+    const nombre = $("admin-identidad-nombre").textContent.trim();
+    const inicial = document.createElement("span");
+    inicial.className = "admin-identidad-inicial";
+    inicial.setAttribute("aria-hidden", "true");
+    inicial.textContent = Array.from(nombre)[0]?.toLocaleUpperCase() || "U";
+    avatar.appendChild(inicial);
+}
+
+function nombreIdentidadAdmin() {
+    return perfilActual?.usuario
+        || auth.currentUser?.displayName
+        || auth.currentUser?.email?.split("@")[0]
+        || "Usuario";
+}
+
+function actualizarNombreIdentidadAdmin() {
+    $("admin-identidad-nombre").innerHTML = escaparHTML(nombreIdentidadAdmin());
+}
+
+async function subirFotoIdentidadAdmin(archivo) {
+    const tiposPermitidos = new Set(["image/jpeg", "image/png", "image/webp"]);
+    if (!tiposPermitidos.has(archivo.type) || archivo.size > 2 * 1024 * 1024) {
+        mostrarToast("Elige una imagen JPG, PNG o WebP de máximo 2 MB.");
+        return;
+    }
+    const boton = $("admin-identidad-icono");
+    const usuario = auth.currentUser;
+    if (!usuario) {
+        mostrarToast("Inicia sesión para cambiar la foto.");
+        return;
+    }
+    const nombreIngresado = prompt(
+        "¿Quieres cambiar tu nombre visible? Ingresa entre 2 y 30 caracteres. Déjalo vacío para mantenerlo.",
+        usuario.displayName || ""
+    );
+    let displayName;
+    if (nombreIngresado !== null && nombreIngresado.trim()) {
+        const nombrePropuesto = nombreIngresado.trim();
+        const longitudNombre = Array.from(nombrePropuesto).length;
+        if (longitudNombre < 2 || longitudNombre > 30) {
+            mostrarToast("El nombre visible debe tener entre 2 y 30 caracteres. Se conservará el actual.");
+        } else {
+            displayName = nombrePropuesto;
+        }
+    }
+    const datos = new FormData();
+    datos.append("file", archivo);
+    datos.append("upload_preset", "futbol-premier");
+    boton.disabled = true;
+    boton.setAttribute("aria-busy", "true");
+    mostrarToast("Subiendo foto de perfil...");
+    try {
+        const respuesta = await fetch("https://api.cloudinary.com/v1_1/dxcfq1mln/image/upload", {
+            method: "POST",
+            body: datos
+        });
+        const resultado = await respuesta.json();
+        if (!respuesta.ok || typeof resultado.secure_url !== "string") {
+            throw new Error(resultado.error?.message || "Cloudinary no devolvió una URL de imagen.");
+        }
+        await usuario.updateProfile({
+            photoURL: resultado.secure_url,
+            ...(displayName ? { displayName } : {})
+        });
+        actualizarNombreIdentidadAdmin();
+        actualizarAvatarAdmin(resultado.secure_url);
+        mostrarToast("Foto de perfil actualizada.");
+    } catch (error) {
+        mostrarToast(`No se pudo actualizar la foto: ${error.message || describirErrorFirebase(error)}`);
+        console.error("Error al subir la foto de perfil:", error);
+    } finally {
+        boton.disabled = false;
+        boton.removeAttribute("aria-busy");
+        $("admin-identidad-foto-input").value = "";
+    }
+}
+
+$("admin-identidad-icono").addEventListener("click", () => $("admin-identidad-foto-input").click());
+$("admin-identidad-foto-input").addEventListener("change", event => {
+    const archivo = event.target.files?.[0];
+    if (archivo) subirFotoIdentidadAdmin(archivo);
+});
+
 function abrirPanelAdministracion() {
     if (!esPersonal()) return;
     $$(".vista-activa").forEach(elemento => elemento.classList.remove("vista-activa"));
@@ -91,9 +185,9 @@ function configurarAccesoPanel() {
     if (primerModulo) activarModuloAdmin(primerModulo);
     $("admin-stats").hidden = !esPersonal();
     $("admin-alertas-stock").hidden = !esPersonal();
-    $("admin-identidad-nombre").textContent =
-        perfilActual?.usuario || usuarioActual?.displayName || usuarioActual?.email || "Usuario";
+    actualizarNombreIdentidadAdmin();
     $("admin-identidad-rol").textContent = etiquetaRol(rolActual);
+    actualizarAvatarAdmin(auth.currentUser?.photoURL);
     if (esPersonal()) renderAdminStats();
 }
 
