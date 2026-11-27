@@ -2,7 +2,7 @@
   "name": "futbol-premier",
   "private": true,
   "dependencies": {
-    "firebase-admin": "^14.5.1"
+    "firebase-admin": "^13.10.0"
   },
   "engines": {
     "node": ">=24.12.0"
