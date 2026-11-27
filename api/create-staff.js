@@ -1,5 +1,4 @@
-const admin = require("firebase-admin");
-const { cert } = require("firebase-admin/app");
+const { cert, initializeApp, getApps } = require("firebase-admin/app");
 const { getAuth } = require("firebase-admin/auth");
 const { createPrivateKey } = require("node:crypto");
 
@@ -115,7 +114,7 @@ function readServiceAccount() {
 }
 
 function existingAdminApp() {
-    const app = admin.getApps().find(candidate => candidate.name === APP_NAME);
+    const app = getApps().find(candidate => candidate.name === APP_NAME);
     if (!app) return null;
     if (app.options.projectId !== PROJECT_ID) {
         throw new FirebaseAdminInitializationError("FIREBASE_ADMIN_APP_CONFLICT");
@@ -151,7 +150,7 @@ function getAdminApp() {
     }
 
     try {
-        return admin.initializeApp({ credential, projectId: PROJECT_ID }, APP_NAME);
+        return initializeApp({ credential, projectId: PROJECT_ID }, APP_NAME);
     } catch (error) {
         let app;
         try {
@@ -230,7 +229,6 @@ module.exports = async function createStaff(req, res) {
     if (decoded.uid !== ADMIN_UID || decoded.email !== ADMIN_EMAIL) {
         return sendError(res, 403, "Solo el administrador puede crear cuentas del equipo.");
     }
-//JJ
     let body = req.body;
     if (typeof body === "string") {
         try {
