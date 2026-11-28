@@ -781,7 +781,6 @@
             <div class="equipo-lista-cabecera">
               <h4>Cuentas del equipo</h4>
               <div class="equipo-lista-botones">
-                <button type="button" id="equipo-recargar">↻ Actualizar</button>
                 <button type="button" id="equipo-nuevo">+ Nuevo usuario</button>
               </div>
             </div>
@@ -991,7 +990,6 @@
                 <label for="clientes-buscar">Buscar cliente
                   <input type="search" id="clientes-buscar" placeholder="Usuario o correo..." />
                 </label>
-                <button type="button" id="recargar-clientes-solo">↻ Actualizar</button>
               </div>
             </div>
             <p class="admin-resultados" id="clientes-resultados" aria-live="polite"></p>
@@ -1022,9 +1020,6 @@
                     <option value="cancelado">Cancelados</option>
                   </select>
                 </label>
-                <button type="button" id="recargar-clientes">
-                  ↻ Actualizar
-                </button>
               </div>
             </div>
             <p
@@ -1046,12 +1041,8 @@
             tabindex="0"
           >
             <div class="admin-panel-intro">
-              <h3>Caja e ingresos de hoy</h3>
-              <p>
-                Marca un pedido como pagado solo después de confirmar el
-                efectivo o el comprobante QR. Cada pedido se registra una sola
-                vez.
-              </p>
+              <h3>Pagos</h3>
+              <p>Cobros recibidos hoy y cierre diario de caja.</p>
             </div>
             <div class="caja-resumen" aria-live="polite">
               <article>
@@ -1067,36 +1058,59 @@
                 ><strong id="caja-total-recibido">—</strong>
               </article>
             </div>
-            <div class="caja-cierre">
-              <h4>Cierre diario</h4>
-              <label for="caja-fondo-inicial"
-                >Fondo inicial en efectivo (Bs)</label
-              >
-              <input
-                id="caja-fondo-inicial"
-                type="number"
-                min="0"
-                step="0.01"
-                value="0"
-              />
-              <label for="caja-efectivo-contado"
-                >Efectivo contado al cierre (Bs)</label
-              >
-              <input
-                id="caja-efectivo-contado"
-                type="number"
-                min="0"
-                step="0.01"
-              />
-              <p>
-                Efectivo esperado:
-                <strong id="caja-efectivo-esperado">—</strong>
-              </p>
-              <p>Diferencia: <strong id="caja-diferencia">—</strong></p>
-              <button type="button" id="caja-cerrar-dia">
-                Registrar cierre de hoy
-              </button>
-              <p id="caja-cierre-estado" role="status" aria-live="polite"></p>
+            <div class="caja-contenido">
+              <div class="caja-listas">
+                <section class="caja-seccion">
+                  <div class="caja-seccion-cabecera">
+                    <h4>Pedidos por cobrar</h4>
+                    <label for="caja-pedidos-buscar">Buscar pedido o cliente
+                      <input type="search" id="caja-pedidos-buscar" placeholder="Número o cliente..." />
+                    </label>
+                  </div>
+                  <p class="admin-resultados" id="caja-pedidos-resultados" aria-live="polite"></p>
+                  <div id="caja-pedidos-por-cobrar">
+                    <p class="admin-vacio">Abre Pagos para cargar los pedidos.</p>
+                  </div>
+                  <button type="button" id="caja-pedidos-cargar-mas" hidden>Cargar más</button>
+                </section>
+                <section class="caja-seccion">
+                  <h4>Cobros de hoy</h4>
+                  <div id="caja-cobros-hoy">
+                    <p class="admin-vacio">Abre Pagos para cargar los cobros.</p>
+                  </div>
+                </section>
+              </div>
+              <div class="caja-cierre">
+                <h4>Cierre diario</h4>
+                <label for="caja-fondo-inicial"
+                  >Fondo inicial en efectivo (Bs)</label
+                >
+                <input
+                  id="caja-fondo-inicial"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value="0"
+                />
+                <label for="caja-efectivo-contado"
+                  >Efectivo contado al cierre (Bs)</label
+                >
+                <input
+                  id="caja-efectivo-contado"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                />
+                <p>
+                  Efectivo esperado:
+                  <strong id="caja-efectivo-esperado">—</strong>
+                </p>
+                <p>Diferencia: <strong id="caja-diferencia">—</strong></p>
+                <button type="button" id="caja-cerrar-dia">
+                  Registrar cierre de hoy
+                </button>
+                <p id="caja-cierre-estado" role="status" aria-live="polite"></p>
+              </div>
             </div>
           </div>
           <div
@@ -1116,11 +1130,11 @@
             <form id="reportes-form" class="reportes-filtros">
               <div class="reportes-filtros-campos">
                 <label for="reportes-desde">
-                  Fecha desde
+                  Desde
                   <input id="reportes-desde" type="date" required />
                 </label>
                 <label for="reportes-hasta">
-                  Fecha hasta
+                  Hasta
                   <input id="reportes-hasta" type="date" required />
                 </label>
               </div>
@@ -1131,71 +1145,105 @@
                 <button type="button" id="reportes-exportar" disabled>
                   Exportar a Excel
                 </button>
-                <p id="reportes-estado" role="status" aria-live="polite">
-                  Selecciona un periodo y genera el reporte.
-                </p>
               </div>
             </form>
+            <p id="reportes-estado" class="reportes-estado" role="status" aria-live="polite">
+              Selecciona un periodo y genera el reporte.
+            </p>
             <div id="reportes-resultado" class="reportes-resultado" hidden>
               <p id="reportes-periodo" class="reportes-periodo"></p>
-              <section class="reportes-seccion">
-                <h4>Indicadores generales</h4>
-                <div id="reportes-indicadores" class="reportes-metricas"></div>
+              <div class="admin-module-tabs reportes-subtabs" data-reportes-tabs role="tablist" aria-label="Secciones del reporte" hidden>
+                <button type="button" class="atab activo" id="reportes-tab-resumen" role="tab" aria-selected="true" aria-controls="reportes-vista-resumen" data-reportes-tab="resumen">
+                  <span class="admin-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-5 5"/></svg></span><span class="admin-tab-text"><strong>Resumen</strong></span>
+                </button>
+                <button type="button" class="atab" id="reportes-tab-productos" role="tab" aria-selected="false" aria-controls="reportes-vista-productos" data-reportes-tab="productos">
+                  <span class="admin-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16.5 9.4-9-5.19"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></span><span class="admin-tab-text"><strong>Productos</strong></span>
+                </button>
+                <button type="button" class="atab" id="reportes-tab-inventario" role="tab" aria-selected="false" aria-controls="reportes-vista-inventario" data-reportes-tab="inventario">
+                  <span class="admin-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></span><span class="admin-tab-text"><strong>Inventario</strong></span>
+                </button>
+                <button type="button" class="atab" id="reportes-tab-pedidos" role="tab" aria-selected="false" aria-controls="reportes-vista-pedidos" data-reportes-tab="pedidos">
+                  <span class="admin-tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M8 12h8"/><path d="M8 16h8"/></svg></span><span class="admin-tab-text"><strong>Pedidos</strong></span>
+                </button>
+              </div>
+              <section class="reportes-vista activo" id="reportes-vista-resumen" data-reportes-panel="resumen" role="tabpanel" aria-labelledby="reportes-tab-resumen" tabindex="0">
+                <section class="reportes-seccion">
+                  <h4>Indicadores generales</h4>
+                  <div id="reportes-indicadores" class="reportes-metricas"></div>
+                </section>
+                <section class="reportes-seccion">
+                  <h4>Ventas e ingresos por día</h4>
+                  <div id="reportes-grafico" class="reportes-grafico"></div>
+                  <div id="reportes-metodos-pago" class="reportes-metricas"></div>
+                </section>
               </section>
-              <section class="reportes-seccion">
-                <h4>Ventas e ingresos por día</h4>
-                <div id="reportes-grafico" class="reportes-grafico"></div>
-                <div id="reportes-metodos-pago" class="reportes-metricas"></div>
+              <section class="reportes-vista" id="reportes-vista-productos" data-reportes-panel="productos" role="tabpanel" aria-labelledby="reportes-tab-productos" tabindex="0" hidden>
+                <section class="reportes-seccion">
+                  <h4>Productos más vendidos (primeros 10)</h4>
+                  <div class="reportes-tabla-wrap">
+                    <table class="reportes-tabla">
+                      <thead>
+                        <tr>
+                          <th>Posición</th>
+                          <th>Jersey</th>
+                          <th>Unidades</th>
+                          <th>Importe bruto</th>
+                        </tr>
+                      </thead>
+                      <tbody id="reportes-productos"></tbody>
+                    </table>
+                  </div>
+                </section>
               </section>
-              <section class="reportes-seccion">
-                <h4>Productos más vendidos</h4>
-                <div class="reportes-tabla-wrap">
-                  <table class="reportes-tabla">
-                    <thead>
-                      <tr>
-                        <th>Posición</th>
-                        <th>Jersey</th>
-                        <th>Unidades</th>
-                        <th>Importe bruto</th>
-                      </tr>
-                    </thead>
-                    <tbody id="reportes-productos"></tbody>
-                  </table>
-                </div>
+              <section class="reportes-vista" id="reportes-vista-inventario" data-reportes-panel="inventario" role="tabpanel" aria-labelledby="reportes-tab-inventario" tabindex="0" hidden>
+                <section class="reportes-seccion">
+                  <h4>Inventario actual</h4>
+                  <div id="reportes-inventario-indicadores" class="reportes-metricas"></div>
+                  <div class="reportes-lista-controles">
+                    <label for="reportes-inventario-filtro">Estado del stock
+                      <select id="reportes-inventario-filtro">
+                        <option value="todos">Todos</option>
+                        <option value="Stock bajo">Stock bajo</option>
+                        <option value="Agotado">Agotados</option>
+                        <option value="Stock no registrado">Sin stock registrado</option>
+                      </select>
+                    </label>
+                  </div>
+                  <div class="reportes-tabla-wrap">
+                    <table class="reportes-tabla">
+                      <thead>
+                        <tr>
+                          <th>Jersey</th>
+                          <th>Stock registrado</th>
+                          <th>Estado</th>
+                        </tr>
+                      </thead>
+                      <tbody id="reportes-inventario"></tbody>
+                    </table>
+                  </div>
+                  <button type="button" class="reportes-ver-mas" id="reportes-inventario-ver-mas" hidden>Ver más</button>
+                </section>
               </section>
-              <section class="reportes-seccion">
-                <h4>Inventario actual</h4>
-                <div id="reportes-inventario-indicadores" class="reportes-metricas"></div>
-                <div class="reportes-tabla-wrap">
-                  <table class="reportes-tabla">
-                    <thead>
-                      <tr>
-                        <th>Jersey</th>
-                        <th>Stock registrado</th>
-                        <th>Estado</th>
-                      </tr>
-                    </thead>
-                    <tbody id="reportes-inventario"></tbody>
-                  </table>
-                </div>
-              </section>
-              <section class="reportes-seccion">
-                <h4>Pedidos del periodo</h4>
-                <div id="reportes-estados-pedidos" class="reportes-metricas"></div>
-                <div class="reportes-tabla-wrap">
-                  <table class="reportes-tabla">
-                    <thead>
-                      <tr>
-                        <th>Número</th>
-                        <th>Fecha</th>
-                        <th>Estado actual</th>
-                        <th>Total</th>
-                        <th>Pago</th>
-                      </tr>
-                    </thead>
-                    <tbody id="reportes-pedidos"></tbody>
-                  </table>
-                </div>
+              <section class="reportes-vista" id="reportes-vista-pedidos" data-reportes-panel="pedidos" role="tabpanel" aria-labelledby="reportes-tab-pedidos" tabindex="0" hidden>
+                <section class="reportes-seccion">
+                  <h4>Pedidos del periodo</h4>
+                  <div id="reportes-estados-pedidos" class="reportes-metricas"></div>
+                  <div class="reportes-tabla-wrap">
+                    <table class="reportes-tabla">
+                      <thead>
+                        <tr>
+                          <th>Número</th>
+                          <th>Fecha</th>
+                          <th>Estado actual</th>
+                          <th>Total</th>
+                          <th>Pago</th>
+                        </tr>
+                      </thead>
+                      <tbody id="reportes-pedidos"></tbody>
+                    </table>
+                  </div>
+                  <button type="button" class="reportes-ver-mas" id="reportes-pedidos-ver-mas" hidden>Ver más</button>
+                </section>
               </section>
             </div>
           </div>
@@ -1211,13 +1259,29 @@
                 <h3>Encargos personalizados</h3>
                 <p>Revisa solicitudes y actualiza su estado de atención.</p>
               </div>
-              <button type="button" id="recargar-encargos">↻ Actualizar</button>
             </div>
+            <div class="admin-lista-acciones">
+              <label for="encargos-filtro-estado">Estado
+                <select id="encargos-filtro-estado">
+                  <option value="todos">Todos</option>
+                  <option value="pendiente" selected>Pendiente</option>
+                  <option value="contactado">Contactado</option>
+                  <option value="en proceso">En proceso</option>
+                  <option value="completado">Completado</option>
+                  <option value="rechazado">Rechazado</option>
+                </select>
+              </label>
+              <label for="encargos-buscar">Buscar encargo
+                <input type="search" id="encargos-buscar" placeholder="Camiseta, correo o usuario..." />
+              </label>
+            </div>
+            <p class="admin-resultados" id="encargos-resultados" aria-live="polite"></p>
             <div id="lista-encargos-admin">
               <p class="admin-vacio">
                 Inicia sesión como administrador para cargar los encargos.
               </p>
             </div>
+            <button type="button" id="encargos-cargar-mas" hidden>Cargar más</button>
           </div>
           <div
             class="admin-tab-content"

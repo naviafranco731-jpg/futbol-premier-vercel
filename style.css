@@ -2010,6 +2010,62 @@ body.vista-seccion[data-vista="admin-panel"] > #admin-panel.vista-activa {
     }
 }
 
+/* Reportes: filtros compactos, vistas internas y tablas legibles */
+#admin-panel .reportes-filtros{
+    display:grid;
+    grid-template-columns:minmax(125px,1fr) minmax(125px,1fr) auto auto;
+    align-items:end;
+    gap:8px;
+    margin-bottom:4px;
+    padding:12px;
+}
+#admin-panel .reportes-filtros-campos,
+#admin-panel .reportes-acciones{display:contents;}
+#admin-panel .reportes-filtros label{min-width:0;gap:4px;font-size:.76rem;}
+#admin-panel .reportes-filtros input{min-height:40px;padding:8px 10px;font-size:.86rem;}
+#admin-panel .reportes-acciones button{
+    min-width:0;
+    min-height:40px;
+    padding:8px 11px;
+    white-space:nowrap;
+    font-size:.82rem;
+}
+#admin-panel .reportes-estado{margin:0 0 12px;color:var(--text3);font-size:.76rem;line-height:1.35;}
+#admin-panel .reportes-periodo{margin:0 0 12px;font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#admin-panel .reportes-subtabs{margin-bottom:14px;}
+#admin-panel .reportes-vista[hidden]{display:none!important;}
+#admin-panel .reportes-vista .reportes-seccion{margin-bottom:16px;}
+#admin-panel .reportes-vista .reportes-seccion h4{margin-bottom:8px;}
+#admin-panel .reportes-metricas{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;}
+#admin-panel .reportes-metrica{display:flex;min-height:76px;flex-direction:column;justify-content:center;gap:4px;padding:10px 12px;}
+#admin-panel .reportes-metrica span{margin:0;font-size:.72rem;}
+#admin-panel .reportes-metrica strong{font-size:clamp(1.05rem,2vw,1.45rem);}
+#admin-panel .reportes-grafico{width:100%;min-height:0;margin-bottom:10px;padding:8px;}
+#admin-panel .reportes-grafico svg{width:100%;height:260px;max-width:none;}
+#admin-panel .reportes-tabla-wrap{max-height:440px;overflow:auto;overscroll-behavior:contain;}
+#admin-panel .reportes-tabla thead th{position:sticky;top:0;z-index:1;}
+#admin-panel .reportes-tabla tbody tr:nth-child(even){background:var(--bg2);}
+#admin-panel .reportes-tabla tbody tr:nth-child(odd){background:var(--bg);}
+#admin-panel .reportes-tabla th,#admin-panel .reportes-tabla td{background-clip:padding-box;}
+#admin-panel .reportes-lista-controles{display:flex;justify-content:flex-end;margin:12px 0 8px;}
+#admin-panel .reportes-lista-controles label{display:flex;align-items:center;gap:8px;color:var(--text3);font-size:.82rem;}
+#admin-panel .reportes-lista-controles select{width:auto;min-width:190px;min-height:38px;margin:0;padding:7px 10px;background:var(--bg2);color:var(--text);}
+#admin-panel .reportes-ver-mas{width:auto;min-width:110px;margin:10px 0 0;padding:8px 14px;}
+
+@media(max-width:900px){
+    #admin-panel .reportes-filtros{grid-template-columns:minmax(110px,1fr) minmax(110px,1fr) auto auto;}
+    #admin-panel .reportes-filtros label{grid-column:auto;}
+    #admin-panel .reportes-acciones button{width:auto;}
+}
+@media(max-width:560px){
+    #admin-panel .reportes-filtros{grid-template-columns:minmax(0,1fr);}
+    #admin-panel .reportes-filtros label{grid-column:span 1;}
+    #admin-panel .reportes-acciones button{width:100%;white-space:normal;}
+    #admin-panel .reportes-metricas{grid-template-columns:repeat(2,minmax(0,1fr));}
+    #admin-panel .reportes-lista-controles{justify-content:stretch;}
+    #admin-panel .reportes-lista-controles label{width:100%;align-items:stretch;flex-direction:column;}
+    #admin-panel .reportes-lista-controles select{width:100%;}
+}
 
 /* Colores de la paleta para valores de color inline existentes */
 .stock-bajo,
@@ -2525,3 +2581,72 @@ html body.vista-seccion.vista-seccion[data-vista="admin-panel"]>#toast#toast{dis
 
 /* Alinear el buscador y el botón Actualizar en las barras de acciones */
 #admin-panel .admin-lista-acciones input{margin:0;min-height:46px;}
+
+#admin-panel .admin-main{padding-top:24px;}
+
+#admin-panel .encargo-admin-card{padding:10px 12px;margin-bottom:8px;}
+#admin-panel .encargo-admin-detalle{margin:6px 0;}
+#admin-panel .encargo-admin-foto{margin:4px 0 6px;}
+#admin-panel .encargo-admin-card .encargo-admin-estado{margin:0;min-height:40px;padding:8px 10px;}
+#admin-panel #encargos-cargar-mas{margin-top:8px;}
+
+#admin-panel .caja-contenido{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.85fr);align-items:start;gap:16px;}
+#admin-panel .caja-listas{display:grid;gap:14px;min-width:0;}
+#admin-panel .caja-seccion{min-width:0;padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--bg2);}
+#admin-panel .caja-seccion h4,#admin-panel .caja-seccion-cabecera h4{margin:0 0 10px;}
+#admin-panel .caja-seccion-cabecera{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+#admin-panel .caja-seccion-cabecera label{display:grid;gap:5px;color:var(--text2);font-size:.82rem;font-weight:600;}
+#admin-panel .caja-seccion-cabecera input{width:min(100%,260px);margin:0;padding:9px 11px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--text);}
+#admin-panel #caja-pedidos-resultados{margin:0 0 8px;color:var(--text3);font-size:.8rem;}
+#admin-panel .caja-pedido-fila,.caja-cobro-fila{margin:0 0 8px;padding:11px;border:1px solid var(--border);border-radius:10px;background:var(--bg);}
+#admin-panel .caja-pedido-fila:last-child,.caja-cobro-fila:last-child{margin-bottom:0;}
+#admin-panel .caja-pedido-info{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px 12px;}
+#admin-panel .caja-pedido-info strong{color:var(--text);}
+#admin-panel .caja-pedido-info span,.caja-cobro-fila span,.caja-cobro-fila time{color:var(--text3);font-size:.82rem;overflow-wrap:anywhere;}
+#admin-panel .caja-pedido-acciones{display:flex;align-items:flex-end;flex-wrap:wrap;gap:8px;margin-top:9px;}
+#admin-panel .caja-pedido-acciones label{display:grid;gap:4px;color:var(--text2);font-size:.78rem;}
+#admin-panel .caja-pedido-acciones select{min-width:120px;margin:0;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--text);}
+#admin-panel .caja-pedido-acciones button,#admin-panel #caja-pedidos-cargar-mas{width:auto;min-height:38px;margin:0;padding:8px 11px;font-size:.82rem;}
+#admin-panel #caja-pedidos-cargar-mas{margin-top:8px;}
+#admin-panel .caja-cobro-fila{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;align-items:center;gap:10px;}
+#admin-panel .caja-cobro-fila>div{display:grid;gap:3px;min-width:0;}
+#admin-panel .caja-cobro-fila strong{font-size:.86rem;}
+#admin-panel .caja-cierre{max-width:none;}
+#admin-panel .caja-cierre p{margin:0;}
+#admin-panel .pedido-ir-pagos{color:var(--accent);font-size:.82rem;font-weight:700;text-decoration:underline;text-underline-offset:2px;}
+@media(max-width:900px){
+    #admin-panel .caja-contenido{grid-template-columns:minmax(0,1fr);}
+}
+@media(max-width:600px){
+    #admin-panel .caja-seccion-cabecera{align-items:stretch;flex-direction:column;}
+    #admin-panel .caja-seccion-cabecera input{width:100%;}
+    #admin-panel .caja-pedido-info{grid-template-columns:minmax(0,1fr);}
+    #admin-panel .caja-pedido-acciones{align-items:stretch;flex-direction:column;}
+    #admin-panel .caja-pedido-acciones select,#admin-panel .caja-pedido-acciones button,#admin-panel #caja-pedidos-cargar-mas{width:100%;}
+    #admin-panel .caja-cobro-fila{grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;}
+    #admin-panel .caja-cobro-fila time{text-align:right;}
+}
+
+#admin-panel #admin-identidad .admin-identidad-icono.con-foto{
+    display:block;
+    flex:0 0 48px;
+    width:48px;
+    height:48px;
+    overflow:hidden;
+    padding:0;
+    border:0;
+    border-radius:50%;
+    background:transparent;
+    box-shadow:none;
+    place-items:initial;
+    font-size:0;
+}
+#admin-panel #admin-identidad .admin-identidad-icono.con-foto img{
+    display:block;
+    width:100%;
+    height:100%;
+    max-width:none;
+    object-fit:cover;
+    object-position:center;
+    border-radius:50%;
+}
