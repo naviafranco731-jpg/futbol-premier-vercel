@@ -4474,3 +4474,22 @@ $("equipo-modal").addEventListener("click", event => {
 document.addEventListener("keydown", event => {
     if (event.key === "Escape" && $("equipo-modal").classList.contains("activo")) cerrarModalEquipo();
 });
+
+const contactoForm = $("contacto-form");
+if (contactoForm) {
+    contactoForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const nombre = $("contacto-nombre").value.trim();
+        const motivo = $("contacto-motivo").value.trim();
+        const mensaje = $("contacto-mensaje").value.trim();
+        const estado = $("contacto-form-estado");
+        if (!nombre || !motivo || !mensaje) {
+            estado.textContent = "Completa tu nombre, el motivo y el mensaje.";
+            return;
+        }
+        const texto = `Hola, soy ${nombre}.\nMotivo: ${motivo}\n\n${mensaje}`;
+        window.open(`https://wa.me/59171208827?text=${encodeURIComponent(texto)}`, "_blank", "noopener");
+        contactoForm.reset();
+        estado.textContent = "Mensaje listo en WhatsApp.";
+    });
+}

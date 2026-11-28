@@ -2909,6 +2909,37 @@ body.vista-seccion:not([data-vista="admin-panel"])>.vista-activa:not(#inicio):no
         min-height:calc(100vh - 340px)!important;
     }
 }
+
+/* Contacto */
+.contacto-wrap{width:min(1200px,100%);margin:0 auto;}
+.contacto-wrap>.section-heading{text-align:left;}
+.contacto-subtitulo{margin-bottom:22px;color:var(--text2);line-height:1.6;}
+.contacto-grid{max-width:none;margin:0;}
+.contacto-extra{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;margin-top:24px;}
+.contacto-mapa{min-width:0;overflow:hidden;border:1px solid var(--border);border-radius:18px;}
+.contacto-mapa iframe{display:block;width:100%;height:360px;border:0;}
+.contacto-form{display:grid;align-content:start;gap:10px;padding:26px;border:1px solid var(--border);border-radius:18px;background:var(--bg2);}
+.contacto-form h3{margin:0;font-size:1.2rem;}
+.contacto-form>p:not(#contacto-form-estado){margin-bottom:5px;color:var(--text2);font-size:.9rem;line-height:1.5;}
+.contacto-form label{color:var(--text2);font-size:.85rem;font-weight:700;}
+.contacto-form input,
+.contacto-form select,
+.contacto-form textarea{width:100%;margin:0;padding:11px 13px;border:1px solid var(--border);border-radius:11px;background:var(--bg3);color:var(--text);font:inherit;font-size:.9rem;}
+.contacto-form input:focus,
+.contacto-form select:focus,
+.contacto-form textarea:focus{outline:none;border-color:var(--accent);}
+.contacto-form textarea{resize:vertical;}
+.contacto-form button{display:inline-flex;min-height:46px;align-items:center;justify-content:center;gap:9px;padding:11px 16px;border:0;border-radius:11px;background:var(--accent-button);color:var(--bg);font:inherit;font-size:.92rem;font-weight:700;cursor:pointer;transition:filter .2s;}
+.contacto-form button:hover{filter:brightness(1.08);}
+.contacto-form button svg{width:19px;height:19px;flex:0 0 19px;}
+#contacto-form-estado{min-height:1.3em;margin:0;color:var(--text2);font-size:.85rem;}
+.footer .footer-ubicacion{display:flex;align-items:flex-start;gap:9px;color:var(--text2);text-decoration:none;}
+.footer .footer-ubicacion svg{width:18px;height:18px;flex:0 0 18px;margin-top:3px;color:var(--accent);}
+.footer a.footer-ubicacion:hover{color:var(--text);}
+@media(max-width:900px){
+    .contacto-extra{grid-template-columns:1fr;}
+    .contacto-mapa iframe{height:280px;}
+}
 body > .footer,
 body.vista-seccion > .footer.vista-activa {
   border-top: 0 !important;
