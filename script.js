@@ -52,6 +52,31 @@ function etiquetaRol(rol) {
     return ({ admin: "Administrador", cajero: "Cajero", empleado: "Empleado" })[rol] || "Cliente";
 }
 
+function actualizarBotonCuenta(photoURL = auth.currentUser?.photoURL) {
+    const boton = $("abrir-cuenta");
+    if (!usuarioActual) {
+        boton.innerHTML = "Ingresar / Crear cuenta";
+        boton.setAttribute("aria-label", "Ingresar o crear cuenta");
+        return;
+    }
+    const nombre = perfilActual?.usuario || usuarioActual.displayName || usuarioActual.email?.split("@")[0] || "Mi cuenta";
+    const caracteres = Array.from(nombre.trim());
+    const nombreCorto = caracteres.length > 16 ? `${caracteres.slice(0, 16).join("")}…` : caracteres.join("");
+    const foto = photoURL || usuarioActual.photoURL;
+    const avatar = foto
+        ? `<img class="cuenta-nav-avatar" src="${escaparHTML(foto)}" alt="">`
+        : `<span class="cuenta-nav-avatar cuenta-nav-inicial" aria-hidden="true">${escaparHTML(Array.from(nombreCorto)[0]?.toLocaleUpperCase() || "U")}</span>`;
+    boton.innerHTML = `${avatar}<span class="cuenta-nav-nombre">${escaparHTML(nombreCorto)}</span>`;
+    boton.setAttribute("aria-label", `Abrir cuenta de ${nombre}`);
+}
+
+function requiereSesionCompra() {
+    if (usuarioActual) return false;
+    mostrarToast("Inicia sesión para comprar");
+    mostrarCuenta("ingresar");
+    return true;
+}
+
 function actualizarAvatarAdmin(photoURL = auth.currentUser?.photoURL) {
     const avatar = $("admin-identidad-icono");
     avatar.replaceChildren();
@@ -286,34 +311,71 @@ function describirErrorFirebase(error) {
 function renderCuentaPerfil() {
     const form = $("cuenta-form");
     const perfil = $("cuenta-perfil");
+    const caja = $("cuenta-box");
     if (!usuarioActual) {
+        caja.classList.remove("cuenta-box-perfil");
         form.style.display = "block";
         perfil.style.display = "none";
+        actualizarBotonCuenta();
         return;
     }
     form.style.display = "none";
     aplicarModoPersonal(false);
+    caja.classList.add("cuenta-box-perfil");
     perfil.style.display = "block";
-    const nombreGuardado = perfilActual?.usuario;
-    const nombre = nombreGuardado
-        ? nombreGuardado.charAt(0).toUpperCase() + nombreGuardado.slice(1)
-        : usuarioActual.displayName || usuarioActual.email;
-    const verificacion = usuarioActual.email === ADMIN_EMAIL || usuarioActual.emailVerified
-        ? "Correo verificado"
-        : "Correo pendiente de verificación";
-    perfil.innerHTML = `<div class="cuenta-perfil-datos">
-        <p>Usuario: <strong>${escaparHTML(nombre)}</strong></p>
-        <p>Correo: <strong>${escaparHTML(usuarioActual.email)}</strong></p>
-        <p>ID de cliente: <strong>${escaparHTML(usuarioActual.uid)}</strong></p>
-        <p>${verificacion}</p>
+    const nombre = perfilActual?.usuario || usuarioActual.displayName || usuarioActual.email?.split("@")[0] || "Usuario";
+    const avatar = Array.from(nombre.trim())[0]?.toLocaleUpperCase() || "U";
+    const foto = usuarioActual.photoURL || auth.currentUser?.photoURL;
+    const correoVerificado = usuarioActual.email === ADMIN_EMAIL || usuarioActual.emailVerified;
+    perfil.innerHTML = `<header class="cuenta-perfil-cabecera">
+        ${foto
+            ? `<img class="cuenta-perfil-avatar tiene-foto" id="cuenta-perfil-avatar" src="${escaparHTML(foto)}" alt="">`
+            : `<span class="cuenta-perfil-avatar" id="cuenta-perfil-avatar" aria-hidden="true">${escaparHTML(avatar)}</span>`}
+        <h3>${escaparHTML(nombre)}</h3>
+        <span class="cuenta-rol-etiqueta">${escaparHTML(etiquetaRol(rolActual))}</span>
+    </header>
+    <div class="cuenta-perfil-datos">
+        <div class="cuenta-perfil-correo">
+            <span>Correo</span>
+            <strong>${escaparHTML(usuarioActual.email || "Sin correo")}</strong>
+            <span class="cuenta-verificacion ${correoVerificado ? "verificado" : "pendiente"}">${correoVerificado ? "Verificado" : "Sin verificar"}</span>
+        </div>
+        <div class="cuenta-perfil-id">
+            <span>ID de cliente</span>
+            <button type="button" class="cuenta-copiar-id" id="cuenta-copiar-id">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg>
+                <span>Copiar ID</span>
+            </button>
+        </div>
     </div>
+    ${correoVerificado ? "" : `<aside class="cuenta-aviso-verificacion">
+        <p>Verifica tu correo para poder hacer pedidos.</p>
+        <button type="button" id="reenviar-verificacion">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="m4 7 8 6 8-6"/></svg>
+            <span>Enviar correo de verificación</span>
+        </button>
+    </aside>`}
     <div class="cuenta-acciones">
-        ${esPersonal() ? '<button type="button" id="cuenta-abrir-admin">Abrir panel de trabajo</button>' : ""}
-        ${usuarioActual.emailVerified || usuarioActual.email === ADMIN_EMAIL ? "" : '<button type="button" id="reenviar-verificacion">Enviar correo de verificación</button>'}
-        <button type="button" id="cuenta-ver-pedidos">📋 Ver mis pedidos</button>
-        <button type="button" id="cuenta-cerrar-sesion">Cerrar sesión</button>
+        <button type="button" class="cuenta-accion-principal" id="cuenta-ver-pedidos">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg>
+            <span>Ver mis pedidos</span>
+        </button>
+        ${esPersonal() ? `<button type="button" class="cuenta-accion-secundaria" id="cuenta-abrir-admin">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10"/><path d="M7 12h5"/><path d="M7 16h3"/></svg>
+            <span>Abrir panel de trabajo</span>
+        </button>` : ""}
+        <button type="button" class="cuenta-accion-secundaria" id="cuenta-cambiar-foto">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5h6v6"/><path d="M20 5 11 14"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg>
+            <span>Cambiar foto</span>
+        </button>
+        <input type="file" id="cuenta-foto-input" accept="image/jpeg,image/png,image/webp" hidden>
+        <button type="button" class="cuenta-accion-cerrar" id="cuenta-cerrar-sesion">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg>
+            <span>Cerrar sesión</span>
+        </button>
     </div>
     <p class="cuenta-ayuda" id="cuenta-perfil-mensaje" role="status"></p>`;
+    actualizarBotonCuenta();
     const reenviar = $("reenviar-verificacion");
     if (reenviar) reenviar.addEventListener("click", async () => {
         try {
@@ -322,6 +384,22 @@ function renderCuentaPerfil() {
         } catch (error) {
             $("cuenta-perfil-mensaje").textContent = describirErrorFirebase(error);
         }
+    });
+    $("cuenta-copiar-id").addEventListener("click", async () => {
+        try {
+            if (!navigator.clipboard?.writeText) throw new Error("El portapapeles no está disponible.");
+            await navigator.clipboard.writeText(usuarioActual.uid);
+            mostrarToast("ID copiado");
+        } catch (error) {
+            mostrarToast("No se pudo copiar el ID.");
+            console.error("Error al copiar el ID de cliente:", error);
+        }
+    });
+    const inputFoto = $("cuenta-foto-input");
+    $("cuenta-cambiar-foto").addEventListener("click", () => inputFoto.click());
+    inputFoto.addEventListener("change", event => {
+        const archivo = event.target.files?.[0];
+        if (archivo) subirFotoCuenta(archivo, event.currentTarget);
     });
     const abrirAdmin = $("cuenta-abrir-admin");
     if (abrirAdmin) abrirAdmin.addEventListener("click", () => {
@@ -340,12 +418,70 @@ function renderCuentaPerfil() {
     });
 }
 
+async function subirFotoCuenta(archivo, input) {
+    const tiposPermitidos = new Set(["image/jpeg", "image/png", "image/webp"]);
+    if (!tiposPermitidos.has(archivo.type) || archivo.size > 2 * 1024 * 1024) {
+        mostrarToast("Elige una imagen JPG, PNG o WebP de máximo 2 MB.");
+        input.value = "";
+        return;
+    }
+    const usuario = auth.currentUser;
+    const boton = $("cuenta-cambiar-foto");
+    if (!usuario) {
+        mostrarToast("Inicia sesión para cambiar la foto.");
+        input.value = "";
+        return;
+    }
+    const datos = new FormData();
+    datos.append("file", archivo);
+    datos.append("upload_preset", "futbol-premier");
+    boton.disabled = true;
+    boton.setAttribute("aria-busy", "true");
+    mostrarToast("Subiendo foto de perfil...");
+    try {
+        const respuesta = await fetch("https://api.cloudinary.com/v1_1/dxcfq1mln/image/upload", {
+            method: "POST",
+            body: datos
+        });
+        const resultado = await respuesta.json();
+        if (!respuesta.ok || typeof resultado.secure_url !== "string") {
+            throw new Error(resultado.error?.message || "Cloudinary no devolvió una URL de imagen.");
+        }
+        await usuario.updateProfile({ photoURL: resultado.secure_url });
+        usuarioActual = auth.currentUser || usuario;
+        const avatar = $("cuenta-perfil-avatar");
+        avatar.classList.add("tiene-foto");
+        avatar.replaceChildren(Object.assign(document.createElement("img"), {
+            src: resultado.secure_url,
+            alt: ""
+        }));
+        actualizarBotonCuenta(resultado.secure_url);
+        if (esPersonal()) actualizarAvatarAdmin(resultado.secure_url);
+        mostrarToast("Foto de perfil actualizada.");
+    } catch (error) {
+        mostrarToast(`No se pudo actualizar la foto: ${error.message || describirErrorFirebase(error)}`);
+        console.error("Error al subir la foto de cuenta:", error);
+    } finally {
+        boton.disabled = false;
+        boton.removeAttribute("aria-busy");
+        input.value = "";
+    }
+}
+
 async function actualizarSesionFirebase(usuario) {
     usuarioActual = usuario;
     perfilActual = null;
+    document.body.classList.toggle("con-sesion", Boolean(usuario));
+    document.body.classList.toggle("visitante", !usuario);
+    if (!usuario) {
+        carrito = [];
+        $("carrito-panel").style.display = "none";
+        actualizarCarrito();
+    }
+    actualizarBotonCuenta();
     adminLogueado = Boolean(usuario && ADMIN_UID && usuario.uid === ADMIN_UID && usuario.email === ADMIN_EMAIL);
     rolActual = adminLogueado ? "admin" : "cliente";
-    if (usuario && !adminLogueado) {
+    if (usuario && !adminLogueado && !esPersonal()) {
         try {
             const token = await usuario.getIdTokenResult();
             if (["cajero", "empleado"].includes(token.claims.role)) rolActual = token.claims.role;
@@ -359,7 +495,7 @@ async function actualizarSesionFirebase(usuario) {
         document.body.classList.remove("vista-seccion");
         delete document.body.dataset.vista;
     }
-    if (usuario && !adminLogueado && !esPersonal()) {
+    if (usuario && !adminLogueado) {
         try {
             const snapshot = await db.ref(`usuarios/${usuario.uid}`).once("value");
             perfilActual = snapshot.val();
@@ -367,7 +503,7 @@ async function actualizarSesionFirebase(usuario) {
             mostrarToast(`No se pudo cargar tu perfil: ${describirErrorFirebase(error)}`);
         }
     }
-    $("abrir-cuenta").textContent = usuario ? "Mi cuenta" : "Ingresar / Mi cuenta";
+    actualizarBotonCuenta();
     $("admin-panel").style.display = esPersonal() ? "block" : "none";
     renderCuentaPerfil();
     if (esPersonal()) abrirPanelAdministracion();
@@ -589,7 +725,7 @@ $("cuenta-submit").addEventListener("click", async () => {
             });
             perfilActual = { usuario: claveUsuario, correo: email };
             renderCuentaPerfil();
-            salida.textContent = `Cuenta creada. Tu ID de cliente es ${credencial.user.uid}. Verifica el correo para poder comprar.`;
+            salida.textContent = "Cuenta creada. Verifica tu correo para poder hacer pedidos.";
             $("cuenta-password").value = "";
         } catch (error) {
             if (credencial?.user && claveUsuario) {
@@ -722,12 +858,13 @@ window.addEventListener("scroll",()=>{
 });
 $("volver-arriba").addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
 const destinosVista = {
-    inicio: ["inicio"],
+    inicio: ["inicio","destacado"],
     ofertas: ["ofertas"],
     catalogo: ["catalogo-vista"],
     "catalogo-vista": ["catalogo-vista"],
     encargos: ["encargos"],
     nosotros: ["nosotros"],
+    "por-que": ["por-que"],
     resenas: ["resenas"],
     entregas: ["entregas"],
     footer: ["contacto"],
@@ -735,32 +872,98 @@ const destinosVista = {
 };
 function ajustarVistaCompleta() {
 }
+function mostrarVista(id, {
+    registrarHistorial = true,
+    categoria = null,
+    restaurarCategorias = null,
+    limpiarHash = false
+} = {}) {
+    const objetivos = destinosVista[id];
+    if (!objetivos || objetivos.some(objetivo => !$(objetivo))) return false;
+
+    const checks = [...$$(".filtro-check")];
+    const categoriaActiva = categoria && checks.some(check => check.value === categoria) ? categoria : null;
+
+    $$(".vista-activa").forEach(elemento => elemento.classList.remove("vista-activa"));
+    objetivos.forEach(objetivo => $(objetivo).classList.add("vista-activa"));
+
+    if (categoriaActiva) {
+        checks.forEach(check => { check.checked = check.value === categoriaActiva; });
+        pMin.value = "0";
+        pMax.value = "1000";
+        rVal.textContent = "0 – 1000 Bs";
+        $("ordenar").value = "";
+        buscador.value = "";
+        resultados.style.display = "none";
+        checks[0]?.dispatchEvent(new Event("change", { bubbles: true }));
+    } else if (Array.isArray(restaurarCategorias)) {
+        const categoriasValidas = restaurarCategorias.filter(valor => checks.some(check => check.value === valor));
+        checks.forEach(check => { check.checked = categoriasValidas.includes(check.value); });
+        checks[0]?.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    document.body.classList.add("vista-seccion");
+    document.body.dataset.vista = objetivos[0];
+
+    const categoriasSeleccionadas = checks.filter(check => check.checked).map(check => check.value);
+    const estadoActual = history.state && typeof history.state === "object" ? history.state : {};
+    const estadoNuevo = {
+        ...estadoActual,
+        tiendaVista: id,
+        tiendaCategoria: categoriaActiva,
+        tiendaCategorias: categoriasSeleccionadas
+    };
+    const urlDestino = `${location.pathname}${location.search}${limpiarHash ? "" : `#${id}`}`;
+    if (registrarHistorial) {
+        const mismaEntrada = location.hash === (limpiarHash ? "" : `#${id}`)
+            && estadoActual.tiendaVista === id
+            && (estadoActual.tiendaCategoria ?? null) === categoriaActiva
+            && JSON.stringify(estadoActual.tiendaCategorias || []) === JSON.stringify(categoriasSeleccionadas);
+        if (!mismaEntrada) history.pushState(estadoNuevo, "", urlDestino);
+    } else {
+        history.replaceState(estadoNuevo, "", urlDestino);
+    }
+
+    window.scrollTo({ top: 0, behavior: "auto" });
+    requestAnimationFrame(() => requestAnimationFrame(ajustarVistaCompleta));
+    return true;
+}
+
+function mostrarVistaDesdeURL(event) {
+    if (event?.type !== "popstate" && esPersonal() && document.body.dataset.vista === "admin-panel") return;
+    const id = location.hash.slice(1);
+    if (id === "admin-panel") {
+        if (esPersonal()) {
+            if (document.body.dataset.vista !== "admin-panel") abrirPanelAdministracion();
+        }
+        else mostrarVista("inicio", { registrarHistorial: false, limpiarHash: true });
+        return;
+    }
+    if (!destinosVista[id]) {
+        mostrarVista("inicio", { registrarHistorial: false, limpiarHash: true });
+        return;
+    }
+    const estado = history.state && typeof history.state === "object" ? history.state : {};
+    const esEstadoVista = estado.tiendaVista === id;
+    const categoria = esEstadoVista ? estado.tiendaCategoria : null;
+    const restaurarCategorias = esEstadoVista && Array.isArray(estado.tiendaCategorias)
+        ? estado.tiendaCategorias
+        : null;
+    mostrarVista(id, { registrarHistorial: false, categoria, restaurarCategorias });
+}
+
 $$('a[href^="#"]').forEach(a=>a.addEventListener("click",e=>{
     const id=a.getAttribute("href").slice(1);
-    const destino=document.getElementById(id);
-    const objetivos=destinosVista[id];
-    if(!destino||!objetivos)return;
+    if(!destinosVista[id])return;
     e.preventDefault();
-    $$(".vista-activa").forEach(elemento=>elemento.classList.remove("vista-activa"));
-    objetivos.forEach(objetivo=>$(objetivo).classList.add("vista-activa"));
-    if(a.dataset.categoriaTienda){
-        const categoria=a.dataset.categoriaTienda;
-        const checks=[...$$(".filtro-check")];
-        checks.forEach(check=>check.checked=categoria!=="todos"&&check.value===categoria);
-        pMin.value="0";
-        pMax.value="1000";
-        rVal.textContent="0 – 1000 Bs";
-        $("ordenar").value="";
-        buscador.value="";
-        resultados.style.display="none";
-        checks[0]?.dispatchEvent(new Event("change",{bubbles:true}));
-    }
-    document.body.classList.add("vista-seccion");
-    document.body.dataset.vista=objetivos[0];
-    history.replaceState(null,"",`#${id}`);
-    window.scrollTo({top:0,behavior:"auto"});
-    requestAnimationFrame(()=>requestAnimationFrame(ajustarVistaCompleta));
+    mostrarVista(id, { categoria: a.dataset.categoriaTienda || null });
 }));
+window.addEventListener("popstate", mostrarVistaDesdeURL);
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", mostrarVistaDesdeURL, { once: true });
+} else {
+    mostrarVistaDesdeURL();
+}
 window.addEventListener("resize",ajustarVistaCompleta);
 
 /* =============================================   BUSCADOR   */
@@ -780,6 +983,7 @@ document.addEventListener("click",e=>{if(!e.target.closest(".buscador-wrap"))res
 
 /* =============================================   CARRITO   */
 document.querySelector(".carrito-icono").addEventListener("click",()=>{
+    if(requiereSesionCompra()) return;
     $("carrito-panel").style.display=$("carrito-panel").style.display==="block"?"none":"block";
 });
 $("cerrar-carrito").addEventListener("click",()=>{$("carrito-panel").style.display="none";});
@@ -1790,6 +1994,7 @@ function crearCard(producto,cont){
             <div class="botones-card">
                 <button class="btn-ver-detalle">Ver detalle</button>
                 <button type="button" class="agregar-carrito" ${producto.agotado?"disabled":""}>${producto.agotado?"Agotado":"Agregar"}</button>
+                <button type="button" class="inicia-sesion-compra">Inicia sesión para comprar</button>
                 <div class="card-extra-btns">
                     <button class="btn-wsp-rapido" data-nombre="${producto.nombre}" data-precio="${producto.precio}">Consultar</button>
                     <button class="btn-comparar-card ${isComp?'comp-activo':''}" data-id="${producto.id}">⚖️ ${isComp?'Quitando...':'Comparar'}</button>
@@ -1808,6 +2013,7 @@ function crearCard(producto,cont){
     card.querySelector(".btn-ver-detalle").addEventListener("click",()=>{
         producto.visitas=(producto.visitas||0)+1;guardarLS();abrirDetalle(producto);
     });
+    card.querySelector(".inicia-sesion-compra").addEventListener("click",requiereSesionCompra);
 
     card.querySelector(".btn-fav-card").addEventListener("click",e=>{
         e.stopPropagation();toggleFavorito(producto.id);
@@ -1838,6 +2044,7 @@ function crearCard(producto,cont){
     // COMPARAR
     card.querySelector(".btn-comparar-card").addEventListener("click",e=>{
         e.stopPropagation();
+        if(requiereSesionCompra()) return;
         const yaEsta=compararLista.some(x=>x.id===producto.id);
         if(yaEsta){compararLista=compararLista.filter(x=>x.id!==producto.id);}
         else{if(compararLista.length>=2){mostrarToast("Solo puedes comparar 2 jerseys");return;}compararLista.push(producto);}
@@ -1849,6 +2056,7 @@ function crearCard(producto,cont){
 
 /* =============================================   MODAL SELECTOR TALLA (DESDE CARD)   */
 function abrirTallaSelector(producto){
+    if(requiereSesionCompra()) return;
     productoSel = producto;
     let tallaS = null, dorsalS = null, colorS = null;
 
@@ -1962,12 +2170,14 @@ function abrirTallaSelector(producto){
 
     // ---- BOTONES ----
     $("talla-sel-agregar").onclick = () => {
+        if(requiereSesionCompra()) return;
         if(!validar()) return;
         agregarAlCarrito(producto, tallaS, dorsalS, colorS||"");
         cerrarTallaModal();
     };
 
     $("talla-sel-comprar-ya").onclick = () => {
+        if(requiereSesionCompra()) return;
         if(!validar()) return;
         agregarAlCarrito(producto, tallaS, dorsalS, colorS||"");
         cerrarTallaModal();
@@ -1994,7 +2204,6 @@ function abrirTallaSelector(producto){
         const msg=`Hola, me interesa: *${producto.nombre}* — ${producto.precio} Bs. ¿Tienen disponibilidad?`;
         window.open(`https://wa.me/59171208827?text=${encodeURIComponent(msg)}`,"_blank");
     };
-
     // Abrir modal usando display flex
     modal.style.display = "flex";
     document.body.style.overflow = "hidden";
@@ -2007,12 +2216,14 @@ function cerrarTallaModal(){
 
 $("talla-sel-cerrar").addEventListener("click", cerrarTallaModal);
 $("talla-selector-modal").addEventListener("click", e=>{ if(e.target===$("talla-selector-modal")) cerrarTallaModal(); });
+$("talla-sel-iniciar-sesion").addEventListener("click", requiereSesionCompra);
 $("btn-guia-tallas2").addEventListener("click", ()=>$("talla-guia-modal").classList.add("activo"));
 
 
 
 /* =============================================   AGREGAR AL CARRITO   */
 function agregarAlCarrito(producto,talla,dorsal,color){
+    if(requiereSesionCompra()) return;
     const key=JSON.stringify([producto.id,talla,dorsal,color]);
     const ex=carrito.find(i=>i.key===key);
     if(ex){
@@ -2299,7 +2510,7 @@ function crearTarjetaPedido(pedido){
 }
 
 /* =============================================   FAVORITOS   */
-function toggleFavorito(id){const i=favoritos.indexOf(id);i===-1?favoritos.push(id):favoritos.splice(i,1);localStorage.setItem("favoritos",JSON.stringify(favoritos));$("contador-favoritos").textContent=favoritos.length||"";}
+function toggleFavorito(id){if(requiereSesionCompra())return;const i=favoritos.indexOf(id);i===-1?favoritos.push(id):favoritos.splice(i,1);localStorage.setItem("favoritos",JSON.stringify(favoritos));$("contador-favoritos").textContent=favoritos.length||"";}
 function renderFavoritos(){
     const lista=$("favoritos-lista");lista.innerHTML="";
     const favProds=productos.filter(p=>favoritos.includes(p.id));
@@ -2419,10 +2630,12 @@ function abrirDetalle(producto){
 
     const ba=$("detalle-agregar");ba.disabled=producto.agotado;ba.textContent=producto.agotado?"Agotado":"Agregar al carrito";
     ba.onclick=()=>{
+        if(requiereSesionCompra()) return;
         if(!tallaS){mostrarToast("👆 Selecciona una talla");return;}
         if(!dorsalS){mostrarToast("👆 Selecciona un dorsal");return;}
         agregarAlCarrito(producto,tallaS,dorsalS,colorS||"");cerrarDetalle();
     };
+    $("detalle-iniciar-sesion").onclick=requiereSesionCompra;
 
     const btnFav=$("detalle-fav");const isFavNow=favoritos.includes(producto.id);
     btnFav.textContent=isFavNow?"♥":"♡";

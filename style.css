@@ -379,7 +379,7 @@ nav.scrolled{backdrop-filter:blur(10px);box-shadow:0 5px 30px rgba(0, 0, 0, .5);
 .encargos-etiqueta{display:inline-block;margin-bottom:13px;color:var(--accent);font-size:.73rem;font-weight:800;letter-spacing:1.6px;}
 .encargos-intro h2{margin-bottom:13px;font-size:clamp(1.6rem,3vw,2.4rem);line-height:1.12;}
 .encargos-intro p{color:var(--text3);line-height:1.7;font-size:.94rem;}
-.encargos-form{padding:22px;border:1px solid var(--border);border-radius:17px;background:var(--bg);}
+.encargos-form{padding:22px;border:0;border-radius:0;background:transparent;}
 .encargos-campos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
 .encargos-form label{display:block;margin-bottom:7px;color:var(--text2);font-size:.82rem;font-weight:700;}
 .encargos-form label span{color:var(--text3);font-size:.75rem;font-weight:400;}
@@ -723,6 +723,7 @@ nav.scrolled{backdrop-filter:blur(10px);box-shadow:0 5px 30px rgba(0, 0, 0, .5);
 /* Grid ciudades nacionales */
 .envios-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:16px;}
 .envio-ciudad{display:flex;justify-content:space-between;align-items:center;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;}
+.entrega-nacional .envio-ciudad{border:0;}
 .envio-ciudad span:first-child{font-size:.86rem;color:var(--text2);}
 .envio-precio{background:var(--accent);color:var(--bg);font-size:.76rem;font-weight:bold;padding:3px 10px;border-radius:18px;}
 
@@ -1414,10 +1415,10 @@ body.vista-seccion>.footer.vista-activa{
     height:auto!important;min-height:0!important;max-height:none!important;
     overflow:visible!important;
     display:block!important;
-    margin:60px 0 0!important;
+    margin:0!important;
     padding:46px 32px 22px!important;
-    background:var(--bg);
-    border-top:1px solid var(--border);
+    background:var(--bg2);
+    border-top:0;
     text-align:left;
 }
 
@@ -2649,4 +2650,267 @@ html body.vista-seccion.vista-seccion[data-vista="admin-panel"]>#toast#toast{dis
     object-fit:cover;
     object-position:center;
     border-radius:50%;
+}
+
+#abrir-cuenta{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:0;}
+.cuenta-nav-avatar{display:block;width:28px;height:28px;flex:0 0 28px;border-radius:50%;object-fit:cover;}
+.cuenta-nav-inicial{display:grid;place-items:center;background:var(--accent-dark);color:#fff;font-size:.78rem;font-weight:700;}
+.cuenta-nav-nombre{max-width:16ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+#cuenta-box.cuenta-box-perfil{
+    width:min(420px,calc(100vw - 24px));
+    max-width:420px;
+    max-height:calc(100dvh - 24px);
+    overflow-y:auto;
+    padding:24px;
+}
+#cuenta-box.cuenta-box-perfil .cuenta-contenido{padding:0;}
+#cuenta-box.cuenta-box-perfil .cuenta-perfil-cabecera{display:flex;align-items:center;flex-direction:column;gap:8px;margin:4px 0 18px;text-align:center;}
+#cuenta-box.cuenta-box-perfil .cuenta-perfil-avatar{display:grid;width:72px;height:72px;flex:0 0 72px;place-items:center;overflow:hidden;border:2px solid rgba(0,254,136,.5);border-radius:50%;background:var(--accent-dark);color:#fff;font-size:1.55rem;font-weight:700;object-fit:cover;}
+#cuenta-box.cuenta-box-perfil .cuenta-perfil-avatar.tiene-foto{display:block;border:0;background:transparent;}
+#cuenta-box.cuenta-box-perfil .cuenta-perfil-avatar img{display:block;width:100%;height:100%;max-width:none;border-radius:50%;object-fit:cover;object-position:center;}
+#cuenta-box.cuenta-box-perfil .cuenta-perfil-cabecera h3{max-width:100%;overflow-wrap:anywhere;font-size:1.35rem;}
+.cuenta-rol-etiqueta{display:inline-flex;align-items:center;padding:4px 11px;border:1px solid rgba(0,254,136,.28);border-radius:999px;background:rgba(0,254,136,.08);color:var(--accent);font-size:.76rem;font-weight:700;}
+#cuenta-box.cuenta-box-perfil .cuenta-perfil-datos{display:grid;gap:12px;margin:0 0 14px;padding:14px;}
+.cuenta-perfil-correo{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 8px;min-width:0;}
+.cuenta-perfil-correo>span:first-child,.cuenta-perfil-id>span{color:var(--text3);font-size:.77rem;font-weight:700;}
+.cuenta-perfil-correo strong{grid-column:1/-1;min-width:0;overflow-wrap:anywhere;color:var(--text);font-size:.9rem;}
+.cuenta-verificacion{grid-column:1/-1;width:fit-content;padding:3px 8px;border-radius:999px;font-size:.72rem;font-weight:700;}
+.cuenta-verificacion.verificado{background:rgba(35,211,102,.14);color:#54e28b;}
+.cuenta-verificacion.pendiente{background:rgba(245,158,11,.14);color:#fbbf24;}
+.cuenta-perfil-id{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:10px;border-top:1px solid var(--border);}
+.cuenta-copiar-id{display:inline-flex!important;align-items:center;gap:6px;width:auto!important;margin:0!important;padding:6px 10px!important;border:1px solid var(--border)!important;background:transparent!important;color:var(--text2)!important;font-size:.75rem!important;}
+.cuenta-copiar-id svg{width:15px;height:15px;}
+.cuenta-aviso-verificacion{display:grid;gap:10px;margin-bottom:14px;padding:12px;border:1px solid rgba(245,158,11,.32);border-radius:12px;background:rgba(245,158,11,.07);}
+.cuenta-aviso-verificacion p{color:#fbbf24;font-size:.84rem;line-height:1.45;}
+.cuenta-aviso-verificacion button,.cuenta-acciones button{display:flex;align-items:center;justify-content:center;gap:9px;min-height:44px;margin:0;padding:10px 13px;border-radius:11px;font-size:.87rem;}
+.cuenta-aviso-verificacion button{border:1px solid rgba(245,158,11,.38);background:rgba(245,158,11,.12);color:#fbbf24;}
+.cuenta-acciones{display:grid;gap:9px;}
+.cuenta-acciones svg,.cuenta-aviso-verificacion svg{width:19px;height:19px;flex:0 0 19px;}
+.cuenta-acciones .cuenta-accion-principal{background:var(--accent-button);color:var(--bg);}
+.cuenta-acciones .cuenta-accion-secundaria{border:1px solid var(--border);background:var(--bg3);color:var(--text);}
+.cuenta-acciones .cuenta-accion-cerrar{margin-top:5px;border:1px solid rgba(252,50,1,.4);background:rgba(252,50,1,.07);color:#ffaaa0;}
+#cuenta-foto-input{display:none;}
+#cuenta-box.cuenta-box-perfil .cuenta-ayuda{min-height:0;margin:8px 0 0;text-align:center;}
+
+.inicia-sesion-compra{display:none;width:100%;padding:10px;border:1px solid rgba(0,254,136,.35);border-radius:11px;background:rgba(0,254,136,.08);color:var(--accent);font-size:.86rem;font-weight:700;cursor:pointer;}
+.detalle-acciones .inicia-sesion-compra{flex:1;}
+body.visitante .carrito-icono,
+body.visitante #btn-favoritos-nav,
+body.visitante #ver-favoritos-btn,
+body.visitante #comparar-barra,
+body.visitante #exit-popup,
+body.visitante #favoritos-modal{display:none!important;}
+body.visitante #carrito-panel{display:none!important;}
+body.visitante .btn-fav-card,
+body.visitante .btn-comparar-card,
+body.visitante .agregar-carrito,
+body.visitante #detalle-agregar,
+body.visitante #detalle-fav,
+body.visitante #talla-sel-agregar,
+body.visitante #talla-sel-comprar-ya{display:none;}
+body.visitante .inicia-sesion-compra{display:block;}
+body.con-sesion .inicia-sesion-compra{display:none!important;}
+
+@media(max-width:480px){
+    #cuenta-box.cuenta-box-perfil{padding:20px;}
+    .cuenta-nav-nombre{max-width:13ch;}
+    .cuenta-nav-avatar{width:26px;height:26px;flex-basis:26px;}
+}
+
+#nosotros{
+    width:100%;
+    padding:clamp(36px,6vw,76px) 24px;
+    background:var(--bg2);
+    border-top:1px solid var(--border);
+    text-align:left;
+}
+#nosotros .nosotros-wrap{
+    display:grid;
+    gap:clamp(24px,4vw,44px);
+    width:min(1200px,100%);
+    margin:0 auto;
+}
+#nosotros .section-heading{
+    width:100%;
+    margin:0;
+    color:var(--text);
+    font-size:clamp(1.7rem,3vw,2.25rem);
+    letter-spacing:.12em;
+    text-align:left;
+}
+#nosotros .nosotros-intro{
+    display:grid;
+    grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);
+    align-items:center;
+    gap:clamp(24px,5vw,64px);
+}
+#nosotros .nosotros-historia{min-width:0;}
+#nosotros .nosotros-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    color:var(--accent);
+    font-size:.8rem;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+}
+#nosotros .nosotros-tag svg{width:22px;height:22px;flex:0 0 22px;}
+#nosotros .nosotros-historia h3{margin:14px 0 16px;font-size:clamp(1.75rem,3.2vw,2.5rem);line-height:1.15;}
+#nosotros .nosotros-historia p{max-width:690px;margin:0 0 12px;color:var(--text2);font-size:.98rem;line-height:1.75;}
+#nosotros .nosotros-imagen{
+    display:grid;
+    min-height:310px;
+    place-items:center;
+    align-content:center;
+    gap:14px;
+    padding:26px;
+    border:1px solid var(--border);
+    border-radius:22px;
+    background:radial-gradient(ellipse at 50% 25%,rgba(0,254,136,.12),transparent 65%),linear-gradient(145deg,var(--bg3),var(--bg));
+}
+#nosotros .nosotros-imagen img{display:block;width:min(100%,320px);height:245px;object-fit:contain;object-position:center;}
+#nosotros .nosotros-imagen span{color:var(--text2);font-size:.8rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;}
+#nosotros .nosotros-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0;}
+#nosotros .nosotros-stat{
+    display:grid;
+    min-height:158px;
+    justify-items:center;
+    align-content:center;
+    gap:7px;
+    padding:20px;
+    border:1px solid var(--border);
+    border-radius:16px;
+    background:var(--bg);
+    text-align:center;
+}
+#nosotros .nosotros-stat svg{width:28px;height:28px;color:var(--accent);}
+#nosotros .nosotros-stat strong{color:var(--accent);font-size:clamp(2rem,4vw,2.8rem);line-height:1;}
+#nosotros .nosotros-stat span{color:var(--text2);font-size:.87rem;}
+#nosotros .nosotros-proposito{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+#nosotros .nosotros-proposito-card{
+    min-height:205px;
+    padding:22px;
+    border:1px solid var(--border);
+    border-radius:16px;
+    background:linear-gradient(150deg,var(--bg3),var(--bg));
+}
+#nosotros .nosotros-proposito-card svg{width:28px;height:28px;margin-bottom:15px;color:var(--accent);}
+#nosotros .nosotros-proposito-card h3{margin:0 0 8px;font-size:1.05rem;}
+#nosotros .nosotros-proposito-card p{color:var(--text2);font-size:.9rem;line-height:1.65;}
+#nosotros .nosotros-beneficios{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:18px 20px;
+    border:1px solid var(--border);
+    border-radius:16px;
+    background:var(--bg);
+}
+#nosotros .nosotros-beneficios-icono{display:grid;width:44px;height:44px;flex:0 0 44px;place-items:center;border:1px solid rgba(0,254,136,.24);border-radius:13px;background:rgba(0,254,136,.07);color:var(--accent);}
+#nosotros .nosotros-beneficios-icono svg{width:23px;height:23px;}
+#nosotros .nosotros-beneficios h3{margin:0 0 4px;font-size:1rem;}
+#nosotros .nosotros-beneficios p{color:var(--text2);font-size:.85rem;line-height:1.5;}
+#nosotros .nosotros-beneficios>a{display:inline-flex;align-items:center;gap:8px;flex:0 0 auto;margin-left:auto;color:var(--accent);font-size:.85rem;font-weight:700;text-decoration:none;}
+#nosotros .nosotros-beneficios>a:hover{color:var(--text);}
+#nosotros .nosotros-beneficios>a svg{width:18px;height:18px;}
+#nosotros .nosotros-como h3{margin:0 0 18px;font-size:1.25rem;}
+#nosotros .nosotros-pasos{
+    position:relative;
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:14px;
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+#nosotros .nosotros-pasos::before{
+    position:absolute;
+    top:22px;
+    right:12.5%;
+    left:12.5%;
+    height:1px;
+    background:linear-gradient(90deg,transparent,var(--border) 12%,var(--accent-dark) 50%,var(--border) 88%,transparent);
+    content:"";
+}
+#nosotros .nosotros-pasos li{position:relative;display:grid;justify-items:center;gap:11px;text-align:center;}
+#nosotros .nosotros-pasos li>span{display:grid;width:44px;height:44px;place-items:center;border:1px solid var(--accent-dark);border-radius:50%;background:var(--bg2);color:var(--accent);font-size:1rem;font-weight:800;}
+#nosotros .nosotros-pasos h4{max-width:200px;font-size:.9rem;line-height:1.45;}
+#nosotros .nosotros-cta{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:22px;
+    padding:clamp(20px,4vw,32px);
+    border:1px solid rgba(0,254,136,.25);
+    border-radius:18px;
+    background:linear-gradient(115deg,rgba(0,254,136,.1),var(--bg3) 68%);
+}
+#nosotros .nosotros-cta h3{margin:0 0 6px;font-size:clamp(1.2rem,2.5vw,1.65rem);}
+#nosotros .nosotros-cta p{color:var(--text2);font-size:.9rem;line-height:1.5;}
+#nosotros .nosotros-cta-acciones{display:flex;flex-wrap:wrap;gap:9px;}
+#nosotros .nosotros-cta-acciones a{display:inline-flex;min-height:44px;align-items:center;justify-content:center;gap:8px;padding:10px 15px;border:1px solid var(--border);border-radius:11px;font-size:.86rem;font-weight:700;text-decoration:none;transition:background .2s,border-color .2s,color .2s;}
+#nosotros .nosotros-boton-principal{border-color:var(--accent-button);background:var(--accent-button);color:var(--bg);}
+#nosotros .nosotros-boton-principal:hover{border-color:var(--accent);background:var(--accent);color:var(--bg);}
+#nosotros .nosotros-boton-secundario{background:var(--bg);color:var(--text);}
+#nosotros .nosotros-boton-secundario:hover{border-color:var(--accent);color:var(--accent);}
+#nosotros .nosotros-boton-secundario svg{width:18px;height:18px;}
+
+body.vista-seccion>#nosotros.vista-activa{height:calc(100vh - 245px);min-height:320px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;padding-bottom:42px;}
+@media(max-width:1250px){
+    body.vista-seccion>#nosotros.vista-activa{height:calc(100vh - 300px);}
+}
+@media(max-width:900px){
+    #nosotros{padding-right:18px;padding-left:18px;}
+    #nosotros .nosotros-intro{grid-template-columns:minmax(0,1fr) minmax(230px,.8fr);gap:24px;}
+    #nosotros .nosotros-proposito{grid-template-columns:repeat(2,minmax(0,1fr));}
+    #nosotros .nosotros-proposito-card:last-child{grid-column:1/-1;min-height:0;}
+    #nosotros .nosotros-cta{align-items:flex-start;flex-direction:column;}
+    body.vista-seccion>#nosotros.vista-activa{height:calc(100vh - 300px);}
+}
+@media(max-width:700px){
+    #nosotros .nosotros-intro,
+    #nosotros .nosotros-stats,
+    #nosotros .nosotros-proposito,
+    #nosotros .nosotros-pasos{grid-template-columns:minmax(0,1fr);}
+    #nosotros .nosotros-imagen{min-height:250px;}
+    #nosotros .nosotros-imagen img{height:190px;}
+    #nosotros .nosotros-stat{min-height:130px;}
+    #nosotros .nosotros-proposito-card,#nosotros .nosotros-proposito-card:last-child{grid-column:auto;min-height:0;}
+    #nosotros .nosotros-beneficios{align-items:flex-start;flex-wrap:wrap;}
+    #nosotros .nosotros-beneficios>a{margin-left:59px;}
+    #nosotros .nosotros-pasos{gap:16px;padding-left:0;}
+    #nosotros .nosotros-pasos::before{top:22px;bottom:22px;left:21px;width:1px;height:auto;background:linear-gradient(180deg,var(--border),var(--accent-dark),var(--border));}
+    #nosotros .nosotros-pasos li{grid-template-columns:44px minmax(0,1fr);justify-items:start;align-items:center;gap:12px;text-align:left;}
+    #nosotros .nosotros-pasos h4{max-width:none;}
+    #nosotros .nosotros-cta-acciones{width:100%;flex-direction:column;}
+    #nosotros .nosotros-cta-acciones a{width:100%;}
+}
+@media(max-width:480px){
+    #nosotros{padding-right:14px;padding-left:14px;}
+    #nosotros .nosotros-beneficios>a{margin-left:0;}
+    #nosotros .nosotros-beneficios{gap:10px;}
+}
+
+/* La vista ocupa el espacio disponible, pero crece con su contenido. */
+body.vista-seccion:not([data-vista="admin-panel"])>.vista-activa:not(#inicio):not(#footer){
+    height:auto!important;
+    min-height:calc(100vh - 245px)!important;
+    overflow:visible!important;
+}
+@media(max-width:1250px){
+    body.vista-seccion:not([data-vista="admin-panel"])>.vista-activa:not(#inicio):not(#footer){
+        min-height:calc(100vh - 300px)!important;
+    }
+}
+@media(max-width:700px){
+    body.vista-seccion:not([data-vista="admin-panel"])>.vista-activa:not(#inicio):not(#footer){
+        min-height:calc(100vh - 340px)!important;
+    }
+}
+body > .footer,
+body.vista-seccion > .footer.vista-activa {
+  border-top: 0 !important;
+  box-shadow: inset 0 2px 0 var(--accent-dark);
 }
