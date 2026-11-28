@@ -2490,3 +2490,38 @@ body.vista-seccion[data-vista="admin-panel"]{
   border:0;
   background:transparent;
 }
+
+/* ===== Toast visible dentro del panel de administración ===== */
+html body.vista-seccion.vista-seccion[data-vista="admin-panel"]>#toast#toast{display:block!important;}
+
+/* ===== Módulo Usuarios: cabecera, lista y modal ===== */
+.modulo-cabecera{margin:0 0 18px;}
+.modulo-cabecera h2{margin:0 0 4px;font-size:1.6rem;text-align:left;}
+.modulo-cabecera p{color:var(--text3);font-size:.95rem;line-height:1.5;}
+
+.equipo-lista-cabecera,#equipo-lista-estado,.equipo-card{max-width:none;}
+.equipo-lista-botones{display:flex;flex-wrap:wrap;gap:8px;}
+#admin-panel #equipo-recargar{background:transparent;color:var(--accent);border:1px solid var(--accent);}
+#admin-panel #equipo-recargar:hover{background:var(--bg3);filter:none;}
+
+.equipo-card-principal{display:flex;align-items:center;gap:12px;min-width:0;}
+.equipo-avatar{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#15803D,#166534);color:#fff;font-size:1.05rem;font-weight:700;}
+.equipo-card-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin-top:5px;}
+.equipo-card .equipo-badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:999px;font-size:.74rem;font-weight:700;}
+.equipo-card .equipo-badge-activa{background:#DCFCE7;color:#166534;}
+.equipo-card .equipo-badge-inactiva{background:#E5E7EB;color:#4B5563;}
+.equipo-card .equipo-badge-rol{background:#E7EFEA;color:#0F2A1F;border:1px solid #D5E2DA;}
+
+.equipo-modal{position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(10,42,29,.55);backdrop-filter:blur(4px);}
+.equipo-modal.activo{display:flex;}
+.equipo-modal-contenido{width:100%;max-width:520px;max-height:90vh;overflow-y:auto;padding:26px;border:1px solid var(--border);border-radius:16px;background:var(--bg);box-shadow:0 20px 50px rgba(0,0,0,.25);}
+.equipo-modal-cabecera{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;}
+.equipo-modal-cabecera h3{margin:0 0 4px;font-size:1.2rem;}
+.equipo-modal-cabecera p{color:var(--text3);font-size:.9rem;line-height:1.5;}
+.equipo-modal .equipo-form{max-width:none;margin:0;}
+#admin-panel .equipo-modal-cerrar{flex:0 0 36px;width:36px;height:36px;margin:0;padding:0;border:1px solid var(--border);border-radius:50%;background:transparent;color:var(--text);font-size:.95rem;}
+#admin-panel .equipo-modal-cerrar:hover{background:var(--bg3);filter:none;transform:none;}
+.admin-module-tabs[data-admin-module-tabs="usuarios"]{margin-bottom:18px;}
+
+/* Alinear el buscador y el botón Actualizar en las barras de acciones */
+#admin-panel .admin-lista-acciones input{margin:0;min-height:46px;}

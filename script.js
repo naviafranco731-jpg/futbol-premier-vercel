@@ -853,6 +853,7 @@ function activarTabAdmin(btn) {
     panel.classList.add("activo");
     if (btn.id) panel.setAttribute("aria-labelledby", btn.id);
     const moduloActivo = btn.closest(".admin-module-tabs")?.dataset.adminModuleTabs;
+    document.querySelector(".modulo-cabecera").hidden = moduloActivo !== "usuarios";
     document.querySelectorAll(".admin-module-tabs").forEach(barra => {
         barra.hidden = barra.dataset.adminModuleTabs !== moduloActivo
             || barra.querySelectorAll(".atab").length < 2;
@@ -863,7 +864,8 @@ function activarTabAdmin(btn) {
         modulo.setAttribute("aria-pressed", String(activo));
     });
     if(btn.dataset.tab==="editar") renderListaAdmin();
-    if(btn.dataset.tab==="clientes") renderAdminClientes();
+    if(btn.dataset.tab==="clientes") renderListaClientes();
+    if(btn.dataset.tab==="pedidos") renderAdminClientes();
     if(btn.dataset.tab==="caja") renderCaja();
     if(btn.dataset.tab==="encargos-admin") renderAdminEncargos();
     if(btn.dataset.tab==="cupones") renderListaCupones();
@@ -889,7 +891,8 @@ $("admin-actualizar").addEventListener("click", async()=>{
         return;
     }
     if(pestanaActiva==="editar") renderListaAdmin();
-    if(pestanaActiva==="clientes") renderAdminClientes();
+    if(pestanaActiva==="clientes") renderListaClientes();
+    if(pestanaActiva==="pedidos") renderAdminClientes();
     if(pestanaActiva==="caja") renderCaja();
     if(pestanaActiva==="encargos-admin") renderAdminEncargos();
     if(pestanaActiva==="cupones") renderListaCupones();
@@ -1528,6 +1531,8 @@ $("equipo-form").addEventListener("submit", async event => {
         estado.textContent = `Cuenta ${etiquetaRol(result.role)} creada para ${result.email}. UID: ${result.uid}`;
         $("equipo-form").reset();
         cargarEquipo();
+        cerrarModalEquipo();
+        mostrarToast(`Cuenta ${etiquetaRol(result.role)} creada para ${result.email}`);
     } catch (error) {
         estado.textContent = error.message || "No se pudo crear la cuenta. Inténtalo nuevamente.";
         console.error("Error al crear cuenta del equipo:", error);
@@ -1547,6 +1552,8 @@ $("admin-ver-inventario").addEventListener("click",()=>{
 });
 $("inventario-buscar").addEventListener("input", renderListaAdmin);
 $("inventario-filtro-stock").addEventListener("change", renderListaAdmin);
+$("clientes-buscar").addEventListener("input",filtrarListaClientes);
+$("recargar-clientes-solo").addEventListener("click",renderListaClientes);
 $("pedidos-filtro-estado").addEventListener("change", aplicarFiltroPedidosAdmin);
 $("recargar-clientes").addEventListener("click", renderAdminClientes);
 $("recargar-encargos").addEventListener("click", renderAdminEncargos);
@@ -2579,6 +2586,53 @@ function toggleAgotado(id){
 }
 function eliminarProd(id){if(!adminLogueado)return;if(confirm("¿Eliminar?")){productos=productos.filter(p=>p.id!==id);guardarLS();renderProductos(productos);renderOfertas();renderListaAdmin();renderAdminStats();mostrarToast("🗑 Eliminado");}}
 
+async function renderListaClientes(){
+    const contenedor=$("lista-clientes-solo");
+    if(!adminLogueado&&rolActual!=="cajero"){
+        contenedor.innerHTML=`<p class="admin-vacio">Tu rol no tiene acceso a los clientes.</p>`;
+        return;
+    }
+    contenedor.innerHTML=`<p class="admin-vacio">Cargando clientes…</p>`;
+    try{
+        const snapshot=await db.ref("usuarios").once("value");
+        const usuarios=snapshot.val()||{};
+        const clientes=Object.entries(usuarios).filter(([uid,perfil])=>uid!==usuarioActual.uid&&perfil&&perfil.usuario);
+        if(!clientes.length){
+            contenedor.innerHTML=`<p class="admin-vacio">Aún no hay clientes registrados.</p>`;
+            $("clientes-resultados").textContent="";
+            return;
+        }
+        const registros=await Promise.all(clientes.map(async([uid,perfil])=>{
+            const pedidosSnapshot=await db.ref(`pedidos/${uid}`).once("value");
+            const pedidos=Object.values(pedidosSnapshot.val()||{}).filter(Boolean);
+            const total=pedidos.filter(p=>p.pago?.estado==="pagado").reduce((suma,p)=>suma+(Number(p.pago.monto)||0),0);
+            return {uid,perfil,cantidad:pedidos.length,total};
+        }));
+        registros.sort((a,b)=>String(b.perfil.creado||"").localeCompare(String(a.perfil.creado||"")));
+        contenedor.innerHTML=registros.map(({uid,perfil,cantidad,total})=>{
+            const fecha=new Date(perfil.creado||"");
+            return `<article class="cliente-card" data-busqueda="${escaparHTML(`${perfil.usuario} ${perfil.correo}`.toLowerCase())}">
+                <div class="cliente-cabecera">
+                    <div><strong>${escaparHTML(perfil.usuario)}</strong><span>${escaparHTML(perfil.correo)}</span></div>
+                    <span>${cantidad} pedido${cantidad===1?"":"s"} · ${escaparHTML(formatoBs(total))} cobrados</span>
+                </div>
+                <p class="cliente-id">Registrado: ${Number.isFinite(fecha.getTime())?escaparHTML(fecha.toLocaleDateString("es-BO")):"—"} · ID: ${escaparHTML(uid)}</p>
+            </article>`;
+        }).join("");
+        filtrarListaClientes();
+    }catch(error){
+        contenedor.innerHTML=`<p class="admin-vacio">${escaparHTML(describirErrorFirebase(error))}</p>`;
+        console.error("Error al cargar clientes:",error);
+    }
+}
+function filtrarListaClientes(){
+    const texto=$("clientes-buscar").value.trim().toLowerCase();
+    const tarjetas=[...$("lista-clientes-solo").querySelectorAll(".cliente-card")];
+    let visibles=0;
+    tarjetas.forEach(t=>{const ok=t.dataset.busqueda.includes(texto);t.hidden=!ok;if(ok)visibles++;});
+    $("clientes-resultados").textContent=tarjetas.length?`Mostrando ${visibles} de ${tarjetas.length} clientes`:"";
+}
+
 async function renderAdminClientes(){
     const contenedor=$("lista-clientes");
     if(!adminLogueado&&rolActual!=="cajero"){
@@ -2600,7 +2654,13 @@ async function renderAdminClientes(){
             const pedidos=Object.entries(pedidosSnapshot.val()||{}).map(([id,pedido])=>({...pedido,id}));
             return {uid,perfil,pedidos:pedidos.sort((a,b)=>String(b.fechaISO||"").localeCompare(String(a.fechaISO||"")))};
         }));
-        contenedor.innerHTML=registros.map(({uid,perfil,pedidos})=>`<article class="cliente-card">
+        const registrosConPedidos=registros.filter(r=>r.pedidos.length);
+        if(!registrosConPedidos.length){
+            contenedor.innerHTML=`<p class="admin-vacio">Todavía no hay pedidos registrados.</p>`;
+            aplicarFiltroPedidosAdmin();
+            return;
+        }
+        contenedor.innerHTML=registrosConPedidos.map(({uid,perfil,pedidos})=>`<article class="cliente-card">
             <div class="cliente-cabecera">
                 <div><strong>${escaparHTML(perfil.usuario)}</strong><span>${escaparHTML(perfil.correo)}</span></div>
                 <span>${pedidos.length} pedido${pedidos.length===1?"":"s"}</span>
@@ -3826,11 +3886,20 @@ function renderEquipo(usuarios) {
         lista.innerHTML = '<p class="admin-vacio">Aún no hay cajeros ni empleados registrados.</p>';
         return;
     }
-    lista.innerHTML = usuarios.map(u => `<article class="equipo-card${u.disabled ? " equipo-card-off" : ""}"
-        data-uid="${escaparHTML(u.uid)}" data-email="${escaparHTML(u.email)}" data-disabled="${u.disabled}">
-        <div class="equipo-card-info">
-            <strong>${escaparHTML(u.email || "Sin correo")}</strong>
-            <span>${u.disabled ? "Desactivada" : "Activa"} · Creada ${escaparHTML(fechaEquipo(u.creationTime))} · Último acceso ${escaparHTML(fechaEquipo(u.lastSignInTime, "nunca"))}</span>
+    lista.innerHTML = usuarios.map(u => {
+        const inicial = (u.email || "?").trim().charAt(0).toUpperCase() || "?";
+        return `<article class="equipo-card${u.disabled ? " equipo-card-off" : ""}"
+        data-uid="${escaparHTML(u.uid)}" data-email="${escaparHTML(u.email)}" data-role="${escaparHTML(u.role)}" data-disabled="${u.disabled}">
+        <div class="equipo-card-principal">
+            <span class="equipo-avatar" aria-hidden="true">${escaparHTML(inicial)}</span>
+            <div class="equipo-card-info">
+                <strong>${escaparHTML(u.email || "Sin correo")}</strong>
+                <div class="equipo-card-meta">
+                    <span class="equipo-badge ${u.disabled ? "equipo-badge-inactiva" : "equipo-badge-activa"}">${u.disabled ? "Desactivada" : "Activa"}</span>
+                    <span class="equipo-badge equipo-badge-rol">${u.role === "cajero" ? "Cajero" : "Empleado"}</span>
+                    <span>Creada ${escaparHTML(fechaEquipo(u.creationTime))} · Último acceso ${escaparHTML(fechaEquipo(u.lastSignInTime, "nunca"))}</span>
+                </div>
+            </div>
         </div>
         <div class="equipo-card-acciones">
             <select class="equipo-rol-select" aria-label="Rol de ${escaparHTML(u.email)}">
@@ -3838,9 +3907,10 @@ function renderEquipo(usuarios) {
                 <option value="empleado"${u.role === "empleado" ? " selected" : ""}>Empleado</option>
             </select>
             <button type="button" class="equipo-btn-toggle">${u.disabled ? "Activar" : "Desactivar"}</button>
-            <button type="button" class="equipo-btn-eliminar">Eliminar</button>
+            ${u.disabled ? '<button type="button" class="equipo-btn-eliminar">Eliminar</button>' : ""}
         </div>
-    </article>`).join("");
+    </article>`;
+    }).join("");
 }
 
 async function cargarEquipo() {
@@ -3880,6 +3950,11 @@ $("equipo-lista").addEventListener("change", event => {
     const select = event.target.closest(".equipo-rol-select");
     if (!select) return;
     const tarjeta = select.closest(".equipo-card");
+    const rolAnterior = tarjeta.dataset.role;
+    if (!confirm(`¿Cambiar el rol de ${tarjeta.dataset.email} a ${select.value}? La persona deberá volver a iniciar sesión.`)) {
+        select.value = rolAnterior;
+        return;
+    }
     accionEquipo(
         select,
         { action: "update", uid: tarjeta.dataset.uid, role: select.value },
@@ -3912,4 +3987,21 @@ $("equipo-lista").addEventListener("click", event => {
         if (!confirm(`¿Eliminar definitivamente la cuenta de ${email}? Esta acción no se puede deshacer.`)) return;
         accionEquipo(boton, { action: "delete", uid }, "Cuenta eliminada.");
     }
+});
+
+function abrirModalEquipo() {
+    $("equipo-estado").textContent = "";
+    $("equipo-modal").classList.add("activo");
+    $("equipo-email").focus();
+}
+function cerrarModalEquipo() {
+    $("equipo-modal").classList.remove("activo");
+}
+$("equipo-nuevo").addEventListener("click", abrirModalEquipo);
+$("equipo-modal-cerrar").addEventListener("click", cerrarModalEquipo);
+$("equipo-modal").addEventListener("click", event => {
+    if (event.target === $("equipo-modal")) cerrarModalEquipo();
+});
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && $("equipo-modal").classList.contains("activo")) cerrarModalEquipo();
 });

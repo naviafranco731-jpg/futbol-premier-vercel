@@ -655,7 +655,7 @@
               <button type="button" class="admin-module-button" data-admin-module="productos" data-default-tab="editar" aria-controls="admin-subtabs-productos">
                 <span class="admin-tab-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m16.5 9.4-9-5.19"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg></span><span class="admin-tab-text"><strong>Productos</strong></span>
               </button>
-              <button type="button" class="admin-module-button" data-admin-module="pedidos" data-default-tab="clientes" aria-controls="admin-subtabs-pedidos">
+              <button type="button" class="admin-module-button" data-admin-module="pedidos" data-default-tab="pedidos" aria-controls="admin-subtabs-pedidos">
                 <span class="admin-tab-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M8 12h8"/><path d="M8 16h8"/></svg></span><span class="admin-tab-text"><strong>Pedidos</strong></span>
               </button>
               <button type="button" class="admin-module-button" data-admin-module="compras" data-default-tab="registrar-compra" aria-controls="admin-subtabs-compras">
@@ -691,6 +691,10 @@
           <div class="admin-module-tabs" id="admin-subtabs-dashboard" data-admin-module-tabs="dashboard" role="tablist" aria-label="Pestañas del dashboard" hidden>
             <button type="button" class="atab" id="admin-tab-dashboard" role="tab" aria-selected="false" aria-controls="tab-dashboard" data-tab="dashboard" data-roles="admin cajero empleado"><span class="admin-tab-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 10 9-7 9 7"/><path d="M5 9v12h14V9"/><path d="M9 21v-8h6v8"/></svg></span><span class="admin-tab-text"><strong>Dashboard</strong></span></button>
           </div>
+          <div class="modulo-cabecera" hidden>
+            <h2>Usuarios</h2>
+            <p>Administra al personal con acceso al panel y consulta a los clientes registrados.</p>
+          </div>
           <div class="admin-module-tabs" id="admin-subtabs-usuarios" data-admin-module-tabs="usuarios" role="tablist" aria-label="Pestañas de Usuarios" hidden>
             <button type="button" class="atab" id="admin-tab-equipo" role="tab" aria-selected="false" aria-controls="tab-equipo" data-tab="equipo" data-roles="admin"><span class="admin-tab-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span class="admin-tab-text"><strong>Personal</strong></span></button>
             <button type="button" class="atab" id="admin-tab-clientes" role="tab" aria-selected="false" aria-controls="tab-clientes" data-tab="clientes" data-roles="admin"><span class="admin-tab-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="admin-tab-text"><strong>Clientes</strong></span></button>
@@ -700,7 +704,7 @@
             <button type="button" class="atab" id="admin-tab-agregar" role="tab" aria-selected="false" aria-controls="tab-agregar" data-tab="agregar" data-roles="admin empleado"><span class="admin-tab-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span><span class="admin-tab-text"><strong>Agregar producto</strong></span></button>
           </div>
           <div class="admin-module-tabs" id="admin-subtabs-pedidos" data-admin-module-tabs="pedidos" role="tablist" aria-label="Pestañas de Pedidos" hidden>
-            <button type="button" class="atab" id="admin-tab-pedidos-clientes" role="tab" aria-selected="false" aria-controls="tab-clientes" data-tab="clientes" data-roles="admin cajero"><span class="admin-tab-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M8 12h8"/><path d="M8 16h8"/></svg></span><span class="admin-tab-text"><strong>Pedidos</strong></span></button>
+            <button type="button" class="atab" id="admin-tab-pedidos-clientes" role="tab" aria-selected="false" aria-controls="tab-pedidos" data-tab="pedidos" data-roles="admin cajero"><span class="admin-tab-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-4"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M8 12h8"/><path d="M8 16h8"/></svg></span><span class="admin-tab-text"><strong>Pedidos</strong></span></button>
             <button type="button" class="atab" id="admin-tab-encargos-admin" role="tab" aria-selected="false" aria-controls="tab-encargos-admin" data-tab="encargos-admin" data-roles="admin"><span class="admin-tab-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg></span><span class="admin-tab-text"><strong>Encargos</strong></span></button>
           </div>
           <div class="admin-module-tabs" id="admin-subtabs-compras" data-admin-module-tabs="compras" role="tablist" aria-label="Pestañas de Compras" hidden>
@@ -774,49 +778,56 @@
             aria-labelledby="admin-tab-equipo"
             tabindex="0"
           >
-            <div class="admin-panel-intro">
-              <h3>Agregar Cajero o Empleado</h3>
-              <p>
-                Crea una cuenta de acceso al panel. La contraseña temporal se
-                comunica directamente a la persona.
-              </p>
-            </div>
-            <form id="equipo-form" class="equipo-form">
-              <label for="equipo-email">Correo de acceso</label>
-              <input
-                id="equipo-email"
-                type="email"
-                autocomplete="off"
-                required
-              />
-              <label for="equipo-password"
-                >Contraseña temporal (mínimo 12 caracteres)</label
-              >
-              <input
-                id="equipo-password"
-                type="password"
-                minlength="12"
-                autocomplete="new-password"
-                required
-              />
-              <label for="equipo-rol">Rol</label>
-              <select id="equipo-rol" required>
-                <option value="cajero">
-                  Cajero — pedidos, pagos e ingresos
-                </option>
-                <option value="empleado">
-                  Empleado — catálogo, precios y existencias
-                </option>
-              </select>
-              <button type="submit" id="equipo-crear">Crear acceso</button>
-              <p id="equipo-estado" role="status" aria-live="polite"></p>
-            </form>
             <div class="equipo-lista-cabecera">
               <h4>Cuentas del equipo</h4>
-              <button type="button" id="equipo-recargar">↻ Actualizar</button>
+              <div class="equipo-lista-botones">
+                <button type="button" id="equipo-recargar">↻ Actualizar</button>
+                <button type="button" id="equipo-nuevo">+ Nuevo usuario</button>
+              </div>
             </div>
             <p id="equipo-lista-estado" role="status" aria-live="polite"></p>
             <div id="equipo-lista"></div>
+            <div class="equipo-modal" id="equipo-modal" role="dialog" aria-modal="true" aria-labelledby="equipo-modal-titulo">
+              <div class="equipo-modal-contenido">
+                <div class="equipo-modal-cabecera">
+                  <div>
+                    <h3 id="equipo-modal-titulo">Agregar Cajero o Empleado</h3>
+                    <p>Crea una cuenta de acceso al panel. La contraseña temporal se comunica directamente a la persona.</p>
+                  </div>
+                  <button type="button" class="equipo-modal-cerrar" id="equipo-modal-cerrar" aria-label="Cerrar">✕</button>
+                </div>
+                <form id="equipo-form" class="equipo-form">
+                  <label for="equipo-email">Correo de acceso</label>
+                  <input
+                    id="equipo-email"
+                    type="email"
+                    autocomplete="off"
+                    required
+                  />
+                  <label for="equipo-password"
+                    >Contraseña temporal (mínimo 12 caracteres)</label
+                  >
+                  <input
+                    id="equipo-password"
+                    type="password"
+                    minlength="12"
+                    autocomplete="new-password"
+                    required
+                  />
+                  <label for="equipo-rol">Rol</label>
+                  <select id="equipo-rol" required>
+                    <option value="cajero">
+                      Cajero — pedidos, pagos e ingresos
+                    </option>
+                    <option value="empleado">
+                      Empleado — catálogo, precios y existencias
+                    </option>
+                  </select>
+                  <button type="submit" id="equipo-crear">Crear acceso</button>
+                  <p id="equipo-estado" role="status" aria-live="polite"></p>
+                </form>
+              </div>
+            </div>
           </div>
           <div
             class="admin-tab-content activo"
@@ -973,8 +984,30 @@
           >
             <div class="clientes-toolbar">
               <div class="admin-panel-intro">
-                <h3>Clientes y pedidos</h3>
-                <p>Consulta las cuentas registradas y sus compras.</p>
+                <h3>Clientes</h3>
+                <p>Consulta las cuentas registradas.</p>
+              </div>
+              <div class="admin-lista-acciones">
+                <label for="clientes-buscar">Buscar cliente
+                  <input type="search" id="clientes-buscar" placeholder="Usuario o correo..." />
+                </label>
+                <button type="button" id="recargar-clientes-solo">↻ Actualizar</button>
+              </div>
+            </div>
+            <p class="admin-resultados" id="clientes-resultados" aria-live="polite"></p>
+            <div id="lista-clientes-solo"></div>
+          </div>
+          <div
+            class="admin-tab-content"
+            id="tab-pedidos"
+            role="tabpanel"
+            aria-labelledby="admin-tab-pedidos-clientes"
+            tabindex="0"
+          >
+            <div class="clientes-toolbar">
+              <div class="admin-panel-intro">
+                <h3>Pedidos</h3>
+                <p>Consulta los pedidos, registra pagos y actualiza su estado.</p>
               </div>
               <div class="admin-lista-acciones">
                 <label for="pedidos-filtro-estado"
